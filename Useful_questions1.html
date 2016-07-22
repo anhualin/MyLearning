@@ -1,0 +1,2349 @@
+
+<!DOCTYPE html>
+			<!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script src="/js/jquery_min.js" type="text/javascript"></script>
+<script language="javascript">
+    //    friendform  user_search  search_form site_search googleform site_search_gg searchform_brd board_search
+    function searchByType(){
+        var type=$('#selType').val();
+        var info=$('#schInfo').val();
+        if(info.length<1){
+            alert("请输入关键字");
+            return;
+        }
+        if(type=="site"){
+            $("#site_search").attr('value',info);
+            document.searchform.submit();
+        }else if(type=="board"){
+            $("#board_search").attr('value',info);
+            document.searchform_brd.submit();
+        }else if(type=="news"){
+            if(info.length<2){
+                alert('请至少输入两个字');
+                return;
+            }else{
+                $("#news_search").attr('value',info);
+            }
+            document.searchform_kws.submit();
+        }else if(type=="friend"){
+            $("#user_search").attr('value',info);
+            document.friendform.submit();
+        }else if(type=="friend_name"){
+            $("#username_search").attr('value',info);
+            document.friendnameform.submit();
+        }
+        return;
+    }
+    function keyEvent(event){
+        // 判断回车键是否按下
+        if(!event)
+            event = window.event;//火狐中是 window.event
+        if((event.keyCode || event.which) != 13)
+            return true;
+
+        searchByType();
+    }
+
+
+function getCookieHeader(name) {
+	var arr = document.cookie.split("; ");
+	var length = arr.length;
+	var a;
+	for (var i=0; i < length; i++) {
+		a = arr[i].split("=");
+		if (a[0].toLowerCase() == name.toLowerCase()) {
+			return a[1];
+		}
+	}
+
+	return "";
+}
+function GetUrl()
+{
+      str=window.location.pathname;
+      if(str==null)
+      {
+          var url = '/mwap';
+      }
+      else {
+          var arr = new Array();
+          arr = str.split("/");
+          var url = '/mwap';
+          if (arr.length == 1) {
+              url = '/mwap';
+          }
+          if(arr.length==2) {
+              if (arr[1] == "mitbbs_bbssec.php") {
+                  url = '/mwap/forum/index.php';
+              }
+              else if(arr[1]=="mitbbs_article.php"){
+                  if(!GetQueryString("opflag")) {
+                      var board = GetQueryString("board");
+                      var id = GetQueryString("id");
+                      url = '/mwap/articlesingle.php?board='+board+'&article_id='+id;
+                  }
+                  else{
+                      var board = GetQueryString("board");
+                      var id = GetQueryString("id");
+                      url = '/mwap/articlesingle.php?club='+board+'&article_id='+id;
+                  }
+              }
+              else if(arr[1]=="mitbbs_article_t.php"){
+                  if(!GetQueryString("opflag")) {
+                      var board = GetQueryString("board");
+                      var gid = GetQueryString("gid");
+                      url = '/mwap/forum/article.php?board=' + board + '&groupid=' + gid + '&content_type=all';
+                  }
+                  else{
+                      var board = GetQueryString("board");
+                      var gid = GetQueryString("gid");
+                      url = '/mwap/club/article.php?club=' + board + '&groupid=' + gid + '&content_type=all';
+                  }
+              }
+              else if(arr[1]=="mitbbs_bbsdoc.php"){
+                  var board = GetQueryString("board");
+                  url = '/mwap/forum/board.php?board=' + board;
+              }
+              else if(arr[1]=="mitbbs_bbsboa.php"){
+                  var group = GetQueryString("group");
+                  url = '/mwap/forum/boardlist.php?sectid=' + group + '&boardname=0';
+              }
+              else if(arr[1]=="mitbbs_my_article.php"){
+                  url='/mwap/home/articlelist.php';
+              }
+              else if(arr[1]=="mitbbs_favorite_boards.php"){
+                  url='/mwap/home/discuss.php';
+              }
+              else if(arr[1]=="mitbbs_bbsfriendinfo.php"){
+                  url='/mwap/home/friends.php';
+              }
+              else if(arr[1]=="mitbbs_badlist.php"){
+                  url='/mwap/home/blacklist.php';
+              }
+              else if(arr[1]=="mitbbs_mailbox.php"){
+                  url='/mwap/home/mails.php';
+              }
+          }
+          if (arr.length == 3) {
+              if (arr[1] == "yimin") {
+                  if(arr[2]=="ym_wzy.php"){
+                      var board = GetQueryString("board");
+                      var id = GetQueryString("id");
+                      url = '/mwap/immigration/article.php?reqtype=column&board=' + board + '&groupid=' +id;
+                  }
+                  else{
+                      url = '/mwap/immigration';
+                  }
+              }
+              else if (arr[1] == "news") {
+                  if(arr[2]=="mitbbs_news_wenzhang.php")
+                  {
+                      var board = GetQueryString("board");
+                      var id = GetQueryString("id");
+                      alert(board);
+                      url = '/mwap/news/article.php?news='+board+'&groupid='+id;
+                  }
+                  else if(arr[2]=="mitbbs_news_pg.php"){
+                      url = '/mwap/news';
+                  }
+                  else {
+                      url = '/mwap/news';
+                  }
+              }
+              else if(arr[1]=="news_pg"){
+                  url = '/mwap/news';
+
+              }
+              else if (arr[1] == "club") {
+                  if(arr[2]=="mitbbs_club_bbsdoc.php"){
+                      var club=GetQueryString("club");
+                      url='/mwap/club/club.php?club='+club;
+                  }
+                  else if(arr[2]=="mitbbs_club_myclub.php"){
+                      url='/mwap/home/club.php';
+                  }
+                  else{
+                      url = '/mwap/club';
+                  }
+              }
+              else if (arr[1] == "bbsdoc") {
+                  var arr1 = new Array();
+                  arr1 = arr[2].split(".");
+                  url = '/mwap/forum/board.php?board=' + arr1[0];
+              }
+              else if (arr[1] == "bbsboa") {
+                  var arr1 = new Array();
+                  arr1 = arr[2].split(".");
+                  arr1[0]++;
+                  url = '/mwap/forum/boardlist.php?sectid=' + arr1[0] + '&boardname=0';
+              }
+              else  if(arr[1]=="club_bbsdoc"){
+                  var arr1 = new Array();
+                  arr1 = arr[2].split(".");
+                  url='/mwap/club/club.php?club='+arr1[0];
+              }
+              else if(arr[1]=="newindex"){
+                  if(arr[2]=="kjjy.php"){
+                      url='/mwap/home/index.php';
+                  }
+              }
+              else if(arr[1]=="share"){
+                  if(arr[2]=="fav_show.php"){
+                      url='/mwap/home/collectlist.php';
+                  }
+              }
+          }
+          if (arr.length == 4) {
+              if (arr[1] == "article") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?board='+arr[2]+'&article_id='+ arr1[0];
+              }
+              else if (arr[1] == "article0") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?board='+arr[2]+'&article_id='+ arr1[0];
+              }
+              else if (arr[1] == "article1") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?board='+arr[2]+'&article_id='+ arr1[0];
+              }
+              else if (arr[1] == "article2") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?board='+arr[2]+'&article_id='+ arr1[0];
+              }
+              else if (arr[1] == "article3") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?board='+arr[2]+'&article_id='+ arr1[0];
+              }
+              else if (arr[1] == "article_t") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/forum/article.php?board=' + arr[2] + '&groupid=' + arr1[0] + '&content_type=all';
+              }
+             else if (arr[1] == "article_t0") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/forum/article.php?board=' + arr[2] + '&groupid=' + arr1[0] + '&content_type=all';
+              }
+              else if (arr[1] == "article_t1") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/forum/article.php?board=' + arr[2] + '&groupid=' + arr1[0] + '&content_type=all';
+              }
+              else if (arr[1] == "article_t2") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/forum/article.php?board=' + arr[2] + '&groupid=' + arr1[0] + '&content_type=all';
+              }
+              else if (arr[1] == "ym_article") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/immigration/article.php?reqtype=column&board=' + arr[2] + '&groupid=' + arr1[0];
+              }
+              else  if (arr[1] == "news_wenzhang") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/news/article.php?news=' + arr[2] + '&groupid=' + arr1[0];
+              }
+              else  if (arr[1] == "clubarticle_t") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/club/article.php?club=' + arr[2] + '&groupid=' + arr1[0] + '&content_type=all';
+              }
+              else  if (arr[1] == "clubarticle_t1") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/club/article.php?club=' + arr[2] + '&groupid=' + arr1[0] + '&content_type=all';
+              }
+              else if (arr[1] == "clubarticle_t2") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split(".");
+                  url = '/mwap/club/article.php?club=' + arr[2] + '&groupid=' + arr1[0] + '&content_type=all';
+              }
+              else  if (arr[1] == "clubarticle") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?club='+arr[2]+'&article_id='+arr1[0];
+              }
+              else  if (arr[1] == "clubarticle1") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?club='+arr[2]+'&article_id='+arr1[0];
+              }
+              else if (arr[1] == "clubarticle2") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?club='+arr[2]+'&article_id='+arr1[0];
+              }
+              else if (arr[1] == "clubarticle3") {
+                  var arr1 = new Array();
+                  arr1 = arr[3].split("_");
+                  url = '/mwap/articlesingle.php?club='+arr[2]+'&article_id='+arr1[0];
+              }
+          }
+      }
+        return url;
+    }
+function GetQueryString(name) //获取指定参数
+{
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)
+            return  unescape(r[2]);
+
+        return null;
+}
+function UrlSearch(arr) //获取所有参数
+{
+        var name,value;
+        var str=location.href;
+        var num=str.indexOf("?")
+        if(num==-1)
+            return null;
+        else {
+        str = str.substr(num + 1);
+        arr = str.split("&");
+        for (var i = 0; i < arr.length; i++) {
+            num = arr[i].indexOf("=");
+            if (num > 0) {
+                name = arr[i].substring(0, num);
+                value = arr[i].substr(num + 1);
+                this[name] = value;
+                         }
+                    }
+                }
+
+}
+function setCookie(name, value, seconds) {
+        seconds = seconds || 0;
+        var expires = "";
+        if (seconds != 0 ) {
+            var date = new Date();
+            date.setTime(date.getTime()+(seconds*1000));
+            expires = "; expires="+date.toGMTString();
+        }
+        document.cookie = name+"="+escape(value)+expires+"; path=/";
+}
+function DelCookie(name) {
+        var exp = new Date();
+        exp.setTime(exp.getTime() + (-1 * 24 * 60 * 60));
+        var cval = GetCookieValue(name);
+        document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
+}
+(function(w){
+ 	var ua = w.navigator.userAgent.toLocaleLowerCase();
+    var matchRe = /iphone|android|symbianos/g;
+ 	if(matchRe.test(ua) && parseInt(getCookieHeader("force_flag")) != 1){
+		//if the force_flag is 0,jump to mwap;and then the force_flage is 1,we will jump to web;
+        var url = GetUrl();
+		w.location.href = url;
+	}
+ })(window);
+
+	</script>
+<title>Data scientist / Machine Learning Engineer 相关面试题 (转 - 未名空间(mitbbs.com)</title>                <title>分类讨论区 - 未名空间 - (mitbbs.com) - 海外华人第一门户</title>
+                <meta name="Keywords" content="未名空间,分类讨论区,热门文章,热门讨论区,热门版面,推荐版面,最新版面">
+                <meta name="Description" content="未名空间(mitbbs.com) 未名空间分类讨论区">
+                <link  rel="stylesheet" type="text/css" href="/unknownspace-yellow.css" charset="gb2312" >
+                <script src="/im/js/im.js" type="text/javascript"></script>
+                <script src="/js/prototype.js" type="text/javascript"></script>
+                <script type="text/javascript" language="javascript" src="/newindex/index.js"></script>
+                <script src="/js/service.js" type="text/javascript"></script>
+            <link rel="stylesheet" type="text/css" href="/header/headerstyle.css" charset="gb2312">
+        </head>
+        <body>
+        <div class="header_all"><!--头部-->
+                        <div class="topbar_wrap"><!--频道导航-->
+                <div class="topbar_cont">
+                    <div class="topbar_nav">
+                        <ul class="topbar_nav_group" style="line-height:24px;"><!--需要将当前频道的链接注释-->
+<!--                            未名论坛，未名移民，未名新闻， 未名俱乐部， 未名点评，分类广告，精华区，未名博客，未名形象秀，未名黄页，未名交友，未名人才-->
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/"> 首页</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/mitbbs_bbssec.php"> 未名论坛</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/yimin/ymindex.php">未名移民</a></li>
+                                                        <li class="topbar_nav_list"><a class="nav_grey" href="/news/mitbbs_news.php">未名新闻</a></li>
+                                                        <li class="topbar_nav_list"><a class="nav_grey" href="/club/index.php">未名俱乐部</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/dianping/user/index.html"> 未名点评</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/newindex/classified.php"> 分类广告</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/mitbbs_bbsann.php"> 精华区</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/pc/pcmain.php"> 未名博客</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/virtual_shape/mitbbs_vshape_index.php">未名形象秀</a></li>
+                            <li class="topbar_nav_list"><a class="nav_grey" href="/yellowpage/index.php">未名黄页</a></li>
+                            <li class="topbar_nav_list"><a class="nav_red" href="http://www.jiaoyou8.com/"> 未名交友</a></li>
+                            <li class="topbar_nav_list"><a class="nav_red" href="http://www.rencai8.com/"> 未名人才</a></li>
+                        </ul>
+                    </div>
+                    <div class="topbar_login">
+                        <ul class="topbar_login_group" style="line-height:24px;">
+                            <!--未登录显示-->
+                                                                <li class="topbar_login_list"><a class="nav_grey" id="tuichu" href="/mitbbs_register1.php">注册</a></li>
+                            <li class="topbar_login_list"><a class="nav_red" id="userid" href="/mitbbs_login.php">登录</a></li>
+                                                            </ul>
+                    </div>
+                </div>
+            </div><!--频道导航-->
+                        <div class="channel_wrap"><!--频道栏-->
+                <div class="channel_cont forum_bb">
+                    <div class="channel_logo"><!--通过更换图片来改变频道logo-->
+                        <div class="logo_box" >
+   <a href=/mitbbs_bbssec.php><img src=/header/img/logo_forum.png alt=未名论坛 width="100%"></a>                                <!--<img src="img/logo_forum.png" alt="未名论坛" width="100%">-->
+                                <!--<img src="img/logo_club.png" alt="未名俱乐部" width="100%">-->
+                                <!--<img src="img/logo_news.png" alt="未名新闻" width="100%">-->
+                                <!--<img src="img/logo_imm.png" alt="未名移民" width="100%">-->
+                                <!--<img src="img/logo_blog.png" alt="未名博客" width="100%">-->
+                                <!--<img src="img/logo_jhq.png" alt="精华区" width="100%">-->
+                                <!--<img src="img/logo_yellowpage.png" alt="未名黄页" width="100%">-->
+                        </div>
+<div class="logo_box"><a href=/AppDownload/wmlt.php><img src=/header/img/app_forum.png alt=未名论坛 width="100%"></a></div>                                <!--<img src="img/app_forum.png" alt="未名论坛" width="100%">-->
+                                <!--<img src="img/app_club.png" alt="未名俱乐部" width="100%">-->
+                                <!--<img src="img/app_news.png" alt="未名新闻" width="100%">-->
+                                <!--<img src="img/app_imm.png" alt="未名移民" width="100%">-->
+                                <!--博客,精华区和黄页没有app下载图片-->
+
+                    </div>
+					                                            <div class="channel_brand_ad">
+                                            <script type="text/javascript"><!--
+                    google_ad_client = "ca-pub-9374326915974877";
+                    /* first_page_320_50 */
+                    google_ad_slot = "6001824015";
+                    google_ad_width = 320;
+                    google_ad_height = 50;
+                    //-->
+                </script>
+                <script type="text/javascript"
+                        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                </script>
+                                            <!--                    <a href="#">-->
+                            <!--                        <img src="../img/m.1325236771_2.i0.gif" height="66" width="320"/>-->
+                            <!--                    </a>-->
+                        </div>
+                                </div>
+            </div><!--频道栏-->
+            <div class="search_wrap"><!--搜索--><!--所有二级页面都没有这个div-->
+                <div class="search_cont forum_s_bc"><!--通过更换第二个类来改变频道颜色-->
+                    <div class="search_box"><!--通过更换input的第二个类来改变搜索样式,两个input必须在同一行,不可以换行.-->
+                        <form class="search_form" action="/mitbbs_bbsqry.php" method="post" name="friendform">
+                            <!--<input type="radio"  name="flag" value="1" />昵称
+                            <input type="radio" name="flag" value="2"  checked="checked"/>帐号-->
+                            <select class="search_id"  name="flag">
+                                <option value="3">帐号</option>
+                                <option value="1">昵称</option>
+                            </select>
+                                <input class="search_text forum_search_text" type="search" name="userid" id="user_search" placeholder="查询网友" onclick="javascript:cleartxt3()"><input class="search_btn  forum_search_btn" type="button" name="usersearch_btn" id="usersearch_btn" value="查询网友" onclick="javascript:friendform.submit()">
+                        </form>
+                    </div>
+                    <div class="search_box"><!--本站搜索-->
+                                                    <form name="googleform" action="http://www.mitbbs.com/mitbbs_search_result.php" id="cse-search-box" target="_blank">
+                                <input type="hidden" name="cx"  value="partner-pub-9374326915974877:8447678996" />
+                                <input type="hidden" name="cof" value="FORID:10"/>
+                                <input type="hidden" name="ie"  value="GB2312"  />
+                                <input type="search" name="q" class="search_text forum_search_text" onclick="javascript:cleartxt1()" size="10" placeholder="本站搜索" /><input type="button" name="sa"  value="本站搜索" class="search_btn forum_search_btn"   onclick="if(googleform.q.value=='') {alert('请输入要搜索的文章关键字'); return false;} else googleform.submit();" />
+                            </form>
+                                            </div>
+                    <div class="search_box">
+                        <form class="search_form" action="/mitbbs_bbssel.php" name="searchform_brd" method="post">
+                            <input class="search_text forum_search_text"  type="search" name="board"           id="board_search"    onclick="javascript:cleartxt2()" placeholder="版面搜索"><input class="search_btn forum_search_btn" type="button" name="boardsearch_btn" id="boardsearch_btn" onclick="if(searchform_brd.board.value=='') {alert('请输入要查询的版面名称'); return false;} else searchform_brd.submit();" value="版面搜索">
+                        </form>
+                    </div>
+                                    <div class="online_box">
+                        <span>当前在线人数<a href="/mitbbs_bbsuser.php">13366</a></span>
+                                            </div>
+
+                </div>
+            </div><!--搜索-->
+        </div><!--头部-->
+
+    <center><script type="text/javascript" language="javascript">
+function myhref(myurl){
+	if ( (myurl.indexOf(".html")==(myurl.length-5))||(myurl.indexOf("/user_info/")>0)) window.location.href=myurl;else window.location.href=myurl;	
+}
+</script>
+<script language="javascript">
+    var gjswidth=597;
+</script>
+
+    <table width="1000"  border="0" cellpadding="0" cellspacing="0" align="center">
+        <tr>
+            <td><a href="/newindex/index.php" class="a2">首页</a> -                <a href="/mitbbs_bbssec.php" class="a2">分类讨论区</a> - <a href=/bbsboa/9.html class=a2>电脑网络</a> - <a href="/bbsdoc/DataSciences.html"  class="a2">数据科学版</a> - 同主题阅读文章</td>
+                        <td align="right"><div id=left_navigation name=left_navigation><a href="/newindex/index.php" class=a2>首页</a></div></td>
+        </tr>
+    </table>
+
+<table align="center" width="1000">
+<tr><td width="85" valign="top">
+    
+        <table width="82" height="202" align="center" border="0" cellpadding="0" cellspacing="0">
+            <tr><td height="19" align="center" class="newskuang1"><a href="http://www.jiaoyou8.com/" class="black_14p_link" target="_blank"><strong>未名交友</strong></a></td>
+            </tr>
+            <tr><td height="2"></td></tr>
+            <tr><td align="center" valign="top" class="newskuang2"><table width="68" border="0" align="center" cellpadding="0" cellspacing="0">
+                        <tr><td height="5"></td></tr>
+                                                <tr>
+                            <td height="85" align="center"><a href="http://www.jiaoyou8.com/friends_info?action=user_info&login_id=miumiu620" target="_blank"><font color="#C7A4D1"><img src="http://www.jiaoyou8.com//friends_pics/M/MIUMIU620/MIUMIU620_1393729_c5349f0733eb72818cc7505e08a0eade366813b6_I.png" border="0" width="68" height="85"></font></a></td>
+                        </tr>
+                        <tr>
+                            <td height="25" align="right">[<a href="http://www.jiaoyou8.com/friends_search?action=latest_upload_pic&gender=female&offset=0" class="a2" target="_blank">更多</a>]</td>
+                        </tr>
+                                                <tr>
+                            <td height="85" align="center"><a href="http://www.jiaoyou8.com/friends_info?action=user_info&login_id=ying4300" target="_blank"><font color="#C7A4D1"><img src="http://www.jiaoyou8.com//friends_pics/Y/YING4300/YING4300_1393661_af778a0d2a6d31d7223f4c4f4cdbc0a529b817f8_I.jpg" border="0" width="68" height="85"></font></a></td>
+                        </tr>
+                        <tr>
+                            <td height="19" align="right">[<a href="http://www.jiaoyou8.com/friends_search?action=latest_upload_pic&gender=male&offset=0" class="a2" target="_blank">更多</a>]</td>
+                        </tr>
+                        <tr><td height="5"></td></tr>
+                    </table></td>
+            </tr>
+            <tr>
+                <td width="82" align="center"><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                        <tr><td align="center"><div id="BL1_CL11_body" style="display: none;"><a href="http://tuan.haishentianxia.com" target="_blank" onclick="javascript:staticAd(1233,2);" ><img src="/ad_file/M.1462416081_2.O0.gif" width="82" border="0" alt="tuan.haishentianxia.com"></a></div></td></tr><script language="javascript">staticAd(1233,1);</script><tr><td height="5"></td></tr><tr><td align="center"><div id="BL1_CL12_body" style="display: none;"><a href="http://talent.sustc.edu.cn/cn/" target="_blank" onclick="javascript:staticAd(641,2);" ><img src="/ad_file/M.1326789633_2.X0.gif" width="82" border="0" alt="南方科技大学"></a></div></td></tr><script language="javascript">staticAd(641,1);</script><tr><td height="5"></td></tr><tr><td align="center"><div id="BL1_CL13_body" style="display: none;"><a href="/yellowpage/ent_info.php?id=65133" target="_blank" onclick="javascript:staticAd(825,2);" ><img src="/ad_file/M.1431311097_2.P0.gif" width="82" border="0" alt="/yellowpage/ent_info.php?id=65133"></a></div></td></tr><script language="javascript">staticAd(825,1);</script><tr><td height="5"></td></tr>		<script language="javascript">
+			var tmpobj_2, curr_pos;
+			var total_tmp = 3;
+			var offset_tmp = 1;
+			var ad_arry = new Array();
+
+			//save ad data into ad_arry
+			for (ii=0; ii<total_tmp; ii++)
+			{
+				tmpobj_2  = document.getElementById("BL1_CL1" + (ii+1) + "_body");
+				ad_arry[ii] = tmpobj_2.innerHTML;
+			}
+
+			//rotate ad
+			for (ii=0; ii<total_tmp; ii++)
+			{
+
+				curr_pos = (ii + offset_tmp) % total_tmp;
+				tmpobj_2  = document.getElementById("BL1_CL1" + (ii+1) + "_body");
+				tmpobj_2.innerHTML = ad_arry[curr_pos];
+				tmpobj_2.style.display = "block";
+			}
+		</script>
+                    </table></td>
+            </tr>
+        </table>
+    </td>
+<td valign="top"><table width="915"  border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td width="755" align="center"><div>
+                <table width="100%"  border="0" cellpadding="0" cellspacing="0">
+                    			<tr><td align="center">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- article_top -->
+			<ins class="adsbygoogle"
+				style="display:inline-block;width:728px;height:90px"
+				data-ad-client="ca-pub-9374326915974877"
+				data-ad-slot="7051977617"></ins>
+			<script>
+			(adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+			</td></tr>
+                </table>
+            </div></td>
+        <td width="158" align="left" valign="bottom" height="90"><div id="b_and_a_pic_banner_right_"></div></td>
+    </tr>
+<tr><td height="3"></td></tr>
+
+<tr>
+    <td colspan="2"><div id="all_boards_thread_below_"></div></td>
+</tr>
+
+<tr><td colspan=2><table width="100%"  border="0" cellpadding="0" cellspacing="0">
+<tr><td valign=top><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+<tr><td class="news-bg"><table width="100%" border="0" cellspacing="3" cellpadding="0">
+            		<!--		
+				<tr>
+					<td rowspan="5" width="105"><div id="article_title_left_"></div></td>
+				</tr>
+		-->
+                        <tr>
+				<td align="center" style="word-break:break-all;">
+					<span class="jiatype16"><strong>Data scientist / Machine Learning Engineer 相关面试题 (转</strong></span>
+				</td>
+            </tr>
+            <tr>
+                <td align="center">
+                    [版面:<a href="/bbsdoc/DataSciences.html" class="news">数据科学</a>][首篇作者：<a href=javascript:myhref("/user_info/dsdse/11bf348a0e5160090e0222078804f4a3") class="news">dsdse</a>] , 2014年10月20日11:05:01</td>
+		</tr>
+		<tr>
+			<td align="center">	
+				<a class="erweimaxiao">来APP回复，赚取更多伪币<img  class="erweimaImg1" src="/images/2weimaxiao.png"> <img class="erweimaBig" src="/QRCodeGenerate.php?type=board_article&board=DataSciences&boardid=587&groupid=10029"/></a>
+			</td>
+		</tr>
+			<tr>
+		                <td class="news-bg" align="right">
+                    [首页] [上页][<a href="/article_t1/DataSciences/10029_0_2.html" class="NEWS">下页</a>][<a href="/article_t1/DataSciences/10029_0_3.html" class="NEWS">末页</a>]
+                            [分页:1
+<a href='/article_t1/DataSciences/10029_0_2.html' class=NEWS ><u>2</u></a>
+<a href='/article_t1/DataSciences/10029_0_3.html' class=NEWS ><u>3</u></a>
+]        </table></td></tr></td></tr>
+<form name="vshape_form" method="post">
+    <input name="lowie_flag" type="hidden" value="0">
+</form>
+
+	
+
+<form name="scoreform" method="post">
+                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/dsdse/11bf348a0e5160090e0222078804f4a3") class="news">dsdse </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/dsdse" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_1" style="display: none;">board=DataSciences&u=dsdse</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10029&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413817501_2.i0&userid=dsdse&title=Re: Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+%28%D7%AA" class="news">回信给作者</a>] [<a href="/article/DataSciences/10029_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+%28%D7%AA&author=dsdse&file=M.1413817501_2.i0&id=10029&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413817501_2.i0',10029,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10029" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413817501_2.i0&title=Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+%28%D7%AA&author=dsdse&id=10029" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10029&boardId=587&area=4&articleId=10029&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10029" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 1 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: dsdse (dsdse), 信区: DataSciences<br />
+标&nbsp; 题: Data scientist / Machine Learning Engineer 相关面试题 (转载)<br />
+发信站: BBS 未名空间站 (Mon Oct 20 11:05:01 2014, 美东)<br />
+<br />
+【 以下文字转载自 JobHunting 讨论区 】<br />
+发信人: ISphoenix (beta3), 信区: JobHunting<br />
+标&nbsp; 题: Data scientist / Machine Learning Engineer 相关面试题<br />
+关键字: data scientist，machine learning<br />
+发信站: BBS 未名空间站 (Sun Oct 19 17:31:36 2014, 美东)<br />
+<br />
+去年我找工作的时候发现板上针对data scientist，machine learning engineer面试<br />
+题总结很少，所以尽量申请了很多公司面试相关职位，想看看行业里这个方向都在问什<br />
+么。有幸去过不少地方面试，现在把那些题目整理整理（全部来自Amazon, Microsoft,<br />
+ Yelp, Pinterest, <br />
+Square, Google, Glassdoor, Groupon的电面和onsite)，希望能帮助在找相关工作的<br />
+同学们。<br />
+<br />
+题目写的简略，请大家见谅<br />
+<br />
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝<br />
+<br />
+<br />
+1. Given a coin you don’t know it’s fair or unfair. Throw it 6 times and <br />
+get 1 tail and 5 head. Determine whether it’s fair or not. What’s your <br />
+confidence value? <br />
+<br />
+2. Given Amazon data, how to predict which users are going to be top <br />
+shoppers in this holiday season. <br />
+<br />
+3. Which regression methods are you familiar? How to evaluate regression <br />
+result? <br />
+<br />
+4. Write down the formula for logistic regression. How to determine the <br />
+coefficients given the data? <br />
+<br />
+5. How do you evaluate regression? <br />
+For example, in this particular case:<br />
+item click-through-rate&nbsp; predicted rate<br />
+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.04&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.06<br />
+2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.68&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.78<br />
+3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.27&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.19<br />
+4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.52&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.57<br />
+…<br />
+<br />
+6. What’s the formula for SVM? What is decision boundary? <br />
+<br />
+7. A field with unknown number of rabbits. Catch 100 rabbits and put a label<br />
+ on each of them. A few days later, catch 300 rabbits and found 60 with <br />
+labels. Estimate how many rabbits are there?&nbsp; <br />
+<br />
+8. Given 10 coins with 1 unfair coin and 9 fair coins. The unfair coin has &<br />
+#8532; prob. to be head. Now random select 1 coin and throw it 3 times. You <br />
+observe head, head, tail. What’s the probability that the selected coin is <br />
+the unfair one? <br />
+<br />
+9. What’s the formula for Naive Bayesian classifier? What’s the assumption<br />
+ in the formula? What kind of data is Naive Bayesian good at? What is not? <br />
+<br />
+10. What is the real distribution of click-through rate of items? If you <br />
+want to build a predictor/classifier for this data, how do you do it? How do<br />
+ you divide the data? <br />
+<br />
+11. You have a stream of data coming in, in the format as the following:<br />
+item_id, views, clicks, time<br />
+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 100&nbsp;&nbsp;&nbsp;&nbsp; 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2013-11-28<br />
+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1000&nbsp;&nbsp; 350&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2013-11-29<br />
+1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 200&nbsp;&nbsp;&nbsp;&nbsp; 14&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2013-11-30<br />
+2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 127&nbsp;&nbsp;&nbsp;&nbsp; 13&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2013-12-1<br />
+…<br />
+<br />
+The same id are consecutive. <br />
+<br />
+Click through rate = clicks / views. <br />
+On every day, I want to output the item id when its click through rate is <br />
+larger than a given threshold. <br />
+For example, at day 1, item 1’s rate is 10/100=10%, day2, its (10+350)/(100<br />
++1000)=0.32. day3 it is (10+350+14)/(100+1000+200)=0.28. <br />
+If my threshold is 0.3, then at day 1, I don’t output. On day2 I output. On<br />
+ day3, I don’t output.<br />
+<br />
+11. Given a dictionary and a string. Write a function, if every word is in <br />
+the dictionary return true, otherwise return false. <br />
+<br />
+12. Generate all the permutation of a string. <br />
+For example, abc, acb, cba, … <br />
+<br />
+13. We want to add a new feature to our product. How to determine if people <br />
+like it?<br />
+A/B testing. How to do A/B testing? How many ways? pros and cons? <br />
+<br />
+14. 44.3% vs 47.2% is it significant?&nbsp; <br />
+<br />
+15. Design a function to calculate people’s interest to a place against the<br />
+ distance to the place.<br />
+<br />
+16. How to encourage people to write more reviews on Yelp? How to determine <br />
+who are likely to write reviews? How to increase the registration rate of <br />
+Yelp? What features to add for a better Yelp app? We are expanding to other <br />
+countries. Which country we should enter first? <br />
+<br />
+17. What’s the difference between classification and regression? <br />
+<br />
+18. Can you explain how decision tree works? How to build a decision tree <br />
+from data? <br />
+<br />
+19. What is regularization in regression? Why do regularization? How to do <br />
+regularization? <br />
+<br />
+20. What is gradient descent? stochastic gradient descent?<br />
+<br />
+21. We have a database of &lt;product_id, name, description, price&gt;. When user <br />
+inputs a product name, how to return results fast? <br />
+<br />
+22. If user gives a budget value, how to find the most expensive product <br />
+under budget? Assume the data fits in memory. What data structure, or <br />
+algorithm you use to find the product quickly? Write the program for it. <br />
+<br />
+23. Given yelp data, how to find top 10 restaurants in America?<br />
+<br />
+24. Given a large file that we don’t know how many lines are there. It <br />
+doesn’t fit into memory. We want to sample K lines from the file uniformly.<br />
+ Write a program for it. <br />
+<br />
+25. How to determine if one advertisement is performing better than the <br />
+other? <br />
+<br />
+26. How to evaluate classification result? What if the results are in <br />
+probability mode? <br />
+If I want to build a classifier, but the data is very unbalanced. I have a <br />
+few positive samples but a lot of negative samples. What should I do?<br />
+<br />
+27. Given a lot of data, I want to random sample 1% of them. How to do it <br />
+efficiently? <br />
+<br />
+28. When a new user signs up Pinterest, we want to know its interests. We <br />
+decide to show the user a few pins, 2 pins at a time. Let the user choose <br />
+which pin s/he likes. After the user clicks on one of the 2, we select <br />
+another 2 pins. <br />
+Question: how to design the system and select the pins so that we can <br />
+achieve our goal? <br />
+<br />
+29. Write a function to compute sqrt(X). Write a function to compute pow(x, <br />
+n) [square root and power)<br />
+<br />
+<br />
+30. Given a matrix<br />
+a b c&nbsp; d<br />
+e f&nbsp; g&nbsp; h<br />
+i&nbsp; j&nbsp; k&nbsp;&nbsp; l<br />
+Print it in this order:<br />
+a&nbsp; f&nbsp; k<br />
+b g l<br />
+c h<br />
+d<br />
+e j<br />
+i<br />
+<br />
+31. Given a matrix and an array of words, find if the words are in the <br />
+matrix. You can search the <br />
+<br />
+matrix in all directions:&nbsp; from left to right, right to left, up to down, <br />
+down to up, or diagonally. <br />
+For example<br />
+w o r x b<br />
+h&nbsp; e l&nbsp; o v<br />
+i&nbsp;&nbsp; n d e m<br />
+<br />
+then the word “world” is in the matrix. <br />
+<br />
+<br />
+32. Given a coordinates, and two points A and B. How many ways to go from A <br />
+to B? You can only move up or right. <br />
+For example, from (1, 1) to (5, 7), one possible way is 1,1 -&gt; 2, 1… 5, 1 -<br />
+&gt; 5,2 -&gt; ..5, 7<br />
+<br />
+<br />
+33. In a city where there are only vertical and horizontal streets. There <br />
+are people on the cross point. These people want to meet. Please find a <br />
+cross point to minimize the cost for all the people to move. <br />
+<br />
+34. Design a job search ranking algorithm on glassdoor<br />
+<br />
+35. How to identify review spam?<br />
+<br />
+36. Glassdoor has this kind of data about a job : (position, company, <br />
+location, salary). For example (Software Engineer, Microsoft, Seattle, $125K<br />
+). For some records, all four entires are available. But for others, the <br />
+salary is missing. Design a way to estimate salary for those records.<br />
+<br />
+37. When to send emails to users in a day can get maximum click through rate?<br />
+<br />
+38. Youtube has video play log like this:<br />
+Video ID, time<br />
+vid1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t1<br />
+vid2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t2<br />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br />
+The log is super large. <br />
+Find out the top 10 played videos on youtube in a given week.<br />
+<br />
+39. Write a program to copy a graph<br />
+<br />
+40. A bank has this access log:<br />
+IP address, time<br />
+ip1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t1<br />
+ip2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; t2<br />
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br />
+<br />
+If one ip accessed K times within m seconds, it may be an attack. <br />
+Given the log, identify all IPs that may cause attack. <br />
+<br />
+<br />
+<br />
+<br />
+<br />
+--<br />
+※ 修改:·ISphoenix 於 Oct 19 17:33:34 2014 修改本文·[FROM: 98.]<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 98.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+		<tr><td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+			<tr>
+			<td width="728"></td>
+			<td><div id="article_t_embed_pic_"></div></td>
+			</tr>
+		</table></td></tr>
+				<!-- google ad -->
+		
+		<tr><td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+			<tr>
+			<td width="120">&nbsp;</td>
+			<td><div id="article_t_embed_text_"></div></td>
+			</tr>
+		</table></td></tr>
+		<tr>	<td height="5"></td></tr>
+                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/Thoreau/b888ebef0328480b8ed6d8c466d08ea6") class="news">Thoreau </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2><img src="/picture/T/Thoreau/headimg"></td></tr><tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/Thoreau" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_2" style="display: none;">board=DataSciences&u=Thoreau</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10039&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413832938_2.80&userid=Thoreau&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+" class="news">回信给作者</a>] [<a href="/article/DataSciences/10039_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=Thoreau&file=M.1413832938_2.80&id=10039&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413832938_2.80',10039,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10039" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413832938_2.80&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=Thoreau&id=10039" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10039&boardId=587&area=4&articleId=10039&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10039" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 2 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: Thoreau (welch双绿道高手), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题 (转<br />
+发信站: BBS 未名空间站 (Mon Oct 20 15:22:18 2014, 美东)<br />
+<br />
+牛。这么多背公式的，太变态了吧。<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 208.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/heli007/6c698a901f82fce7a861dde75f632a7b") class="news">heli007 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/heli007" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_3" style="display: none;">board=DataSciences&u=heli007</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10053&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413904835_2.t0&userid=heli007&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+" class="news">回信给作者</a>] [<a href="/article/DataSciences/10053_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=heli007&file=M.1413904835_2.t0&id=10053&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413904835_2.t0',10053,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10053" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413904835_2.t0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=heli007&id=10053" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10053&boardId=587&area=4&articleId=10053&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10053" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 3 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: heli007 (随大流), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题 (转<br />
+发信站: BBS 未名空间站 (Tue Oct 21 11:20:35 2014, 美东)<br />
+<br />
+我出的题<br />
+<br />
+简述 vc dimension 以及和 svm 关系<br />
+<br />
+svm怎么实现？有没有比smo更快的？<br />
+<br />
+各种kernel空间维度，怎么用<br />
+<br />
+简述MAP, fisher information<br />
+<br />
+简述MCMC基本类型，难点<br />
+<br />
+bayesian vs frequentist pros and cons<br />
+<br />
+boostrap好处，性质<br />
+<br />
+手推PCA<br />
+<br />
+向量求导手推<br />
+<br />
+微分方程手推<br />
+<br />
+简述categorical处理<br />
+<br />
+牛顿法，共轭梯度，模拟退火，各类优化求解<br />
+<br />
+各种图搜索<br />
+<br />
+真做过ML的，上面都是小意思<br />
+没做过的，基本没可能突击出来<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 137.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/walkrandom/983a374cf539ad176bf8e1fa596451a8") class="news">walkrandom </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/walkrandom" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_4" style="display: none;">board=DataSciences&u=walkrandom</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10055&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413907209_2.d0&userid=walkrandom&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10055_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=walkrandom&file=M.1413907209_2.d0&id=10055&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413907209_2.d0',10055,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10055" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413907209_2.d0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=walkrandom&id=10055" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10055&boardId=587&area=4&articleId=10055&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10055" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 4 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: walkrandom (walkrandom), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Tue Oct 21 12:00:09 2014, 美东)<br />
+<br />
+大牛，这些问题用代码怎么实现?<br />
+<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 我出的题<br />
+: 简述 vc dimension 以及和 svm 关系<br />
+: svm怎么实现？有没有比smo更快的？<br />
+: 各种kernel空间维度，怎么用<br />
+: 简述MAP, fisher information<br />
+: 简述MCMC基本类型，难点<br />
+: bayesian vs frequentist pros and cons<br />
+: boostrap好处，性质<br />
+: 手推PCA<br />
+: 向量求导手推<br />
+: ...................<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 98.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/Thoreau/b888ebef0328480b8ed6d8c466d08ea6") class="news">Thoreau </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2><img src="/picture/T/Thoreau/headimg"></td></tr><tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/Thoreau" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_5" style="display: none;">board=DataSciences&u=Thoreau</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10059&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413911097_2.k0&userid=Thoreau&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10059_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=Thoreau&file=M.1413911097_2.k0&id=10059&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413911097_2.k0',10059,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10059" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413911097_2.k0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=Thoreau&id=10059" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10059&boardId=587&area=4&articleId=10059&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10059" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 5 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: Thoreau (welch双绿道高手), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Tue Oct 21 13:04:57 2014, 美东)<br />
+<br />
+你还是考手推lanczos好啦。恍若回到了当年数值分析考试，都是手推，没有cheat <br />
+sheet，只许用一张16开演算纸。可以正反面用。<br />
+<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 我出的题<br />
+: 简述 vc dimension 以及和 svm 关系<br />
+: svm怎么实现？有没有比smo更快的？<br />
+: 各种kernel空间维度，怎么用<br />
+: 简述MAP, fisher information<br />
+: 简述MCMC基本类型，难点<br />
+: bayesian vs frequentist pros and cons<br />
+: boostrap好处，性质<br />
+: 手推PCA<br />
+: 向量求导手推<br />
+: ...................<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 208.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/heli007/6c698a901f82fce7a861dde75f632a7b") class="news">heli007 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/heli007" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_6" style="display: none;">board=DataSciences&u=heli007</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10063&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413915271_2.o0&userid=heli007&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+" class="news">回信给作者</a>] [<a href="/article/DataSciences/10063_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=heli007&file=M.1413915271_2.o0&id=10063&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413915271_2.o0',10063,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10063" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413915271_2.o0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=heli007&id=10063" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10063&boardId=587&area=4&articleId=10063&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10063" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 6 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: heli007 (随大流), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题 (转载<br />
+发信站: BBS 未名空间站 (Tue Oct 21 14:14:31 2014, 美东)<br />
+<br />
+我这些都是ml <br />
+非ml不会考<br />
+<br />
+--<br />
+※ 来源:·iOS 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 156.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/heli007/6c698a901f82fce7a861dde75f632a7b") class="news">heli007 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/heli007" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_7" style="display: none;">board=DataSciences&u=heli007</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10067&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413918224_2.M0&userid=heli007&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10067_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=heli007&file=M.1413918224_2.M0&id=10067&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413918224_2.M0',10067,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10067" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413918224_2.M0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=heli007&id=10067" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10067&boardId=587&area=4&articleId=10067&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10067" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 7 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: heli007 (随大流), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Tue Oct 21 15:03:44 2014, 美东)<br />
+<br />
+问答题而已<br />
+<br />
+coding自有其他人去花时间陪着<br />
+<br />
+【 在 walkrandom (walkrandom) 的大作中提到: 】<br />
+: 大牛，这些问题用代码怎么实现?<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 156.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/bigeyefish/5ef44351c3db3db9e18e7da2576a7e67") class="news">bigeyefish </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/bigeyefish" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_8" style="display: none;">board=DataSciences&u=bigeyefish</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10069&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413921948_2.m0&userid=bigeyefish&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10069_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=bigeyefish&file=M.1413921948_2.m0&id=10069&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413921948_2.m0',10069,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10069" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413921948_2.m0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=bigeyefish&id=10069" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10069&boardId=587&area=4&articleId=10069&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10069" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 8 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: bigeyefish (大眼鱼), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Tue Oct 21 16:05:48 2014, 美东)<br />
+<br />
+都会，大牛，你找人么？<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 我出的题<br />
+: 简述 vc dimension 以及和 svm 关系<br />
+: svm怎么实现？有没有比smo更快的？<br />
+: 各种kernel空间维度，怎么用<br />
+: 简述MAP, fisher information<br />
+: 简述MCMC基本类型，难点<br />
+: bayesian vs frequentist pros and cons<br />
+: boostrap好处，性质<br />
+: 手推PCA<br />
+: 向量求导手推<br />
+: ...................<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 64.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/heli007/6c698a901f82fce7a861dde75f632a7b") class="news">heli007 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/heli007" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_9" style="display: none;">board=DataSciences&u=heli007</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10073&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413931714_2.V0&userid=heli007&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10073_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=heli007&file=M.1413931714_2.V0&id=10073&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413931714_2.V0',10073,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10073" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413931714_2.V0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=heli007&id=10073" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10073&boardId=587&area=4&articleId=10073&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10073" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 9 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: heli007 (随大流), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Tue Oct 21 18:48:34 2014, 美东)<br />
+<br />
+等机会<br />
+<br />
+【 在 bigeyefish (大眼鱼) 的大作中提到: 】<br />
+: 都会，大牛，你找人么？<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 108.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/drburnie/dd36046ba6b2654c412cea114af88ddd") class="news">drburnie </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/drburnie" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_10" style="display: none;">board=DataSciences&u=drburnie</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10075&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413947130_2.m0&userid=drburnie&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+" class="news">回信给作者</a>] [<a href="/article/DataSciences/10075_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=drburnie&file=M.1413947130_2.m0&id=10075&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413947130_2.m0',10075,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10075" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413947130_2.m0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=drburnie&id=10075" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10075&boardId=587&area=4&articleId=10075&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10075" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 10 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: drburnie (专门爆料), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题 (<br />
+发信站: BBS 未名空间站 (Tue Oct 21 23:08:26 2014, 美东)<br />
+<br />
+Linear SVM的话比SMO快的算法不少。对于用了Nonlinear Kernel的SVM，有啥比SMO更<br />
+快速的算法？<br />
+<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 我出的题<br />
+: 简述 vc dimension 以及和 svm 关系<br />
+: svm怎么实现？有没有比smo更快的？<br />
+: 各种kernel空间维度，怎么用<br />
+: 简述MAP, fisher information<br />
+: 简述MCMC基本类型，难点<br />
+: bayesian vs frequentist pros and cons<br />
+: boostrap好处，性质<br />
+: 手推PCA<br />
+: 向量求导手推<br />
+: ...................<br />
+<br />
+<br />
+--<br />
+<br />
+※ 来源:·BBS 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 140.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/drburnie/dd36046ba6b2654c412cea114af88ddd") class="news">drburnie </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/drburnie" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_11" style="display: none;">board=DataSciences&u=drburnie</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10077&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413947989_2.m0&userid=drburnie&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+" class="news">回信给作者</a>] [<a href="/article/DataSciences/10077_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=drburnie&file=M.1413947989_2.m0&id=10077&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413947989_2.m0',10077,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10077" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413947989_2.m0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2+&author=drburnie&id=10077" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10077&boardId=587&area=4&articleId=10077&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10077" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 11 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: drburnie (专门爆料), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题 (<br />
+发信站: BBS 未名空间站 (Tue Oct 21 23:20:01 2014, 美东)<br />
+<br />
+好八股的面试题，呵呵。<br />
+<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题 (转<br />
+: 发信站: BBS 未名空间站 (Tue Oct 21 11:20:35 2014, 美东)<br />
+: <br />
+: 我出的题<br />
+: <br />
+: 简述 vc dimension 以及和 svm 关系<br />
+: <br />
+: svm怎么实现？有没有比smo更快的？<br />
+: <br />
+: 各种kernel空间维度，怎么用<br />
+: <br />
+: 简述MAP, fisher information<br />
+: <br />
+: 简述MCMC基本类型，难点<br />
+: <br />
+: bayesian vs frequentist pros and cons<br />
+: <br />
+: boostrap好处，性质<br />
+: <br />
+: 手推PCA<br />
+: <br />
+: 向量求导手推<br />
+: <br />
+: 微分方程手推<br />
+: <br />
+: 简述categorical处理<br />
+: <br />
+: 牛顿法，共轭梯度，模拟退火，各类优化求解<br />
+: <br />
+: 各种图搜索<br />
+: <br />
+: 真做过ML的，上面都是小意思<br />
+: 没做过的，基本没可能突击出来<br />
+: --<br />
+: ※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 137.]<br />
+<br />
+<br />
+<br />
+--<br />
+<br />
+※ 来源:·BBS 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 140.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/heli007/6c698a901f82fce7a861dde75f632a7b") class="news">heli007 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/heli007" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_12" style="display: none;">board=DataSciences&u=heli007</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10081&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1413981669_2.P0&userid=heli007&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10081_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=heli007&file=M.1413981669_2.P0&id=10081&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1413981669_2.P0',10081,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10081" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1413981669_2.P0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=heli007&id=10081" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10081&boardId=587&area=4&articleId=10081&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10081" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 12 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: heli007 (随大流), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Wed Oct 22 08:41:09 2014, 美东)<br />
+<br />
+大都是open question<br />
+<br />
+没考ANN POSIX不算八股<br />
+<br />
+【 在 drburnie (专门爆料) 的大作中提到: 】<br />
+: 好八股的面试题，呵呵。<br />
+<br />
+<br />
+<br />
+<br />
+--<br />
+※ 修改:·heli007 於 Oct 22 08:43:36 2014 修改本文·[FROM: 137.]<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 137.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/drburnie/dd36046ba6b2654c412cea114af88ddd") class="news">drburnie </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/drburnie" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_13" style="display: none;">board=DataSciences&u=drburnie</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10097&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414031587_2.Z0&userid=drburnie&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10097_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=drburnie&file=M.1414031587_2.Z0&id=10097&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414031587_2.Z0',10097,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10097" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414031587_2.Z0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=drburnie&id=10097" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10097&boardId=587&area=4&articleId=10097&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10097" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 13 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: drburnie (专门爆料), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Wed Oct 22 22:34:00 2014, 美东)<br />
+<br />
+基本都是照本宣科的东西，学过了就知道。<br />
+<br />
+考察不出真正做modelling的能力，还不如预测下个月销量这种问题靠谱。<br />
+<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 大都是open question<br />
+: 没考ANN POSIX不算八股<br />
+<br />
+<br />
+<br />
+--<br />
+<br />
+※ 来源:·BBS 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 140.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/freebsd2012/4f88e1f733d21e7c648ca43a41cd689b") class="news">freebsd2012 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/freebsd2012" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_14" style="display: none;">board=DataSciences&u=freebsd2012</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10173&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414178635_2.U0&userid=freebsd2012&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10173_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=freebsd2012&file=M.1414178635_2.U0&id=10173&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414178635_2.U0',10173,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10173" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414178635_2.U0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=freebsd2012&id=10173" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10173&boardId=587&area=4&articleId=10173&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10173" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 14 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: freebsd2012 (U2), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Fri Oct 24 15:23:55 2014, 美东)<br />
+<br />
+老大，做ML的这些都是入门要求，您所提到的这些俺都能手推。<br />
+<br />
+<br />
+还能顺着 Fisher information 侃一点 information geometry；吹吹 MCMC 的几个经<br />
+典算法，包括 reversible jump MCMC；大谈主观贝叶斯和客观贝叶斯，以及和频率派<br />
+的那些恩恩怨怨；解常微方程不敢，聊一聊它的定性与稳定性理论，像 Lyapunov的几<br />
+个定理还是可以的；耍矩阵是一方面，另外还懂点张量分析；微分几何和微分拓扑都学<br />
+过，捡捡还能继续；从 Newton 法、梯度下降法、Lagrange 乘子法（包括对偶问题、<br />
+二次规划）到 Levenberg-Marquardt 法、BFGS 法等非线性最优化算法都能手推。<br />
+<br />
+<br />
+以我个人的经验，懂这些有个屁用！<br />
+<br />
+手推更是变态！！又不是作发考题。就是当教书匠，大牛 Ng 讲课还拿着稿呢。<br />
+<br />
+所以，我尊重你的学识，鄙视你的几乎致人内伤的考题！！！<br />
+<br />
+老子花了很长时间总结失败的面试，基本与智商无关。最关键的是情商，得会幽默着侃<br />
+晕你的考官，得有一个阳光健康的外型。<br />
+<br />
+至于工业界里的数学，计算机系或物理系本科的就够了。我们组的一个白人老油条，虽<br />
+然除了玩得仍然不太熟练的PCA什么都不会，但他就有本事跟什么人都能侃到一起。这<br />
+个本事，恰恰是咱们欠缺的技能。<br />
+<br />
+<br />
+作为资深WSN，我想我的考题就是：你是华人吗？是就放水，不是就出个分支数未知的<br />
+高斯混合模型让你手推！！！！<br />
+<br />
+<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 我出的题<br />
+: 简述 vc dimension 以及和 svm 关系<br />
+: svm怎么实现？有没有比smo更快的？<br />
+: 各种kernel空间维度，怎么用<br />
+: 简述MAP, fisher information<br />
+: 简述MCMC基本类型，难点<br />
+: bayesian vs frequentist pros and cons<br />
+: boostrap好处，性质<br />
+: 手推PCA<br />
+: 向量求导手推<br />
+: ...................<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 208.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/Thoreau/b888ebef0328480b8ed6d8c466d08ea6") class="news">Thoreau </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2><img src="/picture/T/Thoreau/headimg"></td></tr><tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/Thoreau" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_15" style="display: none;">board=DataSciences&u=Thoreau</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10185&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414182256_2.q0&userid=Thoreau&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10185_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=Thoreau&file=M.1414182256_2.q0&id=10185&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414182256_2.q0',10185,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10185" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414182256_2.q0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=Thoreau&id=10185" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10185&boardId=587&area=4&articleId=10185&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10185" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 15 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: Thoreau (welch双绿道高手), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Fri Oct 24 16:24:16 2014, 美东)<br />
+<br />
+没有健康阳光的外形，有什么slide或者网上教程可以推荐吗<br />
+<br />
+【 在 freebsd2012 (U2) 的大作中提到: 】<br />
+: 老大，做ML的这些都是入门要求，您所提到的这些俺都能手推。<br />
+: 还能顺着 Fisher information 侃一点 information geometry；吹吹 MCMC 的几个经<br />
+: 典算法，包括 reversible jump MCMC；大谈主观贝叶斯和客观贝叶斯，以及和频率派<br />
+: 的那些恩恩怨怨；解常微方程不敢，聊一聊它的定性与稳定性理论，像 Lyapunov的几<br />
+: 个定理还是可以的；耍矩阵是一方面，另外还懂点张量分析；微分几何和微分拓扑都学<br />
+: 过，捡捡还能继续；从 Newton 法、梯度下降法、Lagrange 乘子法（包括对偶问题、<br />
+: 二次规划）到 Levenberg-Marquardt 法、BFGS 法等非线性最优化算法都能手推。<br />
+: 以我个人的经验，懂这些有个屁用！<br />
+: 手推更是变态！！又不是作发考题。就是当教书匠，大牛 Ng 讲课还拿着稿呢。<br />
+: 所以，我尊重你的学识，鄙视你的几乎致人内伤的考题！！！<br />
+: ...................<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 208.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/freebsd2012/4f88e1f733d21e7c648ca43a41cd689b") class="news">freebsd2012 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/freebsd2012" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_16" style="display: none;">board=DataSciences&u=freebsd2012</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10189&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414184371_2.p0&userid=freebsd2012&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10189_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=freebsd2012&file=M.1414184371_2.p0&id=10189&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414184371_2.p0',10189,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10189" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414184371_2.p0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=freebsd2012&id=10189" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10189&boardId=587&area=4&articleId=10189&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10189" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 16 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: freebsd2012 (U2), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Fri Oct 24 16:59:31 2014, 美东)<br />
+<br />
+每天坚持听郭德纲于谦的对口相声，以及刘宝瑞的单口。<br />
+<br />
+笑的形式可以参阅金三胖，发型就不必了。<br />
+<br />
+把大肚囊练掉，刮掉那唏嘘的胡子，换双好鞋，穿一身干净的衣服，放下 Bishop 的那<br />
+本烂书，从现在开始你的侃大山生涯。。。<br />
+<br />
+<br />
+【 在 Thoreau (welch双绿道高手) 的大作中提到: 】<br />
+: 没有健康阳光的外形，有什么slide或者网上教程可以推荐吗<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 208.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/Thoreau/b888ebef0328480b8ed6d8c466d08ea6") class="news">Thoreau </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2><img src="/picture/T/Thoreau/headimg"></td></tr><tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/Thoreau" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_17" style="display: none;">board=DataSciences&u=Thoreau</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10191&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414185180_2.e0&userid=Thoreau&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10191_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=Thoreau&file=M.1414185180_2.e0&id=10191&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414185180_2.e0',10191,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10191" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414185180_2.e0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=Thoreau&id=10191" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10191&boardId=587&area=4&articleId=10191&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10191" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 17 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: Thoreau (welch双绿道高手), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Fri Oct 24 17:13:00 2014, 美东)<br />
+<br />
+闹鬼了，我正在听郭德纲，感情是入门了。<br />
+<br />
+【 在 freebsd2012 (U2) 的大作中提到: 】<br />
+: 每天坚持听郭德纲于谦的对口相声，以及刘宝瑞的单口。<br />
+: 笑的形式可以参阅金三胖，发型就不必了。<br />
+: 把大肚囊练掉，刮掉那唏嘘的胡子，换双好鞋，穿一身干净的衣服，放下 Bishop 的那<br />
+: 本烂书，从现在开始你的侃大山生涯。。。<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 208.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/chaoz/fdac69c3eee7bd0427535354eae235a4") class="news">chaoz </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2><img src="/picture/C/chaoz/headimg"></td></tr><tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/chaoz" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_18" style="display: none;">board=DataSciences&u=chaoz</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10197&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414187024_2.S0&userid=chaoz&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10197_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=chaoz&file=M.1414187024_2.S0&id=10197&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414187024_2.S0',10197,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10197" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414187024_2.S0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=chaoz&id=10197" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10197&boardId=587&area=4&articleId=10197&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10197" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 18 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: chaoz (晨钟暮鼓), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Fri Oct 24 17:43:44 2014, 美东)<br />
+<br />
+大牛，您这是找人教课还是找人解决问题 ：P<br />
+<br />
+您的这些问题我都得一个个去google<br />
+<br />
+【 在 heli007 (随大流) 的大作中提到: 】<br />
+: 我出的题<br />
+: 简述 vc dimension 以及和 svm 关系<br />
+: svm怎么实现？有没有比smo更快的？<br />
+: 各种kernel空间维度，怎么用<br />
+: 简述MAP, fisher information<br />
+: 简述MCMC基本类型，难点<br />
+: bayesian vs frequentist pros and cons<br />
+: boostrap好处，性质<br />
+: 手推PCA<br />
+: 向量求导手推<br />
+: ...................<br />
+<br />
+<br />
+<br />
+--<br />
+面朝大海 吃碗凉皮<br />
+<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 184.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/chaoz/fdac69c3eee7bd0427535354eae235a4") class="news">chaoz </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2><img src="/picture/C/chaoz/headimg"></td></tr><tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/chaoz" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_19" style="display: none;">board=DataSciences&u=chaoz</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10201&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414187405_2.h0&userid=chaoz&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10201_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=chaoz&file=M.1414187405_2.h0&id=10201&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414187405_2.h0',10201,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10201" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414187405_2.h0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=chaoz&id=10201" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10201&boardId=587&area=4&articleId=10201&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10201" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 19 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: chaoz (晨钟暮鼓), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Fri Oct 24 17:50:05 2014, 美东)<br />
+<br />
+我的问题<br />
+<br />
+<br />
+1. 找出top k items，不要求real time<br />
+2. how to compare two distributions<br />
+3. feature generation from unstructured data<br />
+4. fundamentals of your favorite model<br />
+5. understanding of the bias variance tradeoff<br />
+6. fundamentals of gradient decent<br />
+<br />
+7. what will you do if you have all the money you need<br />
+8. how do you multitask (or how to avoid it)<br />
+9. how much do you know about us<br />
+<br />
+--<br />
+面朝大海 吃碗凉皮<br />
+<br />
+※ 修改:·chaoz 於 Oct 24 17:51:05 2014 修改本文·[FROM: 184.]<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 184.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+<tr>
+                        <td class="news-bg">&nbsp;</td>
+                        </tr>                    <tr>
+                      <td><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="128" rowspan="2" align="center" valign="top" class="wenzhang_bg"><table width="100%"  border="0" align="center" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/bm.gif" width="16" height="16"></td>
+                              <td class="wenzhang"><strong>
+				<a href=javascript:myhref("/user_info/freebsd2012/4f88e1f733d21e7c648ca43a41cd689b") class="news">freebsd2012 </a></STRONG></td>
+                            </tr>
+			    <tr align="center"><td colspan=2 class="wenzhang"><a href="/virtual_shape/mitbbs_vshape_index.php" class="news">进入未名形象秀</a></td></tr>                            <tr>
+                              <td width="20%" height="25" align="center"><img src="/mitbbs_images/postno_5.gif" width="16" height="16"></td>
+                              <td width="80%" class="wenzhang"><a href="/pc/index/freebsd2012" class="news">我的博客</a></td>
+                            </tr>
+
+
+			  				<tr><td></td><td><span id="bm_deny_20" style="display: none;">board=DataSciences&u=freebsd2012</span></td></tr>
+			  			  </table></td>
+			  <TD valign="top" ><TABLE width="100%" border=0 cellPadding=0 cellSpacing=0>
+			    <tr>
+			      <td align="left" class=jiahui-4><table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                  <td width="83%" height="20">[<a href="/mitbbs_postdoc.php?board=DataSciences&reid=10209&gid=10029" class=NEWS>回复</a>] [<a href="/mitbbs_mailbox.php?board=DataSciences&file=M.1414189980_2.E0&userid=freebsd2012&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2" class="news">回信给作者</a>] [<a href="/article/DataSciences/10209_0.html" class="news" >本篇全文</a>] [<a href="/bbsdoc/DataSciences.html" class="news">本讨论区</a>] [<a href="/mitbbs_bbsedit.php?brdname=DataSciences&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=freebsd2012&file=M.1414189980_2.E0&id=10209&gid=10029" class="news" >修改</a>] [<a onclick="return del_article('M.1414189980_2.E0',10209,0);" href="#" class="news">删除</a>] [<a href="/mitbbs_forward.php?board=DataSciences&id=10209" class="news">转寄</a>] [<a href="/mitbbs_bbsccc.php?board=DataSciences&file=M.1414189980_2.E0&title=Re%3A+Data+scientist+%2F+Machine+Learning+Engineer+%CF%E0%B9%D8%C3%E6%CA%D4%CC%E2&author=freebsd2012&id=10209" class="news">转贴</a>] [<a href="/share/fav_input.php?type=1&board_id=587&article_id=10209&boardId=587&area=4&articleId=10209&club_flag=0" class=NEWS>收藏</a>] [<a href="/mitbbs_report.php?type=1&board_id=587&article_id=10209" class=NEWS>举报</a>]</td>
+							  <td width="10%" align="center">
+			          </td>
+                                  <td width="7%" align="center">[ 20 ]</td>
+				</tr>
+			      </table></td>
+			    </tr>
+			  </TABLE>
+			  <table style="TABLE-LAYOUT: fixed;word-break:break-all;" width="600" border="0" cellspacing="0" cellpadding="0">
+			    <TR>
+			      <td  class="jiawenzhang-type">
+			      <p>发信人: freebsd2012 (U2), 信区: DataSciences<br />
+标&nbsp; 题: Re: Data scientist / Machine Learning Engineer 相关面试题<br />
+发信站: BBS 未名空间站 (Fri Oct 24 18:33:00 2014, 美东)<br />
+<br />
+和你不太一样，我是面朝大海，喝瓶啤酒。<br />
+<br />
+请大侠对我的回答给予指点！<br />
+<br />
+【 在 chaoz (晨钟暮鼓) 的大作中提到: 】<br />
+: 我的问题<br />
+: 1. 找出top k items，不要求real time<br />
+什么是 top k items，求解释。<br />
+<br />
+: 2. how to compare two distributions<br />
+一大堆方法，例如 KL divergence，Kolmogorov-Smirnov goodness-of-fit test, etc.<br />
+<br />
+: 3. feature generation from unstructured data<br />
+这个得问专家，哪些 feature 是和问题有关的<br />
+<br />
+: 4. fundamentals of your favorite model<br />
+这个能说出一大堆。一般地，好的模型的想法都是简单为美。<br />
+<br />
+: 5. understanding of the bias variance tradeoff<br />
+跷跷板呗。如果系统误差给定，Bias+Var=一个常数，一个增大，另一个就减小。<br />
+<br />
+: 6. fundamentals of gradient decent<br />
+譬如找局部最小，就是每一步都朝最陡的方向跳。要保证每步都往下跳哦～<br />
+其实，梯度下降法就是 Newton-Raphson 方法的一个简化版本。<br />
+<br />
+: 7. what will you do if you have all the money you need<br />
+面朝大海，喝瓶啤酒。如果肚子有空间，再加碗凉皮。<br />
+<br />
+: 8. how do you multitask (or how to avoid it)<br />
+客户着急哪个做哪个<br />
+<br />
+: 9. how much do you know about us<br />
+用狗狗查！<br />
+<br />
+<br />
+<br />
+--<br />
+※ 来源:·WWW 未名空间站 网址：mitbbs.com 移动：在应用商店搜索未名空间·[FROM: 208.]<br />
+</p></td>
+			    </TR>
+			  </table></td>
+                        </tr>
+                        <tr>
+			  <td style="BORDER-BOTTOM: #D0D0D0 1px solid;"><table cellspacing="0" cellpadding="0" border="0"><tr><td height="1"></tr></table></td>
+                        </tr>
+                      </table></td>
+                    </tr>
+</form>
+<tr>
+    <td align="right">
+        [首页] [上页][<a href="/article_t1/DataSciences/10029_0_2.html" class="NEWS">下页</a>][<a href="/article_t1/DataSciences/10029_0_3.html" class="NEWS">末页</a>]
+                            [分页:1
+<a href='/article_t1/DataSciences/10029_0_2.html' class=NEWS ><u>2</u></a>
+<a href='/article_t1/DataSciences/10029_0_3.html' class=NEWS ><u>3</u></a>
+] </td>
+</tr>
+<tr>
+    <td height="40" class="logo-bg" align="center">[<a href="javascript:history.go(-1)" class="news">快速返回</a>] [
+        <a href="/bbsdoc/DataSciences.html"  class="news">
+                进入数据科学讨论区</a>]
+            [<a href="#top" class="news">返回顶部</a>]
+                                <form name="postform" action="/mitbbs_article_t.php?board=DataSciences&gid=10029&start=0&pno=1" method=post>
+                    <input type="hidden" name="PREUTMPKEY" value="C79C0416C4969D32BADB57FA885413A3">                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                <tr><td height="25" align="center" class="hui-2"><span class="black_2">回复文章</span></td></tr>
+                        <tr><td><table width="100%"  border="0" cellpadding="0" cellspacing="0" >
+                                    <tr><td><div name="showloginform" id="showloginform"></div></td>
+                                    </tr>
+                                    <tr><td><table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#CCCCCC">
+                                                <tr bgcolor="#E6E6E6" align="left">
+                                                    <td width="118" align="right">标题：</td>
+                                                    <td><input name="title" type="text" value="Re: Data scientist / Machine Learning Engineer 相关面试题 (转" size="60"></td>
+                                                </tr>
+                                                <tr bgcolor="#FFFFFF" align="left">
+                                                    <td align="right"><DIV align=right>内 容：</DIV></td>
+                                                    <td><textarea name="text" style="width: 580px" rows="15"></textarea><br><div name="validcode_span" id="validcode_span"></div></td>
+                                                </tr>
+                                                <tr align="center" bgcolor="#FFFFFF">
+                                                    <td colspan="2" class="jiahui-1"><input type="hidden" name="type_flag" value="0"><input type="submit" name="submit" value="回复"></td>
+                                                </tr>
+                                            </table></td></tr>
+                                                                            <tr><td align="center">
+                                                <script type="text/javascript"><!--
+                                                    google_ad_client = "ca-pub-9374326915974877";
+                                                    /* Article_bottom1 */
+                                                    google_ad_slot = "9367807282";
+                                                    google_ad_width = 728;
+                                                    google_ad_height = 90;
+                                                    //-->
+                                                </script>
+                                                <script type="text/javascript"
+                                                        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                                                </script>
+                                            </td></tr>
+                                                                    </table></td>
+                        </tr>
+                </form>
+                <script>
+                    function del_article(file,id,dingflag)
+                    {
+                        if(!confirm('你真的要删除本文吗?'))
+                            return false;
+                        document.delform.file.value=file;
+                        document.delform.id.value=id;
+                        document.delform.dingflag.value=dingflag;
+                        document.delform.submit();
+                        return false;
+                    }
+
+                    function del_attach(aid, ap, as, of)
+                    {
+                        if(!confirm('您将删除此附件，确定吗?'))
+                            return false;
+                        document.datt.aid.value=parseInt(aid);
+                        document.datt.ap.value=parseInt(ap);
+                        document.datt.as.value=parseInt(as);
+                        document.datt.of.value=parseInt(of);
+                        document.datt.submit();
+                        return false;
+                    }
+                </script>
+                <form action="/mitbbs_bbsdel.php"  method="post" name="delform">
+                    <input type="hidden" name="submit_del_article">
+                    <input type="hidden" name="PREUTMPKEY" value="C79C0416C4969D32BADB57FA885413A3">                    <input type="hidden" name="board" value="DataSciences">
+                    <input type="hidden" name="file">
+                    <input type="hidden" name="id">
+                    <input type="hidden" name="gid" value="10029">
+                    <input type="hidden" name="ftype" value="">
+                    <input type="hidden" name="dingflag" >
+                    <input type="hidden" name="opflag" value="0">
+                </form>
+                <form action="/mitbbs_del_attach.php" method="POST" name="datt"><input type="hidden" name="PREUTMPKEY" value="C79C0416C4969D32BADB57FA885413A3"><input type="hidden" name="board" value="DataSciences"><input type="hidden" name="aid"><input type="hidden" name="ap"><input type="hidden" name="as"><input type="hidden" name="of"><input type="hidden" name="url" value="/article_t1/DataSciences/10029_0_1.html"></form>
+</table></td>
+</tr>
+</table></td>
+<td valign="top">
+            <table width="160"  border="0" cellpadding="0" cellspacing="0" align="right">
+            <tr><td width="160" valign="top" class="jiahui-1"><div id="all_boards_right_1"></div><table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        		<tr>	<td align="center">
+		<script type="text/javascript"><!--
+		google_ad_client = "ca-pub-9374326915974877";
+		/* Article_right1 */
+		google_ad_slot = "6998627538";
+		google_ad_width = 160;
+		google_ad_height = 600;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+		</td></tr>
+<tr><td height="5"></td></tr>                    </table>
+                    <div id="all_boards_right_2"></div>
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <!--detele by baibing at 20140513-->
+<!--		<tr><td align="center"><script type="text/javascript" src="http://ad.wsod.com/embed/d2b88a582927eb1634402fb636420ccb/156.0.js.160x60/${CACHEBUSTER}?click=${CLICK_URL}"></script><NOSCRIPT><a href="${CLICK_URL}http://ad.wsod.com/click/d2b88a582927eb1634402fb636420ccb/156.0.img.160x60/" target="_blank"><img width="160" height="60" border="0" src="http://ad.wsod.com/embed/d2b88a582927eb1634402fb636420ccb/156.0.img.160x60/${CACHEBUSTER}" /></a></NOSCRIPT></td></tr>-->
+<!--		<tr><td height="5"></td></tr>-->
+        <!--detele end by baibing at 20140513-->
+<tr><td height="5"></td></tr>		<tr><td align="center"><a href="http://www.jiaoyou8.com/unknown_friends?action=index&refer_id=mitbbs1" target="_blank"><img src="/ad_pics/jiaoyou8.gif" width="160" border="0" alt="未名交友"></a></td></tr>
+		<tr><td align="center"><a href=/contact_us.htm class="a2"><font size=2>将您的链接放在这儿</font></a></td></tr>
+                    </table>
+                </td></tr>
+            <tr><td width="160" valign="top" class="jiahui-1">
+                    	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	  <tr>
+		<td align=center><font size=2 ><br>友情链接</font><br><br></td>
+	  </tr>
+
+		</table>
+</td>
+            </tr>
+            <!-- 友情链接结束 -->
+        </table>
+    </td>
+</tr>
+</table></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<script>
+    var brdnum;
+    var opflag_tmp = 0;
+    var pars ="boardname=DataSciences&gid=10029&opflag=0&type=2&startno=1&allnum=20&add=1";
+
+    // 是否需要计算分类站点信息
+    var preurl=document.referrer;
+    var tmpstr1="/newindex/index.php";
+    var tmpstr2=top.location.hostname;
+    var tmpstr3=top.location.hostname+"/";
+
+    if(preurl.indexOf(tmpstr1)==preurl.length-tmpstr1.length||preurl.indexOf(tmpstr2)==preurl.length-tmpstr2.length||preurl.indexOf(tmpstr3)==preurl.length-tmpstr3.length)
+        pars=pars+"&reg=1";
+    else
+        pars=pars+"&reg=0";
+
+    get_dingcainum(pars);
+
+    if (opflag_tmp == 0) //board
+    {
+        brdnum = 534;
+        get_allinfo(allinfo_response1, brdnum);
+    }
+    else
+        get_allinfo(allinfo_response1);
+
+    show_ad_func(587,1);
+
+</script>
+
+<table width="1000" align="center" border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr><td height="0" align="center" valign="middle" background="/mitbbs_images/unknownspace-yellow/bg_down.gif" bgcolor="#F3F2F1">&nbsp;</td>
+	</tr>
+	<tr>
+		<td height="100" align="center" valign="middle" bgcolor="#F3F2F1" ><p><a href="/sitemap.php" class="a2">Site Map</a> - <a href="/contact_us.htm" class="a2">Contact Us</a> - <a href="/tos.htm"  class="a2">Terms and Conditions</a> - <a href="/privacy_policy.htm"  class="a2">Privacy Policy </a><br><br>版权所有，未名空间（mitbbs.com），since 1996</p></td>
+	</tr>
+  </table></td>
+</tr>
+</table>
+</center>
+
+<script src="/im/js/im.js" type="text/javascript"></script>
+<script src="/js/prototype.js" type="text/javascript"></script>
+<script type="text/javascript" src="/im/js/request.js"/></script>
+
+<script type="text/javascript">
+var  foreign=0;
+//是ca,否则都认为com
+if(top.location.hostname=='www.mitbbs.ca'||top.location.hostname=='mitbbs.ca'){
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));	
+	foreign=2;
+}else{
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	foreign=1;
+}
+
+</script>
+<script type="text/javascript">
+if (foreign!=0){
+	try {		
+		if(foreign==1){			
+			var pageTracker = _gat._getTracker("UA-7425977-1");
+			pageTracker._trackPageview();
+		}else if(foreign==2){			
+			var pageTracker = _gat._getTracker("UA-7425977-2");
+			pageTracker._trackPageview();
+		}		
+	} catch(err) {
+		
+	}
+}// end if 
+
+</script>
+
+</body>
+</html>
