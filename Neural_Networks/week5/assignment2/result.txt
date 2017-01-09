@@ -1,0 +1,10 @@
+2. 50 embedding, 200 hidden, 10 epochs, training set CE = 2.534
+3. learning rate 100.0, both training CE and validation CE fluctuates around
+  a large number.
+4. no training, average CE on validation set = 5.521
+5. learning rate = 0.1 is best
+6. same as 5.
+7. A: 5 embeding, 100 hidden, 10 epochs  training CE = 2.804 , Validate CE = 2.828.
+  B: 50 embedding, 10 hidden, train = 3.01  validate = 3.020
+  C: 50 embedding, 200 hidden, train = 2.538  validate = 2.610 
+ 
