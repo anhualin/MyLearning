@@ -6,8 +6,10 @@ Created on Tue Jan 24 08:42:07 2017
 """
 
 from math import sqrt
-import time
+#import time
+from time import time
 import sys
+import resource
 #import numpy as np
 
 class Npuzzle(object):
@@ -19,22 +21,22 @@ class Npuzzle(object):
         self.move = move # the move it takes to get here from the parent
         self.depth = depth
         self.N = int(sqrt(len(state.split('*'))))
-    def display(self):
+#    def display(self):
 #        print np.array([int(e) for e in self.state.split('*')]).reshape(self.N, self.N)
 #        print self.depth
 #        print self.x0
 #        print self.y0
-        print self.state
-    def setParent(self, parent):
-        self.parent = parent
+#        print self.state
+#    def setParent(self, parent):
+#        self.parent = parent
     def getParent(self):
         return self.parent
     def getState(self):
         return self.state
     def getMove(self):
         return self.move
-    def setMove(self, move):
-        self.move = move
+#    def setMove(self, move):
+#        self.move = move
     def getDepth(self):
         return self.depth
     def setDepth(self, depth):
@@ -72,6 +74,7 @@ def retracePath(node):
     return path, path_to_goal, len(path_to_goal)
 
 def BFS(start):
+    start_time = time()
     target = '*'.join([str(e) for e in range(len(start))])
     start_state = '*'.join(start)
     pos = start.index('0')
@@ -79,7 +82,6 @@ def BFS(start):
     x0 = int(pos/N)
     y0 = pos - x0 * N
     root = Npuzzle(start_state, None, x0, y0, None, 0) 
-    start = time.time()
     iteration = 0
     Frontier = [root]
     Explored = set()
@@ -94,6 +96,8 @@ def BFS(start):
     while(not done):
         if Frontier:
             node = Frontier.pop(0) 
+#            if max_depth < node.getDepth():
+#                max_depth = node.getDepth()
             FrontierSet.remove(node.getState())
             if node.getState() == target:
                 done = True
@@ -117,7 +121,7 @@ def BFS(start):
             done = True
     if success:
         path, path_to_goal, cost_of_path = retracePath(node)
-        running_time = time.time() - start
+        running_time = time() - start_time
         output.append('path_to_goal: ' + str(path_to_goal))
         output.append('cost_of_path: ' + str(cost_of_path))
         output.append('nodes_expanded: ' + str(nodes_expanded))
@@ -125,17 +129,20 @@ def BFS(start):
         output.append('max_fringe_size: ' + str(max_fringe_size))
         output.append('search_depth: ' + str(node.getDepth()))
         output.append('max_depth: ' +  str(max_depth))
-        output.append('running_time: ' + str(running_time))
-        output.append('max_ram_usage: 0.5')
+        output.append('running_time: ' + "{0:.8f}".format(running_time))
+        mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+        output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
+       
     return output
 
 
-test = ['1','2','5','3','4','0','6','7','8']
-out = BFS(test)
-test2 = ['3', '2', '1','0']
-out2 = BFS(test2)
+#test = ['1','2','5','3','4','0','6','7','8']
+#out = BFS(test)
+#test2 = ['3', '2', '1','0']
+#out2 = BFS(test2)
     
 def DFS(start):
+    start_time = time()
     target = '*'.join([str(e) for e in range(len(start))])
     start_state = '*'.join(start)
     pos = start.index('0')
@@ -143,7 +150,6 @@ def DFS(start):
     x0 = int(pos/N)
     y0 = pos - x0 * N
     root = Npuzzle(start_state, None, x0, y0, None, 0) 
-    start = time.time()
     Frontier = [root]
     Explored = set()
     FrontierSet = set([start_state])
@@ -180,7 +186,7 @@ def DFS(start):
             done = True
     if success:
         path, path_to_goal, cost_of_path = retracePath(node)
-        running_time = time.time() - start
+        running_time = time() - start_time
         output.append('path_to_goal: ' + str(path_to_goal))
         output.append('cost_of_path: ' + str(cost_of_path))
         output.append('nodes_expanded: ' + str(nodes_expanded))
@@ -188,8 +194,9 @@ def DFS(start):
         output.append('max_fringe_size: ' + str(max_fringe_size))
         output.append('search_depth: ' + str(node.getDepth()))
         output.append('max_depth: ' +  str(max_depth))
-        output.append('running_time: ' + str(running_time))
-        output.append('max_ram_usage: 0.5')
+        output.append('running_time: ' + "{0:.8f}".format(running_time))
+        mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+        output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
     return output
 
 #test = ['1','2','5','3','4','0','6','7','8']
@@ -200,9 +207,11 @@ def DFS(start):
 #out3 = DFS(test3)
 
 def main(argv):
+    mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+    print "mem = ", mem
     method = argv[0]
     start = argv[1].split(',')
-    if method == 'bfs':
+    if method == 'bfs' or method == 'ast' or method =='ida':
         output = BFS(start)
     elif method == 'dfs':
         output = DFS(start)
