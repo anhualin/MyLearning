@@ -7,7 +7,7 @@ Created on Mon Jan 30 10:56:17 2017
 
 import numpy as np
 import sys
-
+#
 #lam = 0.1
 #sigma2 = 1
 #
@@ -30,13 +30,15 @@ import sys
 #
 #index = range(X_new.shape[0])
 #y_new = yall[60:]
-
+#
+#X_train = X
+#y_train = y
 
 def hw_regression(lam, sigma2, X_train, y_train, X_test, top_num):
     d = X_train.shape[1]
     A = lam * np.eye(d) + X_train.T.dot(X_train)
     b = X_train.T.dot(y_train)
-    w_RR = np.linalg.solve(A, b)
+    w_RR = np.linalg.solve(A, b).reshape(d)
 
     
     invSigma = lam * np.eye(d) + (1/sigma2) * X_train.T.dot(X_train)
@@ -44,8 +46,6 @@ def hw_regression(lam, sigma2, X_train, y_train, X_test, top_num):
     X_new = X_test
     index = range(X_new.shape[0])
     for i in range(top_num):
-        print i
-        print index
         g1 = np.linalg.solve(invSigma, X_new.T)
         t2 = X_new.dot(g1)
         sigma02 = np.diag(t2)
@@ -54,7 +54,7 @@ def hw_regression(lam, sigma2, X_train, y_train, X_test, top_num):
         x0 = X_new[choose,].reshape([d,1])
         invSigma = invSigma + x0.dot(x0.T)
         X_new = np.delete(X_new, choose, 0)
-        index.remove(choose)
+        index.remove(index[choose])
     return w_RR, active
 
 def load_data(X_train_file, y_train_file, X_test_file):
@@ -75,7 +75,7 @@ def write_output(w_RR, active, lam, sigma2):
     
     f = open(file_name2, 'w')
     for i in active[:-1]:
-        f.write(str(i) + ',')
+        f.write(str(i+1) + ',')
     f.write(str(active[-1]))
     f.close()
     
@@ -88,7 +88,7 @@ def main(argv):
     X_train, y_train, X_test = load_data(X_train_file, y_train_file, X_test_file)
     w_RR, active = hw_regression(lam, sigma2, X_train, y_train, X_test, 10)
    
-    write_output(w_RR, active)
+    write_output(w_RR, active, lam, sigma2)
    
 if __name__ == "__main__":
     main(sys.argv[1:])
