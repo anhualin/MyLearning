@@ -8,22 +8,27 @@ Created on Mon Jan 30 10:56:17 2017
 import numpy as np
 import sys
 
-lam = 0.1
-sigma2 = 1
-
-N = 100
-d = 4
-Xall = np.random.rand(N,d-1)
-Xall = np.append(Xall, np.ones([N,1]),1)
-err = np.random.rand(N,1)
-w = np.random.rand(d,1) * 10 - 5
-yall = Xall.dot(w) + err
-
-X = Xall[:60]
-y = yall[:60]
-
-X_new = Xall[60:]
-index = range(X_new.shape[0])
+#lam = 0.1
+#sigma2 = 1
+#
+#N = 100
+#d = 4
+#Xall = np.random.rand(N,d-1)
+#Xall = np.append(Xall, np.ones([N,1]),1)
+#err = np.random.rand(N,1)
+#w = np.random.rand(d,1) * 10 - 5
+#yall = Xall.dot(w) + err
+#
+#X = Xall[:60]
+#y = yall[:60]
+#
+#X_new = Xall[60:]
+#
+#np.savetxt('X_train.csv', X, delimiter = ',')
+#np.savetxt('y_train.csv', y)
+#np.savetxt('X_test.csv', X_new, delimiter = ',')
+#
+#index = range(X_new.shape[0])
 #y_new = yall[60:]
 
 
@@ -39,6 +44,8 @@ def hw_regression(lam, sigma2, X_train, y_train, X_test, top_num):
     X_new = X_test
     index = range(X_new.shape[0])
     for i in range(top_num):
+        print i
+        print index
         g1 = np.linalg.solve(invSigma, X_new.T)
         t2 = X_new.dot(g1)
         sigma02 = np.diag(t2)
@@ -50,6 +57,28 @@ def hw_regression(lam, sigma2, X_train, y_train, X_test, top_num):
         index.remove(choose)
     return w_RR, active
 
+def load_data(X_train_file, y_train_file, X_test_file):
+    X_train = np.loadtxt(X_train_file, delimiter = ',')
+    y_train = np.loadtxt(y_train_file, delimiter = ',')
+    y_train = y_train.reshape([y_train.shape[0], 1])
+    X_test = np.loadtxt(X_test_file, delimiter = ',' )
+    return X_train, y_train, X_test
+
+def write_output(w_RR, active, lam, sigma2):
+    file_name1 = 'w_RR_' + str(lam) + '.csv'
+    file_name2 = 'active_' + str(lam) + '_'+str(sigma2) + '.csv'
+    
+    f = open(file_name1, 'w')
+    for w in w_RR:
+        f.write(str(w) + '\n')
+    f.close()
+    
+    f = open(file_name2, 'w')
+    for i in active[:-1]:
+        f.write(str(i) + ',')
+    f.write(str(active[-1]))
+    f.close()
+    
 def main(argv):
     lam = float(argv[0])
     sigma2 = float(argv[1])
@@ -59,9 +88,7 @@ def main(argv):
     X_train, y_train, X_test = load_data(X_train_file, y_train_file, X_test_file)
     w_RR, active = hw_regression(lam, sigma2, X_train, y_train, X_test, 10)
    
-    f = open('output.txt','w')
-    for e in output:
-        f.write(e+'\n')
-    f.close()
+    write_output(w_RR, active)
+   
 if __name__ == "__main__":
     main(sys.argv[1:])
