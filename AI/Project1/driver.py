@@ -9,7 +9,7 @@ from math import sqrt, fabs
 #import time
 from time import time
 import sys
-import resource
+#mport resource
 #import numpy as np
 
 class Npuzzle(object):
@@ -212,6 +212,7 @@ def Manhattan(state):
     # state is a string
     dis = 0
     state = [int(state[i]) for i in range(len(state))]
+    print state
     N = int(sqrt(len(state)))
     for i in range(len(state)):
         x0 = int(i/N)
@@ -219,9 +220,13 @@ def Manhattan(state):
         s = int(state[i])
         x1 = int(s/N)
         y1 = s - x1 * N
-        dis  = dis + fabs(x0 - y0) + fabs(x1 - y1)
+        delta = fabs(x0 - y0) + fabs(x1 - y1)
+        print "i=%s, x0 = %s, y0 = %s, s = %s, x1 = %s, y1=%s, delta = %s" % (i, x0, y0, s, x1, y1, delta)
+        dis  = dis + fabs(x0 - y0) + fabs(y0 - y1)
     return dis
-         
+
+state = '012345678'
+print Manhattan(state)         
 def main(argv):
     mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
     print "mem = ", mem
