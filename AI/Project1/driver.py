@@ -113,11 +113,11 @@ def AStar(start):
     max_depth = root.getDepth()
     output = []
     while(not done):
-        print iteration
+        
         if Frontier:
             node = heappop(Frontier)
             empty_Frontier = False
-            while not empty_Frontier and node.getState in Explored:
+            while not empty_Frontier and node.getState() in Explored:
                 if Frontier:
                     node = heappop(Frontier)
                 else:
@@ -139,7 +139,7 @@ def AStar(start):
                     neighbors = node.getNeighbors()
                    
                     for neighbor in neighbors:
-                        print 'in neighbors'
+                
                         if neighbor.getState() in Explored:
                             pass
                         elif neighbor.getState() in FrontierSet:
@@ -178,9 +178,13 @@ def AStar(start):
        
     return output
 
+    
 
-state = ['7', '2', '4', '5', '0', '6', '8', '3', '1']
-output = AStar(state)
+    
+#state = ['7', '2', '4', '5', '0', '6', '8', '3', '1']
+#state = ['1','2','5','3','4','0','6','7','8']
+#output = AStar(state)
+#output1 = BFS(state)
 
 def BFS(start):
     start_time = time()
@@ -308,6 +312,63 @@ def DFS(start):
         output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
     return output
 
+    
+def DFLStar(root, bound):
+    target = '*'.join([str(e) for e in range(len(root.getState().split('*')))])
+    Frontier = [root]
+    Explored = set()
+    FrontierSet = set([root.getState()])
+    done = False
+    node = root
+    success = False
+    nodes_expanded = 0
+    max_fringe_size = 1
+    max_depth = root.getDepth()
+    output = []
+    minBound = -1
+    while(not done):
+        if Frontier:
+            node = Frontier.pop(0) 
+            FrontierSet.remove(node.getState())
+            if node.getF() > bound:
+                if minBound < 0:
+                    minBound = node.getF()
+                else:
+                    minBound = min(minBound, node.getF())
+            elif node.getState() == target:
+                done = True
+                success = True
+            else:
+                nodes_expanded += 1
+                Explored.add(node.getState())
+                neighbors = node.getNeighbors()
+                for i in range(len(neighbors) - 1, -1, -1):
+                    neighbor = neighbors[i]
+                    if neighbor.getState() in Explored or neighbor.getState() in FrontierSet:
+                        pass
+                    else:
+                        Frontier.insert(0, neighbor)
+                        FrontierSet.add(neighbor.getState())
+                        if max_depth < neighbor.getDepth():
+                            max_depth = neighbor.getDepth()
+                if max_fringe_size < len(Frontier):
+                    max_fringe_size = len(Frontier)
+        else:
+            done = True
+    if success:
+        path, path_to_goal, cost_of_path = retracePath(node)
+        #running_time = time() - start_time
+        output.append('path_to_goal: ' + str(path_to_goal))
+        output.append('cost_of_path: ' + str(cost_of_path))
+        output.append('nodes_expanded: ' + str(nodes_expanded))
+        output.append('fringe_size: ' + str(len(Frontier))) 
+        output.append('max_fringe_size: ' + str(max_fringe_size))
+        output.append('search_depth: ' + str(node.getDepth()))
+        output.append('max_depth: ' +  str(max_depth))
+        #output.append('running_time: ' + "{0:.8f}".format(running_time))
+        #mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+        #output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
+    return output
 #test = ['1','2','5','3','4','0','6','7','8']
 #out = DFS(test)
 #test2 = ['3', '2', '1','0']
