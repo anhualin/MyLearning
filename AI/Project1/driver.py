@@ -9,16 +9,11 @@ from math import sqrt, fabs
 #import time
 from time import time
 import sys
-from Queue import PriorityQueue
 from heapq import heappush, heappop 
-#mport resource
+import resource
 #import numpy as np
 
-a = PriorityQueue(10)
-a.put((8, 'x'))
-a.put((7,'y'))
-a.put((10, 'a'))
-a.put((7,'z'))
+
 
 class Npuzzle(object):
     def __init__(self, state, parent, x0, y0, move, depth, g):
@@ -81,24 +76,8 @@ class Npuzzle(object):
         return neighbors
     def __lt__(self, other):
         return self.f < other.getF()
-    def __eq__(self, other):
-        return self.f == other.getF()
+    
         
-a1 = Npuzzle('a1',None, 0, 0, 0, 0, 1)
-a2 = Npuzzle('a2',None, 0, 0, 0, 0, 2)
-a2a = Npuzzle('a2a',None, 0, 0, 0, 0, 2)
-a1a = Npuzzle('a1a',None, 0, 0, 0, 0, 1)
-a2b = Npuzzle('a2b',None, 0, 0, 0, 0, 2)
-
-h = []
-heappush(h, a2)
-heappush(h,a1)
-print heappop(h).getState()
-heappush(h, a2a)
-heappush(h, a1a)
-heappush(h, a2b)
-print heappop(h).getState()
-
 def retracePath(node):
     path = [node]
     while node.getParent():
@@ -110,7 +89,7 @@ def retracePath(node):
         path_to_goal.append(node.getMove())
     return path, path_to_goal, len(path_to_goal)
 
-    
+
     
 def AStar(start):
     start_time = time()
@@ -134,6 +113,7 @@ def AStar(start):
     max_depth = root.getDepth()
     output = []
     while(not done):
+        print iteration
         if Frontier:
             node = heappop(Frontier)
             empty_Frontier = False
@@ -145,15 +125,21 @@ def AStar(start):
             if empty_Frontier:
                 done = True
             else:
+                
                 del FrontierSet[node.getState()] 
+                
                 if node.getState() == target:
                     done = True
                     success = True
                 else:
                     nodes_expanded += 1
+                  
                     Explored.add(node.getState())
+                  
                     neighbors = node.getNeighbors()
+                   
                     for neighbor in neighbors:
+                        print 'in neighbors'
                         if neighbor.getState() in Explored:
                             pass
                         elif neighbor.getState() in FrontierSet:
@@ -161,17 +147,14 @@ def AStar(start):
                             # check to see whether we have a smaller f value 
                             if neighbor.getF() < FrontierSet[neighbor.getState()]:
                                 heappush(Frontier, neighbor)
-                                FrontierSet[neighbor.getState()] = neighbor.getF() 
+                                FrontierSet[neighbor.getState()] = neighbor.getF()
+                                if max_depth < neighbor.getDepth():
+                                    max_depth = neighbor.getDepth()
                         else:
                             #not in Frontier, add it
                             heappush(Frontier, neighbor)
                             FrontierSet[neighbor.getState()] = neighbor.getF() 
                             
-                        if neighbor.getState() in Explored or neighbor.getState() in FrontierSet:
-                            pass
-                        else:
-                            Frontier.append(neighbor)
-                            FrontierSet.add(neighbor.getState())
                             if max_depth < neighbor.getDepth():
                                 max_depth = neighbor.getDepth()
                     if max_fringe_size < len(Frontier):
@@ -194,7 +177,11 @@ def AStar(start):
         output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
        
     return output
-    
+
+
+state = ['7', '2', '4', '5', '0', '6', '8', '3', '1']
+output = AStar(state)
+
 def BFS(start):
     start_time = time()
     target = '*'.join([str(e) for e in range(len(start))])
@@ -203,7 +190,7 @@ def BFS(start):
     N = int(sqrt(len(start)))
     x0 = int(pos/N)
     y0 = pos - x0 * N
-    root = Npuzzle(start_state, None, x0, y0, None, 0) 
+    root = Npuzzle(start_state, None, x0, y0, None, 0, 0) 
     iteration = 0
     Frontier = [root]
     Explored = set()
@@ -271,7 +258,7 @@ def DFS(start):
     N = int(sqrt(len(start)))
     x0 = int(pos/N)
     y0 = pos - x0 * N
-    root = Npuzzle(start_state, None, x0, y0, None, 0) 
+    root = Npuzzle(start_state, None, x0, y0, None, 0, 0) 
     Frontier = [root]
     Explored = set()
     FrontierSet = set([start_state])
@@ -333,8 +320,7 @@ def Manhattan(state):
     # Manhattn distance from state to the target
     # state is a string
     dis = 0
-    state = [int(state[i]) for i in range(len(state))]
-    print state
+    state = [int(e) for e in state.split('*')]
     N = int(sqrt(len(state)))
     for i in range(len(state)):
         if state[i] != 0:
@@ -344,22 +330,24 @@ def Manhattan(state):
           
             x1 = int(s/N)
             y1 = s - x1 * N
-            delta = fabs(x0 - x1) + fabs(y0 - y1)
-            print "i=%s, x0 = %s, y0 = %s, s = %s, x1 = %s, y1=%s, delta = %s" % (i, x0, y0, s, x1, y1, delta)
+#            delta = fabs(x0 - x1) + fabs(y0 - y1)
+#            print "i=%s, x0 = %s, y0 = %s, s = %s, x1 = %s, y1=%s, delta = %s" % (i, x0, y0, s, x1, y1, delta)
             dis  = dis + fabs(x0 - x1) + fabs(y0 - y1)
     return dis
 
-state = '831054267'
-print Manhattan(state)         
+  
 def main(argv):
-    mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
-    print "mem = ", mem
+   
     method = argv[0]
     start = argv[1].split(',')
-    if method == 'bfs' or method == 'ast' or method =='ida':
+    if method == 'bfs':
         output = BFS(start)
     elif method == 'dfs':
         output = DFS(start)
+    elif method == 'ast':
+        output = AStar(start)
+    else:
+        output = BFS(start)
     f = open('output.txt','w')
     for e in output:
         f.write(e+'\n')
