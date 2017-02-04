@@ -13,6 +13,24 @@ from heapq import heappush, heappop
 import resource
 #import numpy as np
 
+def Manhattan(state):
+    # Manhattn distance from state to the target
+    # state is a string
+    dis = 0
+    state = [int(e) for e in state.split('*')]
+    N = int(sqrt(len(state)))
+    for i in range(len(state)):
+        if state[i] != 0:
+            s = int(state[i])
+            x0 = int(i/N)
+            y0 = i - x0 * N
+          
+            x1 = int(s/N)
+            y1 = s - x1 * N
+#            delta = fabs(x0 - x1) + fabs(y0 - y1)
+#            print "i=%s, x0 = %s, y0 = %s, s = %s, x1 = %s, y1=%s, delta = %s" % (i, x0, y0, s, x1, y1, delta)
+            dis  = dis + fabs(x0 - x1) + fabs(y0 - y1)
+    return dis
 
 
 class Npuzzle(object):
@@ -106,7 +124,7 @@ def AStar(start):
     Explored = set()
     FrontierSet = {root.getState(): root.getF()}
     done = False
-    node = root
+   
     success = False
     nodes_expanded = 0
     max_fringe_size = 1
@@ -267,7 +285,6 @@ def DFS(start):
     Explored = set()
     FrontierSet = set([start_state])
     done = False
-    node = root
     success = False
     nodes_expanded = 0
     max_fringe_size = 1
@@ -312,89 +329,112 @@ def DFS(start):
         output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
     return output
 
+def IDAStar(start):
+    start_time = time()
+#    target = '*'.join([str(e) for e in range(len(start))])
+    start_state = '*'.join(start)
+    pos = start.index('0')
+    N = int(sqrt(len(start)))
+    x0 = int(pos/N)
+    y0 = pos - x0 * N
+    root = Npuzzle(start_state, None, x0, y0, None, 0, 0)
+    bound = root.getF()
+    done = False
+    output = []
+    while(not done):
+        minBound, result = DFLStar(root, bound)
+        if minBound < 0 or result:
+            done = True
+        else:
+            bound = minBound
+    if result:
+        running_time = time() - start_time
+        output.append('path_to_goal: ' + str(result['ptg']))
+        output.append('cost_of_path: ' + str(result['cop']))
+        output.append('nodes_expanded: ' + str(result['nexp']))
+        output.append('fringe_size: ' + str(result['fsize'])) 
+        output.append('max_fringe_size: ' + str(result['mfsize']))
+        output.append('search_depth: ' + str(result['sdp']))
+        output.append('max_depth: ' +  str(result['mdp']))
+        output.append('running_time: ' + "{0:.8f}".format(running_time))
+        mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
+        output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
+    return output
     
+       
 def DFLStar(root, bound):
     target = '*'.join([str(e) for e in range(len(root.getState().split('*')))])
     Frontier = [root]
-    Explored = set()
     FrontierSet = set([root.getState()])
+    Explored = {}
     done = False
-    node = root
     success = False
     nodes_expanded = 0
     max_fringe_size = 1
     max_depth = root.getDepth()
-    output = []
+    result = {}
+    
     minBound = -1
     while(not done):
         if Frontier:
             node = Frontier.pop(0) 
             FrontierSet.remove(node.getState())
-            if node.getF() > bound:
-                if minBound < 0:
-                    minBound = node.getF()
-                else:
-                    minBound = min(minBound, node.getF())
-            elif node.getState() == target:
-                done = True
-                success = True
+            if node.getState() in Explored and node.getF() >= Explored[node.getState()]:
+                pass 
             else:
-                nodes_expanded += 1
-                Explored.add(node.getState())
-                neighbors = node.getNeighbors()
-                for i in range(len(neighbors) - 1, -1, -1):
-                    neighbor = neighbors[i]
-                    if neighbor.getState() in Explored or neighbor.getState() in FrontierSet:
-                        pass
+                Explored[node.getState()] = node.getF()
+           
+                if node.getF() > bound:
+                    if minBound < 0:
+                        minBound = node.getF()
                     else:
-                        Frontier.insert(0, neighbor)
-                        FrontierSet.add(neighbor.getState())
-                        if max_depth < neighbor.getDepth():
-                            max_depth = neighbor.getDepth()
-                if max_fringe_size < len(Frontier):
-                    max_fringe_size = len(Frontier)
+                        minBound = min(minBound, node.getF())
+                elif node.getState() == target:
+                    done = True
+                    success = True
+                else:
+                    nodes_expanded += 1
+                    neighbors = node.getNeighbors()
+                    for i in range(len(neighbors) - 1, -1, -1):
+                        neighbor = neighbors[i]
+                        if neighbor.getState() in Explored and neighbor.getF() >= Explored[neighbor.getState()]:
+                            pass
+                        elif neighbor.getState() in FrontierSet:
+                            pass
+                        else:
+                            Frontier.insert(0, neighbor)
+                            FrontierSet.add(neighbor.getState())
+                            if max_depth < neighbor.getDepth():
+                                max_depth = neighbor.getDepth()
+                    if max_fringe_size < len(Frontier):
+                        max_fringe_size = len(Frontier)
         else:
             done = True
     if success:
         path, path_to_goal, cost_of_path = retracePath(node)
         #running_time = time() - start_time
-        output.append('path_to_goal: ' + str(path_to_goal))
-        output.append('cost_of_path: ' + str(cost_of_path))
-        output.append('nodes_expanded: ' + str(nodes_expanded))
-        output.append('fringe_size: ' + str(len(Frontier))) 
-        output.append('max_fringe_size: ' + str(max_fringe_size))
-        output.append('search_depth: ' + str(node.getDepth()))
-        output.append('max_depth: ' +  str(max_depth))
-        #output.append('running_time: ' + "{0:.8f}".format(running_time))
-        #mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
-        #output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
-    return output
+        result['ptg'] = path_to_goal
+        result['cop'] = cost_of_path
+        result['nexp'] = nodes_expanded
+        result['fsize'] = len(Frontier)
+        result['mfsize'] = max_fringe_size
+        result['sdp'] = node.getDepth()
+        result['mdp'] = max_depth
+    return minBound, result 
+#    
 #test = ['1','2','5','3','4','0','6','7','8']
-#out = DFS(test)
+#out1 = IDAStar(test)
+#root = Npuzzle('1*2*5*3*4*0*6*7*8', None, 1, 2, None, 0, 0) 
+#minBound, output, nexp, fronsize, maxfron, depth, maxdep = DFLStar(root, root.getF())
 #test2 = ['3', '2', '1','0']
-#out2 = DFS(test2)
+#out2 = DFS(test)
 #test3 = ['8', '7', '6','5','4', '3', '2', '1', '0']
-#out3 = DFS(test3)
+#out3star = IDAStar(test3)
+#out3b = BFS(test3)
+#out3d = DFS(test3)
+#out3a = AStar(test3)
 
 
-def Manhattan(state):
-    # Manhattn distance from state to the target
-    # state is a string
-    dis = 0
-    state = [int(e) for e in state.split('*')]
-    N = int(sqrt(len(state)))
-    for i in range(len(state)):
-        if state[i] != 0:
-            s = int(state[i])
-            x0 = int(i/N)
-            y0 = i - x0 * N
-          
-            x1 = int(s/N)
-            y1 = s - x1 * N
-#            delta = fabs(x0 - x1) + fabs(y0 - y1)
-#            print "i=%s, x0 = %s, y0 = %s, s = %s, x1 = %s, y1=%s, delta = %s" % (i, x0, y0, s, x1, y1, delta)
-            dis  = dis + fabs(x0 - x1) + fabs(y0 - y1)
-    return dis
 
   
 def main(argv):
@@ -408,7 +448,7 @@ def main(argv):
     elif method == 'ast':
         output = AStar(start)
     else:
-        output = BFS(start)
+        output = IDAStar(start)
     f = open('output.txt','w')
     for e in output:
         f.write(e+'\n')
