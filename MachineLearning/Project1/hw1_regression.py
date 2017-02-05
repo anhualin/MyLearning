@@ -34,6 +34,21 @@ import sys
 #X_train = X
 #y_train = y
 
+#
+#invE = 2 * np.eye(3) + (1/3.0) * X_train.T.dot(X_train)
+#E = np.linalg.inv(invE)
+#D = (X_test.dot(E)).dot(X_test.T)
+#s = np.diag(D)
+#choose = np.argmax(s)
+#
+#invSigma = 2.0 * np.eye(3) + (1/3.0) * X_train.T.dot(X_train)
+#index = range(X_test.shape[0])
+#g1 = np.linalg.solve(invSigma, X_test.T)
+#t2 = X_test.dot(g1)
+#sigma02 = np.diag(t2)
+#choose = np.argmax(sigma02)
+#active.append(index[choose]+1)
+        
 def hw_regression(lam, sigma2, X_train, y_train, X_test, top_num):
     d = X_train.shape[1]
     A = lam * np.eye(d) + X_train.T.dot(X_train)
@@ -50,9 +65,10 @@ def hw_regression(lam, sigma2, X_train, y_train, X_test, top_num):
         t2 = X_new.dot(g1)
         sigma02 = np.diag(t2)
         choose = np.argmax(sigma02)
-        active.append(index[choose])
+        active.append(index[choose]+1)
         x0 = X_new[choose,].reshape([d,1])
         invSigma = invSigma + x0.dot(x0.T)
+        #Sigma = np.linalg.inv(invSigma)
         X_new = np.delete(X_new, choose, 0)
         index.remove(index[choose])
     return w_RR, active
@@ -75,9 +91,11 @@ def write_output(w_RR, active, lam, sigma2):
     
     f = open(file_name2, 'w')
     for i in active[:-1]:
-        f.write(str(i+1) + ',')
+        f.write(str(i) + ',')
     f.write(str(active[-1]))
     f.close()
+
+# X_train, y_train, X_test = load_data('X_train.csv', 'y_train.csv', 'X_test.csv')
     
 def main(argv):
     lam = float(argv[0])
