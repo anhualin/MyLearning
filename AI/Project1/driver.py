@@ -341,21 +341,29 @@ def IDAStar(start):
     bound = root.getF()
     done = False
     output = []
+    nodes_expanded = 0
+    max_fringe_size = 0
+    max_depth = 0
+    found = False
     while(not done):
-        minBound, result = DFLStar(root, bound)
-        if minBound < 0 or result:
+        minBound, result, found = DFLStar(root, bound)
+        if minBound < 0 or found:
             done = True
         else:
             bound = minBound
-    if result:
+        nodes_expanded += result['nexp']
+        max_fringe_size = max(max_fringe_size, result['mfsize'])
+        max_depth = max(max_depth, result['mdp'])
+        
+    if found:
         running_time = time() - start_time
         output.append('path_to_goal: ' + str(result['ptg']))
         output.append('cost_of_path: ' + str(result['cop']))
-        output.append('nodes_expanded: ' + str(result['nexp']))
+        output.append('nodes_expanded: ' + str(nodes_expanded))
         output.append('fringe_size: ' + str(result['fsize'])) 
-        output.append('max_fringe_size: ' + str(result['mfsize']))
+        output.append('max_fringe_size: ' + str(max_fringe_size))
         output.append('search_depth: ' + str(result['sdp']))
-        output.append('max_depth: ' +  str(result['mdp']))
+        output.append('max_depth: ' +  str(max_depth))
         output.append('running_time: ' + "{0:.8f}".format(running_time))
         mem = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
         output.append('max_ram_usage: ' + "{0:.8f}".format(mem))
@@ -410,17 +418,18 @@ def DFLStar(root, bound):
                         max_fringe_size = len(Frontier)
         else:
             done = True
+    result['nexp'] = nodes_expanded
+    result['fsize'] = len(Frontier)
+    result['mfsize'] = max_fringe_size
+    result['sdp'] = node.getDepth()
+    result['mdp'] = max_depth
     if success:
         path, path_to_goal, cost_of_path = retracePath(node)
         #running_time = time() - start_time
         result['ptg'] = path_to_goal
         result['cop'] = cost_of_path
-        result['nexp'] = nodes_expanded
-        result['fsize'] = len(Frontier)
-        result['mfsize'] = max_fringe_size
-        result['sdp'] = node.getDepth()
-        result['mdp'] = max_depth
-    return minBound, result 
+       
+    return minBound, result, success 
 #    
 #test = ['1','2','5','3','4','0','6','7','8']
 #out1 = IDAStar(test)
