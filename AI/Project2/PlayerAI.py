@@ -8,20 +8,39 @@ Created on Mon Feb  6 22:21:28 2017
 
 from random import randint
 from BaseAI import BaseAI
-from copy import deepcopy
+
 
 class PlayerAI(BaseAI):
+#    def getMove(self, grid):
+#        moves = grid.getAvailableMoves()
+#        return moves[randint(0, len(moves) - 1)] if moves else None    
+    def __init__(self):
+        self.possibleNewTiles = [2, 4]
     def getMove(self, grid):
-        
+        move, value = self.maximize(grid)
+        return move
+    def maximize(self, grid):
         moves = grid.getAvailableMoves()
-        if not moves:
-            return None
         maxVal = 0
-        for move in moves:
-            _, value = self.ComputerMove(deepcopy(grid).move(move))
+        bestMove = None
+        for mv in moves:
+            gridCopy = grid.clone()
+            gridCopy.move(mv)
+            value = self.minimize(gridCopy)
             if value > maxVal:
-                bestMove = move
+                bestMove = mv
                 maxVal = value
-        return bestMove
+        return bestMove, maxVal
     
-    def ComputerMove(self,)
+    def minimize(self, grid):
+        cells = grid.getAvailableCells()
+        minValue = 16*20480
+        for tile in self.possibleNewTiles:
+            for cell in cells:
+                gridCopy = grid.clone()
+                gridCopy.setCellValue(cell, tile)
+                _, value = self.maximize(gridCopy)
+                if value < minValue:
+                    minValue = value
+                
+        return minValue
