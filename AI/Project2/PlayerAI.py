@@ -23,24 +23,52 @@ class PlayerAI(BaseAI):
         moves = grid.getAvailableMoves()
         maxVal = 0
         bestMove = None
-        for mv in moves:
-            gridCopy = grid.clone()
-            gridCopy.move(mv)
-            value = self.minimize(gridCopy)
-            if value > maxVal:
-                bestMove = mv
-                maxVal = value
-        return bestMove, maxVal
-    
-    def minimize(self, grid):
-        cells = grid.getAvailableCells()
-        minValue = 16*20480
-        for tile in self.possibleNewTiles:
-            for cell in cells:
-                gridCopy = grid.clone()
-                gridCopy.setCellValue(cell, tile)
-                _, value = self.maximize(gridCopy)
-                if value < minValue:
-                    minValue = value
-                
-        return minValue
+        level = {'player': 'p', 'val': maxVal, 'grid': grid, 'moves': moves, 'mv_ind': 0}
+        stack = [level]
+        while stack:
+            current = stack[0]
+            if current['mv_ind'] == len(current['moves']):
+                children = stack.pop(0)
+                if stack:
+                    father = stack[0]
+                    if father['player'] == 'p':
+                        if children['val'] > father['val']:
+                            father['val'] = children['val']
+                    else:
+                        if children['val'] < father['val']:
+                            father['val'] = children['val']
+                else:
+                    #stack empty
+                    
+                father = stack[0]
+                bestMove = current['move']
+                bestVal = current['val']
+            else:
+                if current['player'] == 'p': 
+                    #computer's turn
+                    gridCopy = grid.clone()
+                    gridCopy.move(current['moves'][current['mv_ind']])
+                    cells = gridCopy.getAvailableCells()
+                    # cells cannot be empty                        
+                    moves = [(2, c) for c in cells ] + [(4, c) for c in cells]
+                    level = {'player': 'c', 'val': 16*20480, 'grid':gridCopy, 'moves': moves, 'mv_ind': 0}
+                    stack.insert(0, level)
+                else:
+                    #player's turn
+                    moves = grid.getAvailableMoves()
+                    if not moves:
+                        # cannot move any more, leaf node
+                        maxTile = grid.getMaxTile()
+                        if maxTile < current['val']:
+                            current['val'] = maxTile
+                        current['mv_ind'] += 1
+                    else:
+                        gridCopy = grid.clone()
+                        move = current['moves'][current['mv_ind']]
+                        cellValue = move[0]
+                        cellLoc = move[1]
+                        gridCopy.setCellValue(cellLoc, cellValue)
+                        level = {'player': 'p', 'val': 0, 'grid': gridCopy, 'moves': moves,
+                                 'mv_ind': 0}
+                        stack.insert(0, level)
+       
