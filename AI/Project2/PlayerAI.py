@@ -33,9 +33,11 @@ class PlayerAI(BaseAI):
            
             displayer.display(current['grid'])
             print current['player']
+            print current['val']
             s = raw_input('--->')
             if current['mv_ind'] == len(current['moves']):
                 children = stack.pop(0)
+                print 'pop\n'
                 if stack:
                     father = stack[0]
                     if father['player'] == 'p':
@@ -53,6 +55,7 @@ class PlayerAI(BaseAI):
                     gridCopy = current['grid'].clone()
                     gridCopy.move(current['moves'][current['mv_ind']])
                     cells = gridCopy.getAvailableCells()
+                    print cells
                     # cells cannot be empty                        
                     moves = [(2, c) for c in cells ] + [(4, c) for c in cells]
                     level = {'player': 'c', 'val': 16*20480, 'grid':gridCopy, 'moves': moves, 'mv_ind': 0}
@@ -62,6 +65,10 @@ class PlayerAI(BaseAI):
                     gridCopy = current['grid'].clone()
                     cellSet = current['moves'][current['mv_ind']]
                     cellValue = cellSet[0]
+                    print '888\n'
+                    print cellSet
+                    print cellValue
+                    print '***\n'
                     cellLoc = cellSet[1]
                     gridCopy.setCellValue(cellLoc, cellValue)
                     moves = gridCopy.getAvailableMoves()
