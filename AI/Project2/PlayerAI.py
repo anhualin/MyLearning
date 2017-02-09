@@ -6,7 +6,8 @@ Created on Mon Feb  6 22:21:28 2017
 @author: alin
 """
 
-from random import randint
+from Displayer  import Displayer
+from Grid       import Grid
 from BaseAI import BaseAI
 
 
@@ -16,17 +17,23 @@ class PlayerAI(BaseAI):
 #        return moves[randint(0, len(moves) - 1)] if moves else None    
     def __init__(self):
         self.possibleNewTiles = [2, 4]
-    def getMove(self, grid):
-        move, value = self.maximize(grid)
-        return move
-    def maximize(self, grid):
+       
+        
+    def getMove(self):
+        grid = Grid(2)
+        grid.setCellValue((0,0),2)
+        displayer 	= Displayer()
         moves = grid.getAvailableMoves()
-        maxVal = 0
         bestMove = None
-        level = {'player': 'p', 'val': maxVal, 'grid': grid, 'moves': moves, 'mv_ind': 0}
+        level = {'player': 'p', 'val': 0, 'grid': grid, 'moves': moves, 'mv_ind': 0}
         stack = [level]
         while stack:
+        
             current = stack[0]
+           
+            displayer.display(current['grid'])
+            print current['player']
+            s = raw_input('--->')
             if current['mv_ind'] == len(current['moves']):
                 children = stack.pop(0)
                 if stack:
@@ -34,19 +41,16 @@ class PlayerAI(BaseAI):
                     if father['player'] == 'p':
                         if children['val'] > father['val']:
                             father['val'] = children['val']
+                            if len(stack) == 1:
+                                bestMove = father['moves'][father['mv_ind']] 
                     else:
                         if children['val'] < father['val']:
                             father['val'] = children['val']
-                else:
-                    #stack empty
-                    
-                father = stack[0]
-                bestMove = current['move']
-                bestVal = current['val']
+                    father['mv_ind'] += 1
             else:
                 if current['player'] == 'p': 
                     #computer's turn
-                    gridCopy = grid.clone()
+                    gridCopy = current['grid'].clone()
                     gridCopy.move(current['moves'][current['mv_ind']])
                     cells = gridCopy.getAvailableCells()
                     # cells cannot be empty                        
@@ -55,20 +59,29 @@ class PlayerAI(BaseAI):
                     stack.insert(0, level)
                 else:
                     #player's turn
-                    moves = grid.getAvailableMoves()
+                    gridCopy = current['grid'].clone()
+                    cellSet = current['moves'][current['mv_ind']]
+                    cellValue = cellSet[0]
+                    cellLoc = cellSet[1]
+                    gridCopy.setCellValue(cellLoc, cellValue)
+                    moves = gridCopy.getAvailableMoves()
                     if not moves:
                         # cannot move any more, leaf node
-                        maxTile = grid.getMaxTile()
+                        maxTile = gridCopy.getMaxTile()
                         if maxTile < current['val']:
                             current['val'] = maxTile
                         current['mv_ind'] += 1
                     else:
-                        gridCopy = grid.clone()
-                        move = current['moves'][current['mv_ind']]
-                        cellValue = move[0]
-                        cellLoc = move[1]
-                        gridCopy.setCellValue(cellLoc, cellValue)
                         level = {'player': 'p', 'val': 0, 'grid': gridCopy, 'moves': moves,
                                  'mv_ind': 0}
                         stack.insert(0, level)
-       
+        return bestMove
+        
+def main():
+    p = PlayerAI()
+    p.getMove()
+    
+
+if __name__ == '__main__':
+    main()
+
