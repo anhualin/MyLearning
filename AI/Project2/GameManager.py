@@ -42,6 +42,8 @@ class GameManager:
         self.displayer = displayer
 
     def updateAlarm(self, currTime):
+        print "time elapsed = ", currTime - self.prevTime
+        st = raw_input()
         if currTime - self.prevTime > timeLimit + allowance:
             self.over = True
         else:

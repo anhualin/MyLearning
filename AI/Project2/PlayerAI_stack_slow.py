@@ -29,12 +29,12 @@ class PlayerAI(BaseAI):
             moves1 = [(grid.clone(), move) for move in moves0]
             for item in moves1:
                 item[0].move(item[1])
-            moves2 = [(e[0].getMaxTile(), e[0], e[1]) for e in moves1]
+            moves2 = [(e[0].getMaxTile(), e[1]) for e in moves1]
             moves3 = sorted(moves2, key = lambda x: -x[0])
             moves4 = [e[1] for e in moves3]
             return moves4, moves3[0][0]
         else:
-            return [], grid.getMaxTile()
+            return [], 0
 
     def orderCells(self, grid):
         """ Input: a grid
@@ -50,7 +50,7 @@ class PlayerAI(BaseAI):
         for item in moves1:
             item[0].setCellValue(item[1][1], item[1][0])
 
-        moves2 = [(self.orderMoves(e[0])[1], e[0], e[1]) for e in moves1]
+        moves2 = [(self.orderMoves(e[0])[1], e[1]) for e in moves1]
         moves3 = sorted(moves2, key = lambda x: x[0])
         moves4 = [e[1] for e in moves3]
         return moves4
@@ -60,66 +60,6 @@ class PlayerAI(BaseAI):
             Output: the estimated best move
         """
         startTime = time.clock()
-        alpha = -100
-        beta = 1000000
-        level = 1
-        move, val, alpha, beta = self.maximize(grid, alpha, beta, startTime, level)
-        return move
-
-    def estimateMaxVal(self, grid):
-        children, maxVal = self.orderMoves(grid)
-        if not children:
-            return grid.getMaxTile()
-        else:
-            return maxVal
-
-    def maximize(self, grid, alpha, beta, startTime, level):
-
-        displayer = Displayer()
-        displayer.display(grid)
-        print "begin maximize"
-        print "alpha =", alpha, " beta =", beta
-        s = raw_input()
-        children, _ = self.orderMoves(grid)
-        if not children:
-            #terminal
-            return None, self.estimateMaxVal(grid), alpha, beta
-        maxChild = None
-        maxVal = 0
-        for child in children:
-            _, val, alpha, beta = self.minimize(child, alpha, beta, startTime, level + 1)
-            if val > maxVal:
-                maxChild = child
-                maxVal = val
-            if maxVal >= beta:
-                break
-            if maxVal > alpha:
-                alpha = maxVal
-        return maxChild, maxVal, alpha, beta
-
-    def minimize(self, grid, alpha, beta, startTime, level):
-
-        displayer = Displayer()
-        displayer.display(grid)
-        print "begin minimize"
-        print "alpha =", alpha, " beta =", beta
-        s = raw_input()
-        children = self.orderCells(grid)
-        minChild = None
-        minVal = 10000000
-        for child in children:
-            _, val, alpha, beta = self.maximize(child, alpha, beta, startTime, level + 1)
-            print "val = ", val
-            if val < minVal:
-                minChild = child
-                minVal = val
-            if minVal <= alpha:
-                break
-            if minVal < beta:
-                beta = minVal
-        return minChild, minVal, alpha, beta
-
-
         initMoves = self.orderMoves(grid)[0]
         bestMove = None
         bestVal = 0
@@ -229,16 +169,13 @@ class PlayerAI(BaseAI):
         #heuristic function to estimate the max final value for the given grid
         _, maxVal = self.orderMoves(grid)
         return maxVal
-def main():
-    p = PlayerAI()
-    grid = Grid(2)
-    grid.setCellValue((0,0), 2)
-    grid.setCellValue((1,1), 4)
-    move = p.getMove(grid)
-    print 'best move is ', move
-    print 'best value is ', val
-#    p.test()
-
-if __name__ == '__main__':
-    main()
+##def main():
+##    p = PlayerAI()
+##    move, val = p.getMove()
+##    print 'best move is ', move
+##    print 'best value is ', val
+###    p.test()
+##
+##if __name__ == '__main__':
+##    main()
 
