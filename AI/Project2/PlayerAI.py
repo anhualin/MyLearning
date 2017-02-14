@@ -6,10 +6,11 @@ Created on Mon Feb  6 22:21:28 2017
 @author: alin
 """
 
-from Displayer  import Displayer
+#from Displayer  import Displayer
 from Grid       import Grid
 from BaseAI import BaseAI
 import time
+from math import log
 moveTimeLimit = 0.08
 
 
@@ -36,6 +37,24 @@ class PlayerAI(BaseAI):
         else:
             return [], grid.getMaxTile()
 
+    def initOrderMoves(self, grid):
+        """ Input: a grid
+            Output: (i) the list of all possible moves ordered by descreasing maxTile
+                if the grid perorms the correspondign move
+                    (ii) the biggest maxTile of after these moves
+        """
+        moves0 = grid.getAvailableMoves()
+        if moves0:
+            moves1 = [(grid.clone(), move) for move in moves0]
+            for item in moves1:
+                item[0].move(item[1])
+            moves2 = [(e[0].getMaxTile(), e[0], e[1]) for e in moves1]
+            moves3 = sorted(moves2, key = lambda x: -x[0])
+            moves4 = [(e[1], e[2]) for e in moves3]
+            return moves4
+        else:
+            return [], grid.getMaxTile()
+
     def orderCells(self, grid):
         """ Input: a grid
             Output: the list of all possible (val, blank cell)s.
@@ -45,6 +64,9 @@ class PlayerAI(BaseAI):
                     (iii) order (val, cell) by this max tile value in increasing order
         """
         cells = grid.getAvailableCells()
+        gridCopy = grid.clone()
+        gridCopy.setCellValue(cells[0],2)
+        return [gridCopy]
         moves = [(2, c) for c in cells ] + [(4, c) for c in cells]
         moves1 = [(grid.clone(), move) for move in moves]
         for item in moves1:
@@ -63,180 +85,166 @@ class PlayerAI(BaseAI):
         alpha = -100
         beta = 1000000
         level = 1
-        move, val, alpha, beta = self.maximize(grid, alpha, beta, startTime, level)
-        return move
+        children = self.initOrderMoves(grid)
+        #displayer = Displayer()
+        bestVal = 0
+        bestMove = None
+        depthBound = 3
+        while(True):
+            print 'depthBound = ', depthBound
+            level = 1
+            #if time.clock() - startTime > moveTimeLimit:
+            for child, move in children:
+                print 'move = ', move
+                val = self.minimize(child, alpha, beta, startTime, level + 1, depthBound)
+                if val > bestVal:
+                    bestVal = val
+                    bestMove = move
+                print "time spent = ", time.clock() - startTime
+                if time.clock() - startTime > moveTimeLimit:
+                    return bestMove
+                alpha = max(alpha, bestVal)
+            depthBound += 5
+        return bestMove
 
-    def estimateMaxVal(self, grid):
-        children, maxVal = self.orderMoves(grid)
-        if not children:
-            return grid.getMaxTile()
-        else:
-            return maxVal
 
-    def maximize(self, grid, alpha, beta, startTime, level):
-
-        displayer = Displayer()
-        displayer.display(grid)
-        print "begin maximize"
-        print "alpha =", alpha, " beta =", beta
-        s = raw_input()
+    def maximize(self, grid, alpha, beta, startTime, level, depthBound):
+        if level >= depthBound:
+            return self.estimateVal(grid)
+        if time.clock() - startTime > moveTimeLimit:
+            return self.estimateVal(grid)
+##        displayer = Displayer()
+##        displayer.display(grid)
+##        print "begin maximize"
+##        print "alpha =", alpha, " beta =", beta
+##        print "level = ", level
+##        s = raw_input()
         children, _ = self.orderMoves(grid)
         if not children:
             #terminal
-            return None, self.estimateMaxVal(grid), alpha, beta
-        maxChild = None
+            return self.estimateVal(grid)
         maxVal = 0
         for child in children:
-            _, val, alpha, beta = self.minimize(child, alpha, beta, startTime, level + 1)
-            if val > maxVal:
-                maxChild = child
-                maxVal = val
-            if maxVal >= beta:
+            val = self.minimize(child, alpha, beta, startTime, level + 1, depthBound)
+##            print "val in max = ", val
+            maxVal = max(maxVal, val)
+            alpha = max(alpha, maxVal)
+            if alpha >= beta:
+##                print "alpha prune"
                 break
-            if maxVal > alpha:
-                alpha = maxVal
-        return maxChild, maxVal, alpha, beta
 
-    def minimize(self, grid, alpha, beta, startTime, level):
+        return maxVal
 
-        displayer = Displayer()
-        displayer.display(grid)
-        print "begin minimize"
-        print "alpha =", alpha, " beta =", beta
-        s = raw_input()
+    def minimize(self, grid, alpha, beta, startTime, level, depthBound):
+        if level >= depthBound:
+            return self.estimateVal(grid)
+        if time.clock() - startTime > moveTimeLimit:
+            return self.estimateVal(grid)
+##        displayer = Displayer()
+##        displayer.display(grid)
+##        print "begin minimize"
+##        print "alpha =", alpha, " beta =", beta
+##        print "level = ", level
+##        s = raw_input()
         children = self.orderCells(grid)
-        minChild = None
         minVal = 10000000
         for child in children:
-            _, val, alpha, beta = self.maximize(child, alpha, beta, startTime, level + 1)
-            print "val = ", val
-            if val < minVal:
-                minChild = child
-                minVal = val
-            if minVal <= alpha:
+            val = self.maximize(child, alpha, beta, startTime, level + 1, depthBound)
+##            print "val in min = ", val
+            minVal = min(minVal, val)
+            beta = min(beta, minVal)
+            if beta <= alpha:
+               # print "beta prune"
                 break
-            if minVal < beta:
-                beta = minVal
-        return minChild, minVal, alpha, beta
+
+        return minVal
 
 
-        initMoves = self.orderMoves(grid)[0]
-        bestMove = None
-        bestVal = 0
-        depthBound = 2
-        while(True):
-            print 'depthBound = ', depthBound
-            #each round we start from beginning to the given depth bound
-            level = {'player': 'p', 'val': 0, 'grid': grid.clone(), 'moves': initMoves, 'mv_ind': 0}
-            stack = [level]
-            currentBestMove = None
-            currentBestVal = 0
-            maxDepth = 1
-            iter = 0
-            while stack:
-                iter +=1
-                print 'iter = ', iter
-                if time.clock() - startTime > moveTimeLimit:
-                    #time's up
-                    print 'damn'
-                    return bestMove
-                current = stack[0]
-                if current['mv_ind'] == len(current['moves']):
-                    # given the current grid, all possible chocies have been explored
-                    children = stack.pop(0)
-                    if stack:
-                        father = stack[0]
-                        if father['player'] == 'p':
-                            if children['val'] > father['val']:
-                                # this is the currently best move for father
-                                father['val'] = children['val']
-                                if len(stack) == 1:
-                                    # at the first level, update the current choice
-                                    currentBestMove = father['moves'][father['mv_ind']]
-                                    currentBestVal = father['val']
-                        else:
-                            if children['val'] < father['val']:
-                                # this is the current best cell choise for father (computer)
-                                father['val'] = children['val']
-                                if father['val'] <= father['grid'].getMaxTile():
-                                    # for type c, the max tile of grid is the lowerbound
-                                    father['mv_ind'] = len(father['moves'])-1
-                        father['mv_ind'] += 1
-                else:
-                    pruned = False
-                    if len(stack) > 1:
-                    # try pruning
-                        father_val = stack[1]['val']
-                        if (current['player'] == 'c' and current['val'] <= father_val) or (current['player'] == 'p' and current['val'] >= father_val):
-                        #current['mv_ind'] = len(current['moves'])
-                            stack.pop(0)
-                            stack[0]['mv_ind'] += 1
-                            pruned = True
-                    if not pruned:
-                        if current['player'] == 'p':
-                            #player's turn
-                            gridCopy = current['grid'].clone()
-                            gridCopy.move(current['moves'][current['mv_ind']])
-                            #add the next layer cell choices
-                            moves = self.orderCells(gridCopy)
-                            level = {'player': 'c', 'val': 16*20480, 'grid':gridCopy, 'moves': moves, 'mv_ind': 0}
-                            stack.insert(0, level)
-                        else:
-                            #computer's turn
-                            gridCopy = current['grid'].clone()
-                            cellSet = current['moves'][current['mv_ind']]
-                            cellValue = cellSet[0]
-                            cellLoc = cellSet[1]
-                            gridCopy.setCellValue(cellLoc, cellValue)
-                            #add the next layer player's choices
-                            moves, maxVal = self.orderMoves(gridCopy)
-                            if not moves:
-                                # cannot move any more, leaf node
-                                maxTile = gridCopy.getMaxTile()
-                                if maxTile < current['val']:
-                                    current['val'] = maxTile
-                                if maxTile == current['grid'].getMaxTile():
-                                    # this is the case when
-                                    # computer can add a number and
-                                    # the game is over
-                                    current['mv_ind'] = len(current['moves'])
-                                else:
-                                    current['mv_ind'] += 1
-                            elif len(stack) >= depthBound:
-                                #reach current bound
-                                #use heuristic to estimate the leaf value
-                                current['val'] = self.estimateMaxVal(gridCopy)  #current naive heuristic
-                                current['mv_ind'] += 1
-                            else:
-                                #add players moves
-                                level = {'player': 'p', 'val': 0, 'grid': gridCopy, 'moves': moves,
-                                         'mv_ind': 0}
-                                stack.insert(0, level)
-                                maxDepth = len(stack)
-            if currentBestVal > bestVal:
-                bestVal = currentBestVal
-                bestMove = currentBestMove
-            print 'maxDepth = ', maxDepth
-            if maxDepth < depthBound:
-                #have searched the wohle true
-                return bestMove
-            if time.clock() - startTime > moveTimeLimit:
-                return bestMove
-            depthBound += 100
-        return bestMove
 
-    def estimateMaxVal(self, grid):
+    def estimateVal(self, grid):
         #heuristic function to estimate the max final value for the given grid
-        _, maxVal = self.orderMoves(grid)
-        return maxVal
+        return grid.getMaxTile()
+
+    def monotonicity(self, grid):
+        mvalue = [0, 0, 0, 0]
+        for i in range(4):
+            j = 0
+            while j <= 2 and grid.getCellValue((i,j)) == 0:
+                j += 1
+
+            if j <= 2:
+                s = log(grid.getCellValue((i,j)), 2)
+                while j <= 2:
+                    v = grid.getCellValue((i, j + 1))
+                    d = 0 if v == 0 else log(v, 2)
+                    if s > d:
+                        mvalue[0]  = mvalue[0] + (s - d)
+                    else:
+                        mvalue[1] = mvalue[1] + (d - s)
+                    j += 1
+                    s = d
+
+            j = 0
+            while j <= 2 and grid.getCellValue((j,i)) == 0:
+                j += 1
+
+            if j <= 2:
+                s = log(grid.getCellValue((j, i)), 2)
+                while j <= 2:
+                    v = grid.getCellValue((j + 1, i))
+                    d = 0 if v == 0 else log(v, 2)
+                    if s > d:
+                        mvalue[2]  = mvalue[2] + (s - d)
+                    else:
+                        mvalue[3] = mvalue[3] + (d - s)
+                    j += 1
+                    s = d
+
+        return max(mvalue[0], mvalue[1]) + max(mvalue[2], mvalue[3])
+    def smoothness(self, grid):
+        score = 0
+        for i in range(4):
+            j = 0
+            while j <= 2 and grid.getCellValue((i,j)) == 0:
+                j += 1
+            if j <= 2:
+                s = log(grid.getCellValue((i,j)), 2)
+                while j <= 2:
+                    j += 1
+                    while j <= 3 and grid.getCellValue((i,j)) == 0:
+                        j += 1
+                    if j <= 3:
+                        d = log(grid.getCellValue((i,j)),2)
+                        score = score + abs(d - s)
+                        s = d
+
+            j = 0
+            while j <= 2 and grid.getCellValue((j,i)) == 0:
+                j += 1
+            if j <= 2:
+                s = log(grid.getCellValue((j,i)), 2)
+                while j <= 2:
+                    j += 1
+                    while j <= 3 and grid.getCellValue((j,i)) == 0:
+                        j += 1
+                    if j <= 3:
+                        d = log(grid.getCellValue((j,i)),2)
+                        score = score + abs(d - s)
+                        s = d
+        return score
+    def test(self, grid):
+        print self.smoothness(grid)
 def main():
     p = PlayerAI()
-    grid = Grid(2)
+    grid = Grid(4)
     grid.setCellValue((0,0), 2)
-    grid.setCellValue((1,1), 4)
-    move = p.getMove(grid)
-    print 'best move is ', move
-    print 'best value is ', val
+    grid.setCellValue((1,1), 2)
+    grid.setCellValue((1,0), 4)
+    grid.setCellValue((1,3), 8)
+    print p.smoothness(grid)
+##    move = p.getMove(grid)
+#    print 'best move is ', move
+
 #    p.test()
 
 if __name__ == '__main__':
