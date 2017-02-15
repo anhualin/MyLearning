@@ -6,12 +6,12 @@ Created on Mon Feb  6 22:21:28 2017
 @author: alin
 """
 
-#from Displayer  import Displayer
+from Displayer  import Displayer
 from Grid       import Grid
 from BaseAI import BaseAI
 import time
 from math import log
-moveTimeLimit = 0.08
+moveTimeLimit = 0.09
 
 
 class PlayerAI(BaseAI):
@@ -64,18 +64,21 @@ class PlayerAI(BaseAI):
                     (iii) order (val, cell) by this max tile value in increasing order
         """
         cells = grid.getAvailableCells()
-        gridCopy = grid.clone()
-        gridCopy.setCellValue(cells[0],2)
-        return [gridCopy]
+#        gridCopy = grid.clone()
+#        gridCopy.setCellValue(cells[0],2)
+#        return [gridCopy]
         moves = [(2, c) for c in cells ] + [(4, c) for c in cells]
-        moves1 = [(grid.clone(), move) for move in moves]
-        for item in moves1:
-            item[0].setCellValue(item[1][1], item[1][0])
-
-        moves2 = [(self.orderMoves(e[0])[1], e[0], e[1]) for e in moves1]
-        moves3 = sorted(moves2, key = lambda x: x[0])
-        moves4 = [e[1] for e in moves3]
-        return moves4
+        score = []
+        for v, pos in moves:
+            grid.setCellValue(pos, v)
+            score.append(-self.smoothness(grid))
+            grid.setCellValue(pos, 0)
+        maxScore = max(score)
+        selectedMoves = []
+        for i in range(len(moves)):
+            if score[i] == maxScore:
+                selectedMoves.append(moves[i])
+        return selectedMoves
 
     def getMove(self, grid):
         """ Input: a grid
@@ -89,18 +92,18 @@ class PlayerAI(BaseAI):
         #displayer = Displayer()
         bestVal = 0
         bestMove = None
-        depthBound = 3
+        depthBound = 5
         while(True):
-            print 'depthBound = ', depthBound
+#            print 'depthBound = ', depthBound
             level = 1
             #if time.clock() - startTime > moveTimeLimit:
             for child, move in children:
-                print 'move = ', move
+#                print 'move = ', move
                 val = self.minimize(child, alpha, beta, startTime, level + 1, depthBound)
                 if val > bestVal:
                     bestVal = val
                     bestMove = move
-                print "time spent = ", time.clock() - startTime
+#                print "time spent = ", time.clock() - startTime
                 if time.clock() - startTime > moveTimeLimit:
                     return bestMove
                 alpha = max(alpha, bestVal)
@@ -149,7 +152,11 @@ class PlayerAI(BaseAI):
         children = self.orderCells(grid)
         minVal = 10000000
         for child in children:
-            val = self.maximize(child, alpha, beta, startTime, level + 1, depthBound)
+            v = child[0]
+            pos = child[1]
+            grid.setCellValue(pos, v)
+            val = self.maximize(grid, alpha, beta, startTime, level + 1, depthBound)
+            grid.setCellValue(pos, 0)
 ##            print "val in min = ", val
             minVal = min(minVal, val)
             beta = min(beta, minVal)
@@ -163,7 +170,7 @@ class PlayerAI(BaseAI):
 
     def estimateVal(self, grid):
         #heuristic function to estimate the max final value for the given grid
-        return grid.getMaxTile()
+        return self.smoothness(grid)*0.1 + self.monotonicity(grid)*1.0 + log(len(grid.getAvailableCells())+1, 2) * 2.7+ grid.getMaxTile() * 1.0
 
     def monotonicity(self, grid):
         mvalue = [0, 0, 0, 0]
@@ -215,7 +222,7 @@ class PlayerAI(BaseAI):
                         j += 1
                     if j <= 3:
                         d = log(grid.getCellValue((i,j)),2)
-                        score = score + abs(d - s)
+                        score = score - abs(d - s)
                         s = d
 
             j = 0
@@ -229,11 +236,16 @@ class PlayerAI(BaseAI):
                         j += 1
                     if j <= 3:
                         d = log(grid.getCellValue((j,i)),2)
-                        score = score + abs(d - s)
+                        score = score - abs(d - s)
                         s = d
         return score
     def test(self, grid):
-        print self.smoothness(grid)
+        display = Displayer()
+        self.test1(grid)
+        display.display(grid)
+    def test1(self, grid):
+        grid.setCellValue((0,0),4)
+        
 def main():
     p = PlayerAI()
     grid = Grid(4)
@@ -241,9 +253,9 @@ def main():
     grid.setCellValue((1,1), 2)
     grid.setCellValue((1,0), 4)
     grid.setCellValue((1,3), 8)
-    print p.smoothness(grid)
-##    move = p.getMove(grid)
-#    print 'best move is ', move
+#    p.test(grid)
+    move = p.getMove(grid)
+    print 'best move is ', move
 
 #    p.test()
 
