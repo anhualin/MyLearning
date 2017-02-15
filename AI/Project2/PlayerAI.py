@@ -74,9 +74,14 @@ class PlayerAI(BaseAI):
             score.append(-self.smoothness(grid))
             grid.setCellValue(pos, 0)
         maxScore = max(score)
+        rest = [e for e in score if e != maxScore]
+        if rest:
+            secondScore = max(rest)
+        else:
+            secondScore = 0
         selectedMoves = []
         for i in range(len(moves)):
-            if score[i] == maxScore:
+            if score[i] >= secondScore:
                 selectedMoves.append(moves[i])
         return selectedMoves
 
@@ -239,23 +244,37 @@ class PlayerAI(BaseAI):
                         score = score - abs(d - s)
                         s = d
         return score
+    def isgroups(self, grid):
+##        cnt = 0
+##        gridCopy = grid.clone()
+##        for i in range(4):
+##            for j in range(4):
+##                c = gridCopy.getCellValue((i,j))
+##                if c != 0:
+##                    cnt += 1
+##                    if j < 3 and c == gridCopy.getCellValue((i, j+1)):
+##                        gridCopy.setCellValue((i,j+1), 0)
+##                    if i < 3 and c == gridCopy.getCellValue((i+1,j)):
+##                        gridCopy.setCellValue((i+1, j), 0)
+        grp = set()
+        for i in range(4):
+            for j in range(4):
+                grp.add(grid.getCellValue((i,j)))
+        return len(grp)
+
     def test(self, grid):
-        display = Displayer()
-        self.test1(grid)
-        display.display(grid)
-    def test1(self, grid):
-        grid.setCellValue((0,0),4)
-        
+       print self.isgroups(grid)
+
 def main():
     p = PlayerAI()
     grid = Grid(4)
     grid.setCellValue((0,0), 2)
-    grid.setCellValue((1,1), 2)
-    grid.setCellValue((1,0), 4)
+    grid.setCellValue((1,0), 2)
+    grid.setCellValue((1,1), 4)
     grid.setCellValue((1,3), 8)
-#    p.test(grid)
-    move = p.getMove(grid)
-    print 'best move is ', move
+    p.test(grid)
+##    move = p.getMove(grid)
+##    print 'best move is ', move
 
 #    p.test()
 

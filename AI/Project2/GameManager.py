@@ -71,9 +71,9 @@ class GameManager:
             move = None
 
             if turn == PLAYER_TURN:
-         #       print "Player's Turn:",
+                print "Player's Turn:",
                 move = self.playerAI.getMove(gridCopy)
-          #      print actionDic[move]
+                print actionDic[move]
 
                 # Validate Move
                 if move != None and move >= 0 and move < 4:
@@ -89,7 +89,7 @@ class GameManager:
                     print "Invalid PlayerAI Move - 1"
                     self.over = True
             else:
-           #     print "Computer's turn:"
+                print "Computer's turn:"
                 move = self.computerAI.getMove(gridCopy)
 
                 # Validate Move
@@ -99,8 +99,8 @@ class GameManager:
                     print "Invalid Computer AI Move"
                     self.over = True
 
-            #if not self.over:
-            #    self.displayer.display(self.grid)
+            if not self.over:
+                self.displayer.display(self.grid)
 
             # Exceeding the Time Allotted for Any Turn Terminates the Game
             self.updateAlarm(time.clock())
