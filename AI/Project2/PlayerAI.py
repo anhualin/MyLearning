@@ -64,9 +64,6 @@ class PlayerAI(BaseAI):
                     (iii) order (val, cell) by this max tile value in increasing order
         """
         cells = grid.getAvailableCells()
-#        gridCopy = grid.clone()
-#        gridCopy.setCellValue(cells[0],2)
-#        return [gridCopy]
         moves = [(2, c) for c in cells ] + [(4, c) for c in cells]
         score = []
         for v, pos in moves:
@@ -99,16 +96,12 @@ class PlayerAI(BaseAI):
         bestMove = None
         depthBound = 5
         while(True):
-#            print 'depthBound = ', depthBound
             level = 1
-            #if time.clock() - startTime > moveTimeLimit:
             for child, move in children:
-#                print 'move = ', move
                 val = self.minimize(child, alpha, beta, startTime, level + 1, depthBound)
                 if val > bestVal:
                     bestVal = val
                     bestMove = move
-#                print "time spent = ", time.clock() - startTime
                 if time.clock() - startTime > moveTimeLimit:
                     return bestMove
                 alpha = max(alpha, bestVal)
@@ -121,12 +114,6 @@ class PlayerAI(BaseAI):
             return self.estimateVal(grid)
         if time.clock() - startTime > moveTimeLimit:
             return self.estimateVal(grid)
-##        displayer = Displayer()
-##        displayer.display(grid)
-##        print "begin maximize"
-##        print "alpha =", alpha, " beta =", beta
-##        print "level = ", level
-##        s = raw_input()
         children, _ = self.orderMoves(grid)
         if not children:
             #terminal
@@ -134,11 +121,9 @@ class PlayerAI(BaseAI):
         maxVal = 0
         for child in children:
             val = self.minimize(child, alpha, beta, startTime, level + 1, depthBound)
-##            print "val in max = ", val
             maxVal = max(maxVal, val)
             alpha = max(alpha, maxVal)
             if alpha >= beta:
-##                print "alpha prune"
                 break
 
         return maxVal
@@ -148,12 +133,6 @@ class PlayerAI(BaseAI):
             return self.estimateVal(grid)
         if time.clock() - startTime > moveTimeLimit:
             return self.estimateVal(grid)
-##        displayer = Displayer()
-##        displayer.display(grid)
-##        print "begin minimize"
-##        print "alpha =", alpha, " beta =", beta
-##        print "level = ", level
-##        s = raw_input()
         children = self.orderCells(grid)
         minVal = 10000000
         for child in children:
@@ -175,8 +154,8 @@ class PlayerAI(BaseAI):
 
     def estimateVal(self, grid):
         #heuristic function to estimate the max final value for the given grid
-        return self.smoothness(grid)*0.1 + self.monotonicity(grid)*1.0 + log(len(grid.getAvailableCells())+1, 2) * 2.7+ grid.getMaxTile() * 1.0
-
+        return self.smoothness(grid)*0.6 + self.monotonicity(grid)*1.0 + log(len(grid.getAvailableCells())+1, 2) * 2.7+ grid.getMaxTile() * 1.0
+#        return self.smoothness(grid)*0.1 + self.monotonicity(grid)*1.0 + log(len(grid.getAvailableCells())+1, 2) * 2.7+ grid.getMaxTile() * 1.0
     def monotonicity(self, grid):
         mvalue = [0, 0, 0, 0]
         for i in range(4):
@@ -244,40 +223,40 @@ class PlayerAI(BaseAI):
                         score = score - abs(d - s)
                         s = d
         return score
-    def isgroups(self, grid):
-##        cnt = 0
-##        gridCopy = grid.clone()
+##    def isgroups(self, grid):
+####        cnt = 0
+####        gridCopy = grid.clone()
+####        for i in range(4):
+####            for j in range(4):
+####                c = gridCopy.getCellValue((i,j))
+####                if c != 0:
+####                    cnt += 1
+####                    if j < 3 and c == gridCopy.getCellValue((i, j+1)):
+####                        gridCopy.setCellValue((i,j+1), 0)
+####                    if i < 3 and c == gridCopy.getCellValue((i+1,j)):
+####                        gridCopy.setCellValue((i+1, j), 0)
+##        grp = set()
 ##        for i in range(4):
 ##            for j in range(4):
-##                c = gridCopy.getCellValue((i,j))
-##                if c != 0:
-##                    cnt += 1
-##                    if j < 3 and c == gridCopy.getCellValue((i, j+1)):
-##                        gridCopy.setCellValue((i,j+1), 0)
-##                    if i < 3 and c == gridCopy.getCellValue((i+1,j)):
-##                        gridCopy.setCellValue((i+1, j), 0)
-        grp = set()
-        for i in range(4):
-            for j in range(4):
-                grp.add(grid.getCellValue((i,j)))
-        return len(grp)
+##                grp.add(grid.getCellValue((i,j)))
+##        return len(grp)
+##
+##    def test(self, grid):
+##       print self.isgroups(grid)
 
-    def test(self, grid):
-       print self.isgroups(grid)
-
-def main():
-    p = PlayerAI()
-    grid = Grid(4)
-    grid.setCellValue((0,0), 2)
-    grid.setCellValue((1,0), 2)
-    grid.setCellValue((1,1), 4)
-    grid.setCellValue((1,3), 8)
-    p.test(grid)
-##    move = p.getMove(grid)
-##    print 'best move is ', move
-
-#    p.test()
-
-if __name__ == '__main__':
-    main()
+##def main():
+##    p = PlayerAI()
+##    grid = Grid(4)
+##    grid.setCellValue((0,0), 2)
+##    grid.setCellValue((1,0), 2)
+##    grid.setCellValue((1,1), 4)
+##    grid.setCellValue((1,3), 8)
+##    p.test(grid)
+####    move = p.getMove(grid)
+####    print 'best move is ', move
+##
+###    p.test()
+##
+##if __name__ == '__main__':
+##    main()
 
