@@ -161,6 +161,21 @@ ggplot(data=train) +
 #17 nation_desc
 # 160 levels with many low count,
 # will not consider in 1st round
+a <- levels(train$nation_desc)
+lowNation <- c('')
+for(i in 1:length(a)){
+  if (sum(train$nation_desc == a[i]) <= 50){
+    lowNation <- c(lowNation, a[i])
+  }
+}
+
+train$nation_tr <- as.character(train$nation_desc)
+train[train$nation_tr %in% lowNation, ]$nation_tr <- 'Other'
+train$nation_tr <- as.factor(train$nation_tr)
+train$nation_tr <- droplevels(train$nation_tr)
+
+single_cat(train, 'nation_tr')
+
 
 #18 current_balance
 single_num(train, 'current_balance')
@@ -209,7 +224,7 @@ single_num(train, 'day_to_begin')
 #####################################################
 vars <- setdiff(names(train), c('student_id', 'risk','bb_gip_etc_ratio_std',
                                     'cp_prior3mon_pay_cnt', 'payment_auto_flag',
-                                    'payment_auto_flag', 'ind'))
+                                    'payment_auto_flag', 'nation_desc', 'ind'))
 
 catVars <- vars[sapply(train[,vars],class) %in%
                   c('factor','character')]
