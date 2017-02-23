@@ -2,7 +2,7 @@ require(ggplot2)
 require(ROCR)
 require(dplyr)
 
-setwd('//loe.corp/EX/RNA/RNA/Baltimore/Student Data Science/UoR/Risk Model/data')
+
 data <- read.table('Collection_Risk.csv', header = TRUE, sep = ',')
 names(data) <- tolower(names(data))
 
