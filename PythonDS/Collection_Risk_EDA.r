@@ -249,6 +249,9 @@ mkPredC <- function(outCol,varCol,appCol) {
 mkPredN <- function(outCol,varCol,appCol) {
   cuts <- unique(as.numeric(quantile(varCol,
                                      probs=seq(0, 1, 0.1),na.rm=T)))
+  #move the lowest bound to the left a bit
+  #otherwise the smallest value may not find an interval
+  cuts[[1]] <- cuts[[1]] - 0.1
   varC <- cut(varCol,cuts)
   appC <- cut(appCol,cuts)
   mkPredC(outCol,varC,appC)
