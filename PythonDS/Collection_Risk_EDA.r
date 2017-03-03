@@ -2,6 +2,7 @@ require(ggplot2)
 require(ROCR)
 require(dplyr)
 
+setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/PythonDS')
 
 data <- read.table('Collection_Risk.csv', header = TRUE, sep = ',')
 names(data) <- tolower(names(data))
