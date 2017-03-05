@@ -120,6 +120,8 @@ ggplot(data=train) +
 #11 ba_age
 single_num(train, 'ba_age')
 summary(train$ba_age)
+
+train[is.na(train$ba_age), 'ba_age'] = mean(train$ba_age, na.rm = TRUE)
 # 3 NA's,  some wrong data: age = 121, or 0?
 # seems not very useful, will not consider in 1st round
 
