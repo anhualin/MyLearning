@@ -61,7 +61,11 @@ a = [(k, len(allowed[k])) for k in allowed.keys()]
 def choose_var(allowed):
     """ choose the unassigned with the fewest allowed values """
     key_len = [(k, len(allowed[k])) for k in allowed.keys()]
-    
+    min_len = min([l for (k, l) in key_len])
+    k_selected = [k for (k,l) in key_len if l == min_len][0]
+    print k_selected                      
+choose_var(allowed)
+                 
 def backtrack(assigned, allowed, sudoku):
     if len(assigned) == 81:
         return sudoku
