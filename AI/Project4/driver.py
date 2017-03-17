@@ -10,13 +10,20 @@ Created on Wed Mar 15 16:59:07 2017
 from copy import copy
 state0 = '003020600900305001001806400008102900700000008006708200002609500800203009005010300'
 state0 = '000260701680070090190004500820100040004602900050003028009300074040050036703018000'
+state0 = sudoku_starts[2]
 def str2board(state):
     sudoku = {}
     for i in range(9):
         for j in range(9):
             sudoku[(i,j)] = int(state[i * 9 + j])
     return sudoku
-
+def board2str(sudoku):
+    state = ''
+    for i in range(9):
+        for j in range(9):
+            state += str(sudoku[(i,j)])
+    return state
+    
 def display(board):
     for i in range(9):
         print '\n'
@@ -65,7 +72,6 @@ def setup(sudoku):
     return unassigned, assigned, allowed, neighbor
 
 unassigned, assigned, allowed, neighbor = setup(sudoku)
-a = [(k, len(allowed[k])) for k in allowed.keys()]
 
 def choose_var(allowed):
     """ choose the unassigned with the fewest allowed values """
@@ -83,7 +89,8 @@ def order_domain(allowed, v, neighbor, sudoku):
     return [x for (x,y) in h]                 
 
     
-def backtrack(assigned, allowed, sudoku, neighbor):
+def backtrack(assigned, allowed, sudoku, neighbor, N):
+    print "N= ", N
     if len(assigned) == 81:
         return sudoku
     v = choose_var(allowed)
@@ -105,3 +112,29 @@ def backtrack(assigned, allowed, sudoku, neighbor):
     return False
 
 sboard = backtrack(assigned, allowed, sudoku, neighbor)
+
+def load_data():
+    start_file = 'C:/Users/alin/Documents/SelfStudy/MyLearning/AI/Project4/sudokus_start.txt'
+    with open(start_file) as f:
+        sudoku_starts = f.readlines()
+    sudoku_starts = [x.strip() for x in sudoku_starts]
+                     
+    finish_file = 'C:/Users/alin/Documents/SelfStudy/MyLearning/AI/Project4/sudokus_finish.txt'
+    with open(finish_file) as f:
+        sudoku_finishes = f.readlines()
+    sudoku_finishes = [x.strip() for x in sudoku_finishes]
+    return sudoku_starts, sudoku_finishes
+sudoku_starts, sudoku_finishes = load_data()                 
+
+total_error = 0
+for i in range(2):
+    sudoku = str2board(sudoku_starts[i])
+    unassigned, assigned, allowed, neighbor = setup(sudoku)
+    solution = backtrack(assigned, allowed, sudoku, neighbor)
+    if solution:
+        sol_str = board2str(solution)
+        if sol_str != sudoku_finishes[i]:
+            total_error += 1
+    else:
+        total_error += 1
+print "total_error = ", total_error
