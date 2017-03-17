@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python2x
 # -*- coding: utf-8 -*-
 """
 Created on Wed Mar 15 16:59:07 2017
@@ -6,10 +6,10 @@ Created on Wed Mar 15 16:59:07 2017
 @author: alin
 """
 
-import numpy as np
+
 from copy import copy
 state0 = '003020600900305001001806400008102900700000008006708200002609500800203009005010300'
-
+state0 = '000260701680070090190004500820100040004602900050003028009300074040050036703018000'
 def str2board(state):
     sudoku = {}
     for i in range(9):
@@ -27,6 +27,24 @@ def display(board):
 sudoku = str2board(state0)
 display(sudoku)
 
+def getNeighbor():
+    neighbor = {}
+    for i in range(9):
+        for j in range(9):
+            neighbor[(i,j)] = set([])
+            for k in range(9):
+                if k != j:
+                    neighbor[(i,j)].add((i,k))
+                if k != i:
+                    neighbor[(i,j)].add((k,j))
+            x = (i/3)*3
+            y = (j/3)*3
+            for l in range(3):
+                for m in range(3):
+                    if x+l != i and y+m != j:
+                        neighbor[(i,j)].add((x+l,y+m))
+    return neighbor
+
 def setup(sudoku):
     unassigned = []
     assigned = []
@@ -39,49 +57,51 @@ def setup(sudoku):
             else:
                 unassigned.append((i,j))
                 allowed[(i,j)] = range(1,10)
+    neighbor = getNeighbor()
     for (i,j) in assigned:
-       for k in range(9):
-           if sudoku[(i,k)] == 0 and sudoku[(i,j)] in allowed[(i,k)]:
-               allowed[(i,k)].remove(sudoku[(i,j)])
-           if sudoku[(k,j)] == 0 and sudoku[(i,j)] in allowed[(k,j)]:
-               allowed[(k,j)].remove(sudoku[(i,j)])
-        
-       x = (i/3)*3
-       y = (j/3)*3
-       for l in range(3):
-           for m in range(3):
-#               if x+l == 0 and y + m == 1:
-#                   print (i,j), (l,m), (x,y)
-               if sudoku[(x+l, y+m)] == 0 and sudoku[(i,j)] in allowed[(x+l, y+m)]:
-                   allowed[(x+l, y+m)].remove(sudoku[(i,j)])
-    return unassigned, assigned, allowed
+        for n in neighbor[(i,j)]:
+            if sudoku[n] == 0 and sudoku[(i,j)] in allowed[n]:
+                allowed[n].remove(sudoku[(i,j)])
+    return unassigned, assigned, allowed, neighbor
 
-unassigned, assigned, allowed = setup(sudoku)
+unassigned, assigned, allowed, neighbor = setup(sudoku)
 a = [(k, len(allowed[k])) for k in allowed.keys()]
+
 def choose_var(allowed):
     """ choose the unassigned with the fewest allowed values """
     key_len = [(k, len(allowed[k])) for k in allowed.keys()]
     min_len = min([l for (k, l) in key_len])
     k_selected = [k for (k,l) in key_len if l == min_len][0]
-    print k_selected                      
-choose_var(allowed)
-                 
-def backtrack(assigned, allowed, sudoku):
+    return k_selected                      
+
+def order_domain(allowed, v, neighbor, sudoku):
+    g = []
+    for val in allowed[v]:
+        num_affected = len([x for x in neighbor[v] if sudoku[x] == 0 and val in allowed[x]])
+        g.append((val, num_affected))
+    h = sorted(g, key = lambda (x,y) : y)
+    return [x for (x,y) in h]                 
+
+    
+def backtrack(assigned, allowed, sudoku, neighbor):
     if len(assigned) == 81:
         return sudoku
     v = choose_var(allowed)
-    domain = order_domain(allowed, v)
+    domain = order_domain(allowed, v, neighbor, sudoku)
     for val in domain:
         assigned.append(v)
         allowed1 = copy(allowed)
         sudoku[v] = val
         del allowed1[v]
-        update(v, allowed1, sudoku1)
-        result = backtract(assigned1, allowed1, sudoku1)
+        for n in neighbor[v]:
+            if sudoku[n] == 0 and val in allowed[n]:
+                allowed[n].remove(val)
+        result = backtrack(assigned, allowed1, sudoku, neighbor)
         if result:
             return result
         else:
             assigned.remove(v)
             sudoku[v] = 0
     return False
-            
+
+sboard = backtrack(assigned, allowed, sudoku, neighbor)
