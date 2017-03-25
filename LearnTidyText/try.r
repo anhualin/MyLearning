@@ -11,3 +11,4 @@ text_df %>%
   unnest_tokens(word, text)
 install.packages(c('repr', 'IRdisplay', 'evaluate', 'crayon', 'pbdZMQ', 'devtools', 'uuid', 'digest'))
 devtools::install_github('IRkernel/IRkernel')
+install.packages(c("jsonlite", "purrr", "tibble", "ggplot2", "lubridate"))
