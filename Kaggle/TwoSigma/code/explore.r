@@ -1,13 +1,17 @@
-packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2")
+packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2", "lubridate")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
 
+
 setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
+
+#setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
+
 data <- fromJSON("train.json")
 
 # unlist every variable except `photos` and `features` and convert to tibble
 vars <- setdiff(names(data), c("photos", "features"))
-library(tibble)
-library(purrr)
+#library(tibble)?
+#library(purrr)
 train_df <- map_at(data, vars, unlist) %>% 
             tibble::as_tibble(.) %>%
             mutate(interest_level = factor(interest_level, c("low", "medium", "high")))
@@ -24,7 +28,7 @@ ggplot(data=train_df) +
 pull <- function(x,y) {
     x[,if(is.name(substitute(y))) deparse(substitute(y)) else y, drop = FALSE][[1]]
   }
-x <- train_df %>% pull('bedrooms')
+x <- train_df %>% pull('day')
 ## seti anal
 library(syuzhet)
 library(DT)
