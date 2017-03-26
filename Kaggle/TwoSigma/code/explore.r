@@ -1,7 +1,7 @@
 packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
 
-setwd('C:/Users/alin/Documents/Kaggle/TwoSigma/data')
+setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
 data <- fromJSON("train.json")
 
 # unlist every variable except `photos` and `features` and convert to tibble
@@ -11,6 +11,10 @@ library(purrr)
 train_df <- map_at(data, vars, unlist) %>% 
             tibble::as_tibble(.) %>%
             mutate(interest_level = factor(interest_level, c("low", "medium", "high")))
+
+library(stringr)
+des <- train_df$description
+
 
 ggplot(data=train_df) +
   geom_density(aes(x = bathrooms,
@@ -24,8 +28,12 @@ x <- train_df %>% pull('bedrooms')
 ## seti anal
 library(syuzhet)
 library(DT)
-sentiment <- get_nrc_sentiment(train_df$description)
+train0 <- train_df[1:500,]
+sentiment <- get_nrc_sentiment(train0$description)
 datatable(head(sentiment))
+
+a <- train0[1]
+b <- gsub('\\S+@\\S+', ' ', a)
 
 train_set <- cbind(train_df, sentiment)
 
