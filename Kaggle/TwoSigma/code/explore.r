@@ -2,9 +2,9 @@ packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2", "lubridate")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
 
 
-setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
+#setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
 
-#setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
+setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
 
 data <- fromJSON("train.json")
 
@@ -18,8 +18,11 @@ train_df <- map_at(data, vars, unlist) %>%
 
 library(stringr)
 des <- train_df$description
-
-
+a <- des[1200]
+a <- gsub('<a\\s+website_redacted', '',a)
+a <- gsub('<\\S+\\s*/*>', ' ', a)
+a <- gsub('\\S+\\s*@\\s*\\S+', ' ', a)
+a <- gsub('\\d+[-]*\\d+[-]\\d+', ' ', a)
 ggplot(data=train_df) +
   geom_density(aes(x = bathrooms,
                    color = interest_level,
@@ -32,7 +35,25 @@ x <- train_df %>% pull('day')
 ## seti anal
 library(syuzhet)
 library(DT)
-train0 <- train_df[1:500,]
+train0 <- train_df[1:500, c('listing_id', 'description')]
+dejunk <- function(a){
+  a <- gsub('<a\\s+website_redacted', '',a)
+  a <- gsub('<\\S+\\s*/*>', ' ', a)
+  a <- gsub('\\S+\\s*@\\s*\\S+', ' ', a)
+  a <- gsub('\\d+[-]*\\d+[-]\\d+', ' ', a)
+  a <- gsub('\\W+', ' ', a)
+  a <- tolower(a)
+}
+
+train0$description1 <- unlist(train0 %>% select(description) %>% map(dejunk))
+train0$description <- NULL
+
+
+train1 <- train0 %>% 
+  unnest_tokens(word, description1)
+senti <- train1 %>%
+  inner_join(get_sentiments('bing'))
+
 sentiment <- get_nrc_sentiment(train0$description)
 datatable(head(sentiment))
 
