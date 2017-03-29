@@ -42,6 +42,7 @@ dejunk <- function(a){
   a <- gsub('\\S+\\s*@\\s*\\S+', ' ', a)
   a <- gsub('\\d+[-]*\\d+[-]\\d+', ' ', a)
   a <- gsub('\\W+', ' ', a)
+  a <- gsub('[[:digit:]]', ' ', a)
   a <- tolower(a)
 }
 
@@ -51,6 +52,14 @@ train0$description <- NULL
 
 train1 <- train0 %>% 
   unnest_tokens(word, description1)
+
+train2 <- train0 %>%
+  unnest_tokens(word, description1) %>%
+  filter(str_detect(word, "[a-z']$"),
+         !word %in% stop_words$word)
+word_cnt <- train2 %>% 
+  count(listing_id)
+
 senti <- train1 %>%
   inner_join(get_sentiments('bing'))
 
