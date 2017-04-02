@@ -43,25 +43,67 @@ dejunk <- function(a){
   a <- gsub('\\d+[-]*\\d+[-]\\d+', ' ', a)
   a <- gsub('\\W+', ' ', a)
   a <- gsub('[[:digit:]]', ' ', a)
-  a <- tolower(a)
 }
 
-train0$description1 <- unlist(train0 %>% select(description) %>% map(dejunk))
+train0$description_tr <- unlist(train0 %>% select(description) %>% map(dejunk))
 train0$description <- NULL
 
 
 train1 <- train0 %>% 
-  unnest_tokens(word, description1)
+  unnest_tokens(word, description_tr)
 
 train2 <- train0 %>%
-  unnest_tokens(word, description1) %>%
+  unnest_tokens(word, description_tr) %>%
+  anti_join(stop_words)
+
+train3 <- train0 %>%
+  unnest_tokens(word, description_tr) %>%
   filter(str_detect(word, "[a-z']$"),
          !word %in% stop_words$word)
-word_cnt <- train2 %>% 
-  count(listing_id)
 
-senti <- train1 %>%
-  inner_join(get_sentiments('bing'))
+
+word_cnt <- train2 %>% 
+  count(listing_id) %>%
+  mutate(word_cnt = n)
+
+train0a <- train0 %>%
+  left_join(word_cnt)
+
+train0a[is.na(train0a$word_cnt), 'word_cnt'] <- 0
+
+library(tidyr)
+
+senti <- train2 %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(listing_id, sentiment) %>%
+  spread(sentiment, n, fill = 0) %>%
+  mutate(sentiment = positive - negative)
+
+train0b <- train0a %>%
+  left_join(senti) %>%
+  select(listing_id, word_cnt, sentiment)
+
+
+train4 <- train0 %>%
+  unnest_tokens(bigram, description_tr, token = "ngrams", n =2 )
+
+
+# pets mentioned in features
+a <- train_df$features
+b <- a[1][[1]]
+g <- a[5000][[1]]
+
+
+a <- train4 %>%
+  filter(bigram == 'no pets' | bigram == 'cats allowed')
+
+pet <- train2 %>%
+  filter(word == 'dog' | word == 'cat')
+
+train0 %>%
+  filter(listing_id == 7202273) %>%
+  select(description_tr)
+
 
 sentiment <- get_nrc_sentiment(train0$description)
 datatable(head(sentiment))
