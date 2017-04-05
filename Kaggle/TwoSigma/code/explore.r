@@ -92,8 +92,14 @@ train4 <- train0 %>%
 a <- train_df$features
 b <- a[1][[1]]
 g <- a[5000][[1]]
+a[3][[1]]
 
-
+x <- a[1][[1]]
+for(i in 2:5000){
+  if (length(a[i][[1]]) > 0){
+    x <- union(x, a[i][[1]])
+  }
+}
 a <- train4 %>%
   filter(bigram == 'no pets' | bigram == 'cats allowed')
 
