@@ -92,6 +92,30 @@ class Solution(object):
                 
         return [nums1[l1], nums1[u1], nums2[l2], nums2[u2]]        
 
+    def findPos(x, nums):
+        N = len(nums)
+        if x < nums[0]:
+            return [-1, 0]
+        if x > nums[N-1]:
+            return [-1, -1]
+        pl = findLower(x, nums)
+    def findLower(x,nums):
+        if x <= nums[0]:
+            return -1
+        else:
+            # x > num[0]
+            # find the last pos < x
+            
+            pl = 0
+            pu = N - 1
+            while pu - pl > 1:
+                z = int((pu + pl)/2)
+                if x > nums[z]:
+                    pl = z
+                else:
+                    pu = z
+            return pl
+            
 a = Solution()
 
 
