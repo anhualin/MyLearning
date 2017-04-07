@@ -89,23 +89,35 @@ class Solution(object):
                     else:
                         l2 = y
                         
+        candidates = set([nums1[l1], nums1[u1], nums2[l2], nums2[u2]])   
+        print candidates
+        chosen = []
+        for c in candidates:
+            pos0, pos1 = self.findPos(c, nums1, nums2)
+            print c, pos0, pos1
+            if (half + 1 >= pos0 and half + 1 <= pos1) or (half + 2 >= pos0 and half + 2 <= pos1):
+                chosen.append(c)
+                if len(chosen) == 2:
+                    return (float(chosen[0] + chosen[1])) / 2.0
                 
-        return [nums1[l1], nums1[u1], nums2[l2], nums2[u2]]        
+               
 
-    def findPos(x, nums):
+   
+    def findPos(self, x, nums1, nums2):
+        pl1 = self.findLower(x, nums1)
+        pl2 = self.findLower(x, nums2)
+        pu1 = self.findUpper(x, nums1)
+        pu2 = self.findUpper(x, nums2)
+        pos0 = pl1 + pl2 + 3
+        pos1 = pu1 + pu2
+        return [pos0, pos1]
+    def findLower(self, x,nums):
         N = len(nums)
-        if x < nums[0]:
-            return [-1, 0]
-        if x > nums[N-1]:
-            return [-1, -1]
-        pl = findLower(x, nums)
-    def findLower(x,nums):
         if x <= nums[0]:
             return -1
+        elif x > nums[N-1]:
+            return N-1
         else:
-            # x > num[0]
-            # find the last pos < x
-            
             pl = 0
             pu = N - 1
             while pu - pl > 1:
@@ -115,7 +127,22 @@ class Solution(object):
                 else:
                     pu = z
             return pl
-            
+    def findUpper(self, x,nums):
+        N = len(nums)
+        if x < nums[0]:
+            return 0
+        elif x >= nums[N-1]:
+            return N
+        else:
+            pl = 0
+            pu = N - 1
+            while pu - pl > 1:
+                z = int((pu + pl)/2)
+                if x < nums[z]:
+                    pu = z
+                else:
+                    pl = z
+            return pu
 a = Solution()
 
 
