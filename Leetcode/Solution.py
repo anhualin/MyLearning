@@ -15,79 +15,80 @@ class Solution(object):
         """
         len1 = len(nums1)
         len2 = len(nums2)
-        if (len1 + len2) % 2 == 0:
-            half = (len1 + len2 - 2) / 2
-            l1 = 0
-            u1 = len1 - 1
-            l2 = 0
-            u2 = len2 - 1
-            print l1, u1, l2, u2
+       
+        half = int((len1 + len2) / 2)
+        l1 = 0
+        u1 = len1 - 1
+        l2 = 0
+        u2 = len2 - 1
+      
+        while(u1 - l1 >= 2 and u2 - l2 >= 2):
             x = int((l1 + u1)/2)
             y = int((l2 + u2)/2)
-            print 'x=', x
-            print 'y=', y
-            # easy case
-            # general cases
-            while(u1 - l1 >= 2 and u2 - l2 >= 2):
-              
-                if nums1[x] >= nums2[y]:
-                    if x + y >= half:
-                        u1 = x
-                        x = int((l1 + u1)/2)
-                    else:
-                        l2 = y
-                        y = int((l2 + u2)/2)                           
+            if nums1[x] >= nums2[y]:
+                if x + y >= half - 1:
+                    u1 = x
+                    x = int((l1 + u1)/2)
                 else:
-                    if x + y >= half:
-                        u2 = y
-                        y = int((l2 + u2)/2)
-                    else:
-                        l1 = x
-                        x = int((l1 + u1)/2)
-            
-            if u1 - l1 > 1:
-                tmp = nums1
-                nums1 = nums2
-                nums2 = tmp
-                len1 = len(nums1)
-                len2 = len(nums2)
-                t = l1
-                l1 = l2
-                l2 = t
-                t = u1
-                u1 = u2
-                u2 = t
-            while(u2 - l2 >= 2):
-                y = int((l2 + u2)/2)
-                if nums2[y] < nums1[l1]:
-                    if nums1[l1] > nums1[0]:
-                        l2 = y
-                    else:
-                        if y >= half + 1:
-                            return [nums2[half], nums2[half + 1]]
-                        l2 = y
-                elif nums2[y] > nums1[u1]:
-                    if nums1[u1] < nums1[len1 - 1]:
-                        u2 = y
-                    else:
-                        if len2 - y - 1 >= half + 1:
-                            return [nums2[len2 - half - 2], nums2[len2 - half - 1]]
-                        u2 = y
-                elif nums2[y] == nums1[l1]:
-                    if l1 + y <= half:
-                        l2 = y
-                    else:
-                        u2 = y
-                elif nums2[y] == nums1[u1]:
-                    if u1 + y <= half:
-                        l2 = y
-                    else:
-                        u2 = y
+                    l2 = y
+                    y = int((l2 + u2)/2)                           
+            else:
+                if x + y >= half - 1:
+                    u2 = y
+                    y = int((l2 + u2)/2)
                 else:
-                    if l1 + y + 1 >= half + 1:
-                        u2 = y
-                    else:
-                        l2 = y
+                    l1 = x
+                    x = int((l1 + u1)/2)
+        
+        if u1 - l1 > 1:
+            tmp = nums1
+            nums1 = nums2
+            nums2 = tmp
+            len1 = len(nums1)
+            len2 = len(nums2)
+            t = l1
+            l1 = l2
+            l2 = t
+            t = u1
+            u1 = u2
+            u2 = t
+        while(u2 - l2 >= 2):
+            y = int((l2 + u2)/2)
+            if nums2[y] < nums1[l1]:
+                if nums1[l1] > nums1[0]:
+                    l2 = y
+                else:
+                    if y >= half:
+                        if (len1 + len2) % 2 == 0:
+                            return float(nums2[half] + nums2[half + 1])/2.0
+                        else:
+                            return float(nums2[half + 1])
+                    l2 = y
+            elif nums2[y] > nums1[u1]:
+                if nums1[u1] < nums1[len1 - 1]:
+                    u2 = y
+                else:
+                    if len2 - y - 1 >= half:
+                        if (len1 + len2) % 2 == 0:
+                            return float(nums2[len2 - half - 1] + nums2[len2 - half])/2.0
+                        else:
+                            return float(nums2[len2 - half - 1])
+                    u2 = y
+            elif nums2[y] == nums1[l1]:
+                if l1 + y < half - 1:
+                    l2 = y
+                else:
+                    u2 = y
+            elif nums2[y] == nums1[u1]:
+                if u1 + y <= half:
+                    l2 = y
+                else:
+                    u2 = y
+            else:
+                if l1 + y + 1 >= half + 1:
+                    u2 = y
+                else:
+                    l2 = y
                         
         candidates = set([nums1[l1], nums1[u1], nums2[l2], nums2[u2]])   
         print candidates
