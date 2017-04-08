@@ -16,6 +16,17 @@ class Solution(object):
         len1 = len(nums1)
         len2 = len(nums2)
        
+        if len1 == 0:
+            if len2 % 2 == 0:
+                return float(nums2[len2/2 - 1 ] + nums2[len2/2])/2.0
+            else:
+                return nums2[len2/2]
+        if len2 == 0:
+            if len1 % 2 == 0:
+                return float(nums1[len1/2 - 1 ] + nums1[len1/2])/2.0
+            else:
+                return nums1[len1/2]
+            
         half = int((len1 + len2) / 2)
         l1 = 0
         u1 = len1 - 1
@@ -60,9 +71,10 @@ class Solution(object):
                 else:
                     if y >= half:
                         if (len1 + len2) % 2 == 0:
-                            return float(nums2[half] + nums2[half + 1])/2.0
+                            return float(nums2[half - 1] + nums2[half])/2.0
                         else:
-                            return float(nums2[half + 1])
+                            
+                            return float(nums2[half])
                     l2 = y
             elif nums2[y] > nums1[u1]:
                 if nums1[u1] < nums1[len1 - 1]:
@@ -72,6 +84,7 @@ class Solution(object):
                         if (len1 + len2) % 2 == 0:
                             return float(nums2[len2 - half - 1] + nums2[len2 - half])/2.0
                         else:
+                          
                             return float(nums2[len2 - half - 1])
                     u2 = y
             elif nums2[y] == nums1[l1]:
@@ -80,27 +93,33 @@ class Solution(object):
                 else:
                     u2 = y
             elif nums2[y] == nums1[u1]:
-                if u1 + y <= half:
+                if u1 + y < half - 1:
                     l2 = y
                 else:
                     u2 = y
             else:
-                if l1 + y + 1 >= half + 1:
+                if l1 + y + 1 >= half:
                     u2 = y
                 else:
                     l2 = y
                         
         candidates = set([nums1[l1], nums1[u1], nums2[l2], nums2[u2]])   
-        print candidates
+       
         chosen = []
-        for c in candidates:
-            pos0, pos1 = self.findPos(c, nums1, nums2)
-            print c, pos0, pos1
-            if (half + 1 >= pos0 and half + 1 <= pos1) or (half + 2 >= pos0 and half + 2 <= pos1):
-                chosen.append(c)
-                if len(chosen) == 2:
-                    return (float(chosen[0] + chosen[1])) / 2.0
-                
+        if (len1 + len2) % 2 == 0:
+            for c in candidates:
+                pos0, pos1 = self.findPos(c, nums1, nums2)
+                if pos0 <= half and pos1 >= half + 1:
+                    return float(c)
+                if (pos0 <= half and pos1 >= half) or (pos0 <= half + 1 and pos1 >= half + 1):
+                    chosen.append(c)
+                    if len(chosen) == 2:
+                        return (float(chosen[0] + chosen[1])) / 2.0
+        else:
+            for c in candidates:
+                pos0, pos1 = self.findPos(c, nums1, nums2)
+                if pos0 <= half + 1 and pos1 >= half + 1:
+                    return float(c)
                
 
    
@@ -144,27 +163,39 @@ class Solution(object):
                 else:
                     pl = z
             return pu
+        
 a = Solution()
 
 
-print a.findMedianSortedArrays([1,4,5,7,9], [2,3,4,6,7,8,10])    
+print a.findMedianSortedArrays([], [1])    
 
 
 import numpy as np
-n1 =np.random.randint(1,100,1)[0]
-n2 = np.random.randint(1,100,1)[0]
-if (n1 + n2) %2 == 1:
-    n2 = n2 + 1
-nums1 = np.random.randint(1,100,n1).tolist()
-nums1.sort()
-
-nums2 = np.random.randint(1,100,n2).tolist()
-nums2.sort()
-
-nums = nums1 + nums2
-nums.sort()
-m1 = nums[(n1+n2)/2 - 1]
-m2 = nums[(n1+n2)/2]
-
-result = a.findMedianSortedArrays(nums1, nums2)    
-
+k = 1
+diff = []
+while k < 10000:
+    n1 =np.random.randint(1,100,1)[0]
+    n2 = np.random.randint(1,100,1)[0]
+    
+    nums1 = np.random.randint(1,100,n1).tolist()
+    nums1.sort()
+    
+    nums2 = np.random.randint(1,100,n2).tolist()
+    nums2.sort()
+    
+    nums = nums1 + nums2
+    nums.sort()
+    
+    if (n1 + n2) %2 ==0:
+        m1 = nums[(n1+n2)/2 - 1]
+        m2 = nums[(n1+n2)/2]
+        r = float(m1 + m2)/2.0
+    else:
+        i = int((n1 + n2)/2)
+        r = float(nums[i])
+    result = a.findMedianSortedArrays(nums1, nums2)    
+    dif = r - result
+    diff.append(dif)
+    if dif > 0.1 or dif < -0.1:
+        break;
+    k = k + 1
