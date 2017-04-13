@@ -1,0 +1,31 @@
+1. Ubuntu 16.04 lost wifi after suspending. Use the following command line to
+restart network:
+sudo systemctl restart network-manager.service
+2. spyder lock file: /home/alin/.config/spyder
+3. install the lastet R:
+  (i) sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+  (ii) sudo add-apt-repository 'deb [arch=amd64,i386] https://cran.rstudio.com/bin/linux/ubuntu xenial/
+  (iii) sudo apt-get update
+  (iv) sudo apt-get install r-base
+  https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-16-04-2
+
+4. Have trouble installing devtools for R because of the curl package.
+  Resolved by: sudo apt-get install libcurl4-openssl-dev libssl-dev
+   Similar trouble with unable to install xml, solved with
+   sudo apt-get install libxml2-dev.
+5. Sound problem: use alsamixer to adjust.
+
+6. Python virtual env:
+   go to desired dir: virtualenv  name_of_venv.
+7. Trouble installing sematch python package:
+  error: __call__() takes exactly 2 argements(1 given)
+   solution:
+   in file /usr/local/lib/python2.7/dist-packages/packaging/requirements.py,
+    line 59 is this one:
+
+ MARKER_EXPR = originalTextFor(MARKER_EXPR())("marker")
+
+ I changed it to
+
+ MARKER_EXPR = originalTextFor(MARKER_EXPR(""))("marker")
+
