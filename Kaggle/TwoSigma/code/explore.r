@@ -122,12 +122,19 @@ train_set <- cbind(train_df, sentiment)
 sent1 <- get_sentiment(s_v, method="syuzhet")
 
 # basic tidy text
-data <- map_at(data, vars, unlist) %>% 
+feature_df <- map_at(data, vars, unlist) %>% 
   tibble::as_tibble(.) %>%
   select(listing_id, features, interest_level) %>%
   mutate(interest_level = factor(interest_level, c("low", "medium", "high")))
 
-head(data, n =5)
+features <-tolower(unlist(feature_df[1, 'features']))
+for(i in 2:nrow(feature_df)){
+  features <- union(features, tolower(unlist(feature_df[i, 'features'])))
+}
+
+fea <- data.frame(feature = features)
+write.table(fea, file = '/home/alin/MyLearning/Kaggle/TwoSigma/data/feature.csv', row.names = FALSE)
+head(feature_df, n =5)
 library(tidry)
 tidy_data <- data %>%
   filter(map(features, is_empty) != TRUE) %>%
