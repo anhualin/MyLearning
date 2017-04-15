@@ -135,6 +135,52 @@ for(i in 2:nrow(feature_df)){
 fea <- data.frame(feature = features)
 write.table(fea, file = '/home/alin/MyLearning/Kaggle/TwoSigma/data/feature.csv', row.names = FALSE)
 head(feature_df, n =5)
+
+library(tidyr)
+feature_df <- data[c(9,7)] %>%
+  tibble::as_tibble(.) %>%
+  mutate(listing_id = unlist(listing_id)) 
+
+feature_df$features <- apply(feature_df[,2], 1, function(l) paste(unlist(l), collapse = '|'))
+g <- feature_df %>%
+  transform(features = strsplit(features, '|', fixed = TRUE)) %>%
+  unnest(features)
+
+
+a <- feature_df[1:5,]
+
+
+dlist <- function(l){
+  paste(unlist(l), collapse = '|')
+}
+
+a$features <- apply(a[,2], 1, dlist)
+
+a %>%
+  transform(features = strsplit(features, "|", fixed = TRUE)) %>%
+  unnest(features)
+
+b <- a %>%
+  mutate(features = dlist(features))
+
+g <- b %>%
+  transform(features = strsplit(features, '|', fixed = TRUE)) %>%
+  unnest(features)
+
+
+
+a$fea <- apply(a[, 'features'], 2, dlist)
+
+train0$description_tr <- unlist(train0 %>% select(description) %>% map(dejunk))
+train0$description <- NULL
+
+%>%
+  select(listing_id, features)
+
+map_at(data, vars, unlist) %>% 
+  tibble::as_tibble(.) %>%
+  select(listing_id, features) 
+
 library(tidry)
 tidy_data <- data %>%
   filter(map(features, is_empty) != TRUE) %>%
