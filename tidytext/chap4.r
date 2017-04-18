@@ -74,3 +74,11 @@ negated_words <- bigrams_separated %>%
   count(word1, word2, score, sort = TRUE) %>%
   ungroup()
 
+austen_section_words <- austen_books() %>%
+  filter(book == "Pride & Prejudice") %>%
+  mutate(section = row_number() %/% 10) %>%
+  filter(section > 0) %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stop_words$word)
+
+
