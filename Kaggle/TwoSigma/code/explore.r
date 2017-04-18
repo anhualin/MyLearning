@@ -2,9 +2,9 @@ packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2", "lubridate")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
 
 
-#setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
+setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
 
-setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
+#setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
 
 data <- fromJSON("train.json")
 
@@ -137,49 +137,20 @@ write.table(fea, file = '/home/alin/MyLearning/Kaggle/TwoSigma/data/feature.csv'
 head(feature_df, n =5)
 
 library(tidyr)
+library(stringr)
 feature_df <- data[c(9,7)] %>%
   tibble::as_tibble(.) %>%
   mutate(listing_id = unlist(listing_id)) 
+  
+feature_df$features <- apply(feature_df[,2], 1, function(l) tolower(paste(unlist(l), collapse = '|')))
 
-feature_df$features <- apply(feature_df[,2], 1, function(l) paste(unlist(l), collapse = '|'))
-g <- feature_df %>%
+feature_df <- feature_df %>%
   transform(features = strsplit(features, '|', fixed = TRUE)) %>%
-  unnest(features)
+  unnest(features) %>%
+  tibble::as_tibble(.) 
 
-
-a <- feature_df[1:5,]
-
-
-dlist <- function(l){
-  paste(unlist(l), collapse = '|')
-}
-
-a$features <- apply(a[,2], 1, dlist)
-
-a %>%
-  transform(features = strsplit(features, "|", fixed = TRUE)) %>%
-  unnest(features)
-
-b <- a %>%
-  mutate(features = dlist(features))
-
-g <- b %>%
-  transform(features = strsplit(features, '|', fixed = TRUE)) %>%
-  unnest(features)
-
-
-
-a$fea <- apply(a[, 'features'], 2, dlist)
-
-train0$description_tr <- unlist(train0 %>% select(description) %>% map(dejunk))
-train0$description <- NULL
-
-%>%
-  select(listing_id, features)
-
-map_at(data, vars, unlist) %>% 
-  tibble::as_tibble(.) %>%
-  select(listing_id, features) 
+pet_df <- feature_df %>%
+  filter(str_detect(features, regex("pet|cat")))
 
 library(tidry)
 tidy_data <- data %>%
