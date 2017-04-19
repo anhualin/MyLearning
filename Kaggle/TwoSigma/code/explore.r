@@ -2,9 +2,9 @@ packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2", "lubridate")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
 
 
-setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
+#setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
 
-#setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
+setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
 
 data <- fromJSON("train.json")
 
@@ -150,7 +150,11 @@ feature_df <- feature_df %>%
   tibble::as_tibble(.) 
 
 pet_df <- feature_df %>%
-  filter(str_detect(features, regex("pet|cat")))
+  filter(str_detect(features, "pet"))
+
+pet_df1 <- pet_df %>%
+  filter(str_detect(features, "pet"))
+
 
 library(tidry)
 tidy_data <- data %>%
