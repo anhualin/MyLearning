@@ -2,9 +2,12 @@ packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2", "lubridate")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
 
 
-#setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
+if (Sys.info()[1] == 'Windows'){
+  setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
+}else{
+  setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')  
+}
 
-setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')
 
 data <- fromJSON("train.json")
 
@@ -150,10 +153,20 @@ feature_df <- feature_df %>%
   tibble::as_tibble(.) 
 
 pet_df <- feature_df %>%
-  filter(str_detect(features, "pet"))
+  filter(str_detect(features, "pet|dog|cat"))
 
-pet_df1 <- pet_df %>%
-  filter(str_detect(features, "pet"))
+pet1_df <- pet_df %>%
+  filter(!str_detect(features, "\\Scat\\S"))
+
+
+
+df <- data_frame(a = c('pet friendly', 'pets ok', ' pet ok', 'pettion', 'no pet', 'apeta'))
+
+df %>%
+  filter(str_detect(a, 'pet[s\\s]' ) | str_detect(a, 'pet$|pets$'))
+
+df %>%
+  filter(str_detect(a, 'pet$'))
 
 
 library(tidry)
