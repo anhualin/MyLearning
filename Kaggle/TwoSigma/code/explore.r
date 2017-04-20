@@ -141,6 +141,10 @@ head(feature_df, n =5)
 
 library(tidyr)
 library(stringr)
+raw_features <- data[c(9,7)] %>%
+  tibble::as_tibble(.) %>%
+  mutate(listing_id = unlist(listing_id)) 
+  
 feature_df <- data[c(9,7)] %>%
   tibble::as_tibble(.) %>%
   mutate(listing_id = unlist(listing_id)) 
@@ -153,17 +157,33 @@ feature_df <- feature_df %>%
   tibble::as_tibble(.) 
 
 pet_df <- feature_df %>%
-  filter(str_detect(features, "pet|dog|cat"))
+  filter(str_detect(features, '(^|\\s)(pet|cat|dog)(s$|s\\s|\\s|$)' )) %>%
+  mutate(pet = 1 - 2* as.integer(str_detect(features, '(^|\\s)no\\s+(pet|cat|dog)'))) %>%
+  select(listing_id, pet) %>%
+  group_by(listing_id) %>% 
+  summarise(pet = max(pet))
 
-pet1_df <- pet_df %>%
-  filter(!str_detect(features, "\\Scat\\S"))
 
 
+df <- data_frame(id = c(1,2,3,4,5), a = c(1,2,3,4,5))
+df1 <- data_frame(id = c(1,2,3), b = c(1,2,3))
 
-df <- data_frame(a = c('pet friendly', 'pets ok', ' pet ok', 'pettion', 'no pet', 'apeta'))
+x <-df %>%
+  left_join(df1)
+
+x$b1 <- apply(x, 1, function(g) if (is.na(g)) 0 else g )
+x <- x %>%
+  mutate(b = if (is.na(b)) 0 else b)
+
+df <- data_frame(a = c('pet friendly', 'pets ok', ' pet ok', 'pettion', 
+                       'no pet', 'apeta', 'apet', 'petsg',
+                       'cat friendly', 'dogs ok', ' cat ok', 'lcatg do',
+                       ' no dog', 'ldog', 'acat', 'lcatdog'))
 
 df %>%
-  filter(str_detect(a, 'pet[s\\s]' ) | str_detect(a, 'pet$|pets$'))
+  filter(str_detect(a, '(^|\\s)(pet|cat|dog)(s$|s\\s|\\s|$)' )) 
+         
+         | 
 
 df %>%
   filter(str_detect(a, 'pet$'))
