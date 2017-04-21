@@ -49,8 +49,8 @@ dejunk <- function(a){
 }
 
 
-train0$description_tr <- unlist(train0 %>% select(description) %>% map(dejunk))
-train0$description <- NULL
+# train0$description_tr <- unlist(train0 %>% select(description) %>% map(dejunk))
+# train0$description <- NULL
 
 train0 <- train0 %>%
   mutate(description = dejunk(description))
