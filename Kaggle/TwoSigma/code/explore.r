@@ -48,26 +48,21 @@ dejunk <- function(a){
   a <- gsub('[[:digit:]]', ' ', a)
 }
 
+
 train0$description_tr <- unlist(train0 %>% select(description) %>% map(dejunk))
 train0$description <- NULL
 
+train0 <- train0 %>%
+  mutate(description = dejunk(description))
 
-train1 <- train0 %>% 
-  unnest_tokens(word, description_tr)
-
-train2 <- train0 %>%
-  unnest_tokens(word, description_tr) %>%
+tidy_train0 <- train0 %>%
+  unnest_tokens(word, description) %>%
   anti_join(stop_words)
 
-train3 <- train0 %>%
-  unnest_tokens(word, description_tr) %>%
-  filter(str_detect(word, "[a-z']$"),
-         !word %in% stop_words$word)
-
-
-word_cnt <- train2 %>% 
+word_cnt <- tidy_train0 %>% 
   count(listing_id) %>%
   mutate(word_cnt = n)
+
 
 train0a <- train0 %>%
   left_join(word_cnt)
@@ -124,21 +119,9 @@ train_set <- cbind(train_df, sentiment)
 
 sent1 <- get_sentiment(s_v, method="syuzhet")
 
-# basic tidy text
-feature_df <- map_at(data, vars, unlist) %>% 
-  tibble::as_tibble(.) %>%
-  select(listing_id, features, interest_level) %>%
-  mutate(interest_level = factor(interest_level, c("low", "medium", "high")))
 
-features <-tolower(unlist(feature_df[1, 'features']))
-for(i in 2:nrow(feature_df)){
-  features <- union(features, tolower(unlist(feature_df[i, 'features'])))
-}
 
-fea <- data.frame(feature = features)
-write.table(fea, file = '/home/alin/MyLearning/Kaggle/TwoSigma/data/feature.csv', row.names = FALSE)
-head(feature_df, n =5)
-
+#### features ####
 library(tidyr)
 library(stringr)
 raw_features <- data[c(9,7)] %>%
@@ -163,13 +146,44 @@ pet_df <- feature_df %>%
   group_by(listing_id) %>% 
   summarise(pet = max(pet))
 
+laundry_df <- feature_df %>%
+  filter(str_detect(features, 'laundry')) %>%
+  mutate(laundry = 1) %>%
+  select(listing_id, laundry) %>%
+  group_by(listing_id) %>%
+  summarise(laundry = max(laundry))
 
+fee_df <- feature_df %>%
+  filter(str_detect(features, '(\\W)fee(\\W|$)')) %>%
+  mutate(fee = 2 * as.integer(str_detect(features, '(^|\\s)no(\\W)')) - 1) %>%
+  select(listing_id, fee) %>%
+  group_by(listing_id) %>%
+  summarise(fee = max(fee))
+
+
+pool_df <- feature_df %>%
+  filter(str_detect(features, '(\\W|^)pool(\\W|$)')) %>%
+  mutate(pool = 1) %>%
+  select(listing_id, pool) %>%
+  group_by(listing_id) %>%
+  summarise(pool = max(pool))
+
+
+
+
+
+
+feature1_df <- raw_features %>%
+  left_join(pet_df) %>%
+  select(listing_id, pet)
+feature1_df[is.na(feature1_df$pet), 'pet'] <- 0
 
 df <- data_frame(id = c(1,2,3,4,5), a = c(1,2,3,4,5))
 df1 <- data_frame(id = c(1,2,3), b = c(1,2,3))
 
 x <-df %>%
   left_join(df1)
+x[is.na(x$b), 'b'] <- 0
 
 x$b1 <- apply(x, 1, function(g) if (is.na(g)) 0 else g )
 x <- x %>%
