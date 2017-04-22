@@ -19,26 +19,16 @@ train_df <- map_at(data, vars, unlist) %>%
             tibble::as_tibble(.) %>%
             mutate(interest_level = factor(interest_level, c("low", "medium", "high")))
 
-library(stringr)
-des <- train_df$description
-a <- des[1200]
-a <- gsub('<a\\s+website_redacted', '',a)
-a <- gsub('<\\S+\\s*/*>', ' ', a)
-a <- gsub('\\S+\\s*@\\s*\\S+', ' ', a)
-a <- gsub('\\d+[-]*\\d+[-]\\d+', ' ', a)
-ggplot(data=train_df) +
-  geom_density(aes(x = bathrooms,
-                   color = interest_level,
-                   linetype = interest_level ))
-
 pull <- function(x,y) {
     x[,if(is.name(substitute(y))) deparse(substitute(y)) else y, drop = FALSE][[1]]
   }
 x <- train_df %>% pull('day')
-## seti anal
+## seti 
 library(syuzhet)
 library(DT)
-train0 <- train_df[1:500, c('listing_id', 'description')]
+
+library(tidyr)
+library(stringr)
 dejunk <- function(a){
   a <- gsub('<a\\s+website_redacted', '',a)
   a <- gsub('<\\S+\\s*/*>', ' ', a)
@@ -48,18 +38,16 @@ dejunk <- function(a){
   a <- gsub('[[:digit:]]', ' ', a)
 }
 
+raw_description <- data[c(9,5)] %>%
+  tibble::as_tibble(.) %>%
+  mutate(listing_id = unlist(listing_id), description = dejunk(description)) 
+  
 
-# train0$description_tr <- unlist(train0 %>% select(description) %>% map(dejunk))
-# train0$description <- NULL
-
-train0 <- train0 %>%
-  mutate(description = dejunk(description))
-
-tidy_train0 <- train0 %>%
+tidy_train <- raw_description %>%
   unnest_tokens(word, description) %>%
   anti_join(stop_words)
 
-word_cnt <- tidy_train0 %>% 
+word_cnt <- tidy_train %>% 
   count(listing_id) %>%
   mutate(word_cnt = n)
 
@@ -69,55 +57,29 @@ train0a <- train0 %>%
 
 train0a[is.na(train0a$word_cnt), 'word_cnt'] <- 0
 
-library(tidyr)
+senti <- tidy_train %>% 
+  inner_join(get_sentiments("afinn")) %>% 
+  group_by(listing_id) %>% 
+  summarise(sentiment1 = sum(score))
 
-senti <- train2 %>%
-  inner_join(get_sentiments("bing")) %>%
-  count(listing_id, sentiment) %>%
-  spread(sentiment, n, fill = 0) %>%
-  mutate(sentiment = positive - negative)
+negation_words <- c("not", "no", "never", "without")
 
-train0b <- train0a %>%
-  left_join(senti) %>%
-  select(listing_id, word_cnt, sentiment)
+neg_senti <- raw_description %>%
+  unnest_tokens(bigram, description, token = "ngrams", n = 2) %>%
+  separate(bigram, c("word1", "word2"), sep = " ") %>%
+  filter(word1 %in% negation_words) %>% 
+  inner_join(get_sentiments("anfinn"), by = c(word2 = "word")) %>%
+  group_by(listing_id) %>%
+  summarise(sentiment2 = -2*sum(score))
+  
+sentiment <- senti %>%
+  left_join(neg_senti)
 
+sentiment[is.na(sentiment$sentiment2), 'sentiment2'] <- 0
+sentiment <- sentiment %>%
+  mutate(sentiment = sentiment1 + sentiment2) %>%
+  select(listing_id, sentiment)
 
-train4 <- train0 %>%
-  unnest_tokens(bigram, description_tr, token = "ngrams", n =2 )
-
-
-# pets mentioned in features
-a <- train_df$features
-b <- a[1][[1]]
-g <- a[5000][[1]]
-a[3][[1]]
-
-x <- a[1][[1]]
-for(i in 2:5000){
-  if (length(a[i][[1]]) > 0){
-    x <- union(x, a[i][[1]])
-  }
-}
-a <- train4 %>%
-  filter(bigram == 'no pets' | bigram == 'cats allowed')
-
-pet <- train2 %>%
-  filter(word == 'dog' | word == 'cat')
-
-train0 %>%
-  filter(listing_id == 7202273) %>%
-  select(description_tr)
-
-
-sentiment <- get_nrc_sentiment(train0$description)
-datatable(head(sentiment))
-
-a <- train0[1]
-b <- gsub('\\S+@\\S+', ' ', a)
-
-train_set <- cbind(train_df, sentiment)
-
-sent1 <- get_sentiment(s_v, method="syuzhet")
 
 
 
@@ -132,6 +94,7 @@ feature_df <- data[c(9,7)] %>%
   tibble::as_tibble(.) %>%
   mutate(listing_id = unlist(listing_id)) 
   
+
 feature_df$features <- apply(feature_df[,2], 1, function(l) tolower(paste(unlist(l), collapse = '|')))
 
 feature_df <- feature_df %>%
