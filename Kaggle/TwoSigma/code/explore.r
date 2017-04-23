@@ -1,4 +1,5 @@
-packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2", "lubridate")
+packages <- c("jsonlite", "dplyr", "purrr", "tidytext", "ggplot2", "lubridate", "tidyr",
+              "stringr")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
 
 
@@ -143,9 +144,25 @@ feature1_df[is.na(feature1_df$pet), 'pet'] <- 0
 
 df <- data_frame(id = c(1,2,3,4,5), a = c(1,2,3,4,5))
 df1 <- data_frame(id = c(1,2,3), b = c(1,2,3))
-
+df2 <- data_frame(id = c(3,4,5), x = c('a','b','c'))
 x <-df %>%
-  left_join(df1)
+  left_join(df1) %>%
+  left_join(df2)
+
+train_df <- train_df %>%
+  left_join(word_cnt) %>%
+  left_join(sentiment) %>%
+  left_join(pet_df) %>%
+  left_join(laundry_df) %>%
+  left_join(pool_df) %>%
+  left_join(fee_df)
+
+train_df[is.na(train_df$word_cnt), 'word_cnt'] <- 0
+train_df[is.na(train_df$sentiment), 'sentiment'] <- 0
+train_df[is.na(train_df$pet), 'pet'] <- 0
+train_df[is.na(train_df$laundry), 'laundry'] <- 0
+train_df[is.na(train_df$pool), 'pool'] <- 0
+train_df[is.na(train_df$fee), 'fee'] <- 0
 x[is.na(x$b), 'b'] <- 0
 
 x$b1 <- apply(x, 1, function(g) if (is.na(g)) 0 else g )
@@ -174,7 +191,13 @@ tidy_data <- data %>%
 
 head(tidy_data, n = 5)
 
-## h2o ###
+
+
+# longitude and lantitude
+# latitude most between 40 and 41
+# longitutde most between -75 and -73
+
+## h2o ### 
 library(data.table)
 library(jsonlite)
 library(h2o)
