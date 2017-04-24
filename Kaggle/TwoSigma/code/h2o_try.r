@@ -2,16 +2,22 @@
 # The environment is defined by the kaggle/rstats docker image: https://github.com/kaggle/docker-rstats
 # For example, here's several helpful packages to load in 
 
+if (Sys.info()[1] == 'Windows'){
+  setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/Kaggle/TwoSigma/data')
+}else{
+  setwd('/home/alin/MyLearning/Kaggle/TwoSigma/data')  
+}
+
 library(data.table)
 library(jsonlite)
-library(h2o)
+
 library(lubridate)
 packages <- c("jsonlite", "dplyr", "purrr")
 purrr::walk(packages, library, character.only = TRUE, warn.conflicts = FALSE)
-h2o.init(nthreads = -1, max_mem_size="8g")
+
 
 # Load data
-t1 <- fromJSON("../input/train.json")
+t1 <- fromJSON("train.json")
 vars <- setdiff(names(t1), c("photos", "features"))
 t1 <- map_at(t1, vars, unlist) %>% tibble::as_tibble(.)
 # Rate By Level using Manager ID
@@ -64,29 +70,10 @@ t2[,":="(yday=yday(created)
       ,wday=wday(created)
       ,hour=hour(created))]
 
-train <- as.h2o(t2[,-"created"], destination_frame = "train.hex")
 
-varnames <- setdiff(colnames(train), "interest_level")
-gbm1 <- h2o.gbm(x = varnames
-                ,y = "interest_level"
-                ,training_frame = train
-                ,distribution = "multinomial"
-                ,model_id = "gbm1"
-                #,nfolds = 5
-                ,ntrees = 750
-                ,learn_rate = 0.05
-                ,max_depth = 7
-                ,min_rows = 20
-                ,sample_rate = 0.7
-                ,col_sample_rate = 0.7
-             #   ,stopping_rounds = 5
-             #   ,stopping_metric = "logloss"
-             #   ,stopping_tolerance = 0
-                ,seed=321
-                )
 
 # Load data
-s1 <- fromJSON("../input/test.json")
+s1 <- fromJSON("test.json")
 vars <- setdiff(names(s1), c("photos", "features"))
 s1 <- map_at(s1, vars, unlist) %>% tibble::as_tibble(.)
 # Rate By Level using Manager ID
@@ -137,6 +124,33 @@ s2[,":="(yday=yday(created)
          ,mday=mday(created)
          ,wday=wday(created)
          ,hour=hour(created))]
+
+
+
+library(h2o)
+h2o.init(nthreads = -1, max_mem_size="10g")
+
+train <- as.h2o(t2[,-"created"], destination_frame = "train.hex")
+
+varnames <- setdiff(colnames(train), "interest_level")
+gbm1 <- h2o.gbm(x = varnames
+                ,y = "interest_level"
+                ,training_frame = train
+                ,distribution = "multinomial"
+                ,model_id = "gbm1"
+                #,nfolds = 5
+                ,ntrees = 750
+                ,learn_rate = 0.05
+                ,max_depth = 7
+                ,min_rows = 20
+                ,sample_rate = 0.7
+                ,col_sample_rate = 0.7
+                #   ,stopping_rounds = 5
+                #   ,stopping_metric = "logloss"
+                #   ,stopping_tolerance = 0
+                ,seed=321
+)
+
 test <- as.h2o(s2[,-"created"], destination_frame = "test.hex")
 
 preds <- as.data.table(h2o.predict(gbm1, test))
@@ -144,3 +158,10 @@ preds <- as.data.table(h2o.predict(gbm1, test))
 testPreds <- data.table(listing_id = unlist(s1$listing_id), preds[,.(high, medium, low)])
 fwrite(testPreds, "submission.csv")
 # Any results you write to the current directory are saved as output.
+
+
+predH2o <- as.data.frame(h2o.predict(gbm1, test))
+test_result1 <- cbind(s2, predH2o)
+test_result <- test_result1 %>%
+  select(listing_id, high, medium, low)
+write.csv(test_result, file = 'submission5.csv', quote = FALSE, row.names = FALSE)
