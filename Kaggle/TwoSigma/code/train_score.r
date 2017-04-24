@@ -14,15 +14,15 @@ raw_train <- fromJSON("train.json")
 raw_test <- fromJSON("test.json")
 
 vars <- setdiff(names(raw_train), c("photos", "features"))
-train_df <- map_at(data, vars, unlist) %>% 
+train_df <- map_at(raw_train, vars, unlist) %>% 
   tibble::as_tibble(.) %>%
   mutate(interest_level = factor(interest_level, c("low", "medium", "high"))) %>%
-  select(-c(building_id, display_address, manager_id, photos, street_address)) %>%
+  select(-c(display_address, street_address)) %>%
   mutate(cat = 'train')
 
 test_df <- map_at(raw_test, vars, unlist) %>% 
   tibble::as_tibble(.) %>%
-  select(-c(building_id, display_address, manager_id, photos, street_address)) %>%
+  select(-c(display_address, street_address)) %>%
   mutate(cat = 'test', interest_level = NA)
 
 data_df <- rbind(train_df, test_df)
@@ -150,15 +150,30 @@ final_df$laundry <- as.factor(final_df$laundry)
 final_df$pool <- as.factor(final_df$pool)
 final_df$fee <- as.factor(final_df$fee)
 final_df$dishwasher <- as.factor(final_df$dishwasher)
+final_df$manager_id <- as.factor(final_df$manager_id)
+final_df$building_id <- as.factor(final_df$building_id)
+
+final_df$numphotos <- unlist(map(final_df$photos, function(p) length(unlist(p))))
+final_df$numfeatures <- unlist(map(final_df$features, function(p) length(unlist(p)))) 
 
 final_df <- final_df %>%
   select(cat, listing_id, bathrooms, bedrooms, latitude, longitude,
          price, month, ten_day, word_cnt, sentiment, pet, laundry,
-         pool, fee, dishwasher, interest_level) %>%
-  filter(cat == 'test' | price < 50000)
+         pool, fee, dishwasher, numphotos, numfeatures, interest_level, 
+         manager_id, building_id) %>%
+  filter(cat == 'test' | price < 50000) %>%
+  mutate(logprice = log(price))
 
-library(h2o)
-h2o.init(nthreads = -1, max_mem_size="10g")
+
+logloss <- function(result){
+  score <- 0
+  for(i in 1:nrow(result)){
+    score <- score - log(result[i, as.character(result[i, 'interest_level'])])
+  }  
+  score <- score/nrow(result)
+} 
+
+
 
 train_df <- final_df %>%
   filter(cat == 'train')
@@ -168,12 +183,142 @@ split <- sample.split((1:nrow(train_df)), SplitRatio = 0.7)
 train <- train_df[split,]
 valid <- train_df[!split, ]
 
+### try adding manager feature
+# interest_by_manager <- function(df1, target_id){
+#   tmp_df <- df1[, c(target_id, "interest_level")]
+#   tmp_df$dummy <- 1
+#   
+#   high_df <- tmp_df %>%
+#     filter(interest_level == 'high') %>%
+#     group_by(manager_id) %>%
+#     summarise(high = sum(dummy))
+#   
+#   medium_df <- tmp_df %>%
+#     filter(interest_level == 'medium') %>%
+#     group_by(manager_id) %>%
+#     summarise(medium = sum(dummy))
+#   
+#   low_df <- tmp_df %>%
+#     filter(interest_level == 'low') %>%
+#     group_by(manager_id) %>%
+#     summarise(low = sum(dummy))
+#   
+#   total_df <- tmp_df %>%
+#     group_by(manager_id) %>%
+#     summarise(m_total = sum(dummy))
+#   
+#   tmp1_df <- total_df %>%
+#     left_join(high_df) %>%
+#     left_join(medium_df) %>%
+#     left_join(low_df) 
+#   
+#   for(lev in levels(tmp_df$interest_level)){
+#     tmp1_df[is.na(tmp1_df[, lev]), lev] <- 0
+#   }
+#   
+#   tmp2_df <- tmp1_df %>%
+#     mutate(m_high = high/m_total, m_medium = medium/m_total,
+#            m_low = low/m_total) %>%
+#     select(manager_id, m_high, m_medium, m_low)
+# }
+# 
+# interest_by_building <- function(df1, target_id){
+#   tmp_df <- df1[, c(target_id, "interest_level")]
+#   tmp_df$dummy <- 1
+#   
+#   high_df <- tmp_df %>%
+#     filter(interest_level == 'high') %>%
+#     group_by(building_id) %>%
+#     summarise(high = sum(dummy))
+#   
+#   medium_df <- tmp_df %>%
+#     filter(interest_level == 'medium') %>%
+#     group_by(building_id) %>%
+#     summarise(medium = sum(dummy))
+#   
+#   low_df <- tmp_df %>%
+#     filter(interest_level == 'low') %>%
+#     group_by(building_id) %>%
+#     summarise(low = sum(dummy))
+#   
+#   total_df <- tmp_df %>%
+#     group_by(building_id) %>%
+#     summarise(b_total = sum(dummy))
+#   
+#   tmp1_df <- total_df %>%
+#     left_join(high_df) %>%
+#     left_join(medium_df) %>%
+#     left_join(low_df) 
+#   
+#   for(lev in levels(tmp_df$interest_level)){
+#     tmp1_df[is.na(tmp1_df[, lev]), lev] <- 0
+#   }
+#   
+#   tmp2_df <- tmp1_df %>%
+#     mutate(b_high = high/b_total, b_medium = medium/b_total,
+#            b_low = low/b_total) %>%
+#     select(building_id, b_high, b_medium, b_low)
+# }
+# 
+# 
+# manager_df <- interest_by_manager(train, 'manager_id')
+# building_df <- interest_by_building(train, 'building_id')
+# 
+# train <- train %>%
+#   left_join(manager_df) %>%
+#   left_join(building_df)
+# 
+# valid <- valid %>%
+#   left_join(manager_df) %>%
+#   left_join(building_df)
+# 
+# tab <- table(train$interest_level)
+# valid[is.na(valid$m_low), 'm_low'] <- tab[1] / sum(tab)
+# valid[is.na(valid$m_medium), 'm_medium'] <- tab[2] / sum(tab)
+# valid[is.na(valid$m_high), 'm_high'] <- tab[3] / sum(tab)
+# 
+# valid[is.na(valid$b_low), 'b_low'] <- tab[1] / sum(tab)
+# valid[is.na(valid$b_medium), 'b_medium'] <- tab[2] / sum(tab)
+# valid[is.na(valid$b_high), 'b_high'] <- tab[3] / sum(tab)
+# 
+#   
+### end adding manager feature
+
+
+library(h2o)
+h2o.init(nthreads = -1, max_mem_size="10g")
+
+
 varnames <- setdiff(names(train), c("listing_id", "cat"))
+                                    # "m_high", "m_medium", "m_low",
+                                    # "b_high", "b_medium", "b_low"))
 features <- setdiff(varnames, 'interest_level')
 #train1 <- as.data.frame(train)
+
+
+
 train.hex <- as.h2o(train)
 
 h2o_gbm <- h2o.gbm(x = features, y = "interest_level", train.hex, seed = 10000)
+h2o_gbm <- h2o.gbm(x = features
+                ,y = "interest_level"
+                ,training_frame = train.hex
+                ,distribution = "multinomial"
+                ,model_id = "gbm1"
+                #,nfolds = 5
+                ,ntrees = 750
+                ,learn_rate = 0.05
+                ,max_depth = 7
+                ,min_rows = 20
+                ,sample_rate = 0.7
+                ,col_sample_rate = 0.7
+                #   ,stopping_rounds = 5
+                #   ,stopping_metric = "logloss"
+                #   ,stopping_tolerance = 0
+                ,seed=321
+)
+
+
 #h2o_gbm <- h2o.gbm(1:5, 6, train.hex, seed = 10000)
 
 true_interest <- valid$interest_level
@@ -188,6 +333,11 @@ valid_result1 <- cbind(valid, predH2o)
 valid_result <- valid_result1 %>%
   select(listing_id, interest_level, predict, high, medium, low) %>%
   mutate(totalProb = high + medium + low)
+
+print(logloss(valid_result))
+
+
+
 
 ######################
 test_df <- final_df %>%
