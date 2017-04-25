@@ -158,10 +158,9 @@ final_df$numfeatures <- unlist(map(final_df$features, function(p) length(unlist(
 
 final_df <- final_df %>%
   select(cat, listing_id, bathrooms, bedrooms, latitude, longitude,
-         price, month, ten_day, word_cnt, sentiment, pet, laundry,
+         price, month, day, ten_day, word_cnt, sentiment, pet, laundry,
          pool, fee, dishwasher, numphotos, numfeatures, interest_level, 
          manager_id, building_id) %>%
-  filter(cat == 'test' | price < 50000) %>%
   mutate(logprice = log(price))
 
 
@@ -289,7 +288,10 @@ library(h2o)
 h2o.init(nthreads = -1, max_mem_size="10g")
 
 
-varnames <- setdiff(names(train), c("listing_id", "cat"))
+varnames <- setdiff(names(train), c("listing_id", "cat", "word_cnt",
+                                    "sentiment", "pet", "laundry",
+                                    "pool", "fee", "dishwasher",
+                                    "ten_day"))
                                     # "m_high", "m_medium", "m_low",
                                     # "b_high", "b_medium", "b_low"))
 features <- setdiff(varnames, 'interest_level')
