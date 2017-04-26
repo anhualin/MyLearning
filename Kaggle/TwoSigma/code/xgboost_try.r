@@ -62,7 +62,7 @@ catNWayAvgCV <- function(data, varList, y, pred0, filter, k, f, g=1, lambda=NULL
 
 # Load training set
 print("loading training set")
-t1 <- fromJSON("../input/train.json")
+t1 <- fromJSON("train.json")
 t1_feats <- data.table(listing_id=rep(unlist(t1$listing_id), lapply(t1$features, length)), features=unlist(t1$features))
 t1_photos <- data.table(listing_id=rep(unlist(t1$listing_id), lapply(t1$photos, length)), features=unlist(t1$photos))
 vars <- setdiff(names(t1), c("photos", "features"))
@@ -78,22 +78,36 @@ class <- data.table(interest_level=c("low", "medium", "high"), class=c(0,1,2))
 t1 <- merge(t1, class, by="interest_level", all.x=TRUE, sort=F)
 
 # Load test set
-print("loading test set")
-s1 <- fromJSON("../input/test.json")
-s1_feats <- data.table(listing_id=rep(unlist(s1$listing_id), lapply(s1$features, length)), features=unlist(s1$features))
-s1_photos <- data.table(listing_id=rep(unlist(s1$listing_id), lapply(s1$photos, length)), features=unlist(s1$photos))
-vars <- setdiff(names(s1), c("photos", "features"))
-s1<- map_at(s1, vars, unlist) %>% as.data.table(.)
-s1[,":="(interest_level="-1",
-        class=-1,
-        filter=2)]
+# print("loading test set")
+# s1 <- fromJSON("../input/test.json")
+# s1_feats <- data.table(listing_id=rep(unlist(s1$listing_id), lapply(s1$features, length)), features=unlist(s1$features))
+# s1_photos <- data.table(listing_id=rep(unlist(s1$listing_id), lapply(s1$photos, length)), features=unlist(s1$photos))
+# vars <- setdiff(names(s1), c("photos", "features"))
+# s1<- map_at(s1, vars, unlist) %>% as.data.table(.)
+# s1[,":="(interest_level="-1",
+#         class=-1,
+#         filter=2)]
 
-ts1 <- rbind(t1, s1)
-rm(t1, s1);gc()
-ts1_feats <- rbind(t1_feats, s1_feats)
-rm(t1_feats, s1_feats);gc()
-ts1_photos <- rbind(t1_photos, s1_photos)
-rm(t1_photos, s1_photos);gc()
+### anhua ##
+
+library(caTools)
+split <- sample.split((1:nrow(t1)), SplitRatio = 0.7)
+
+ts1 <- t1
+ts1$filter <- 1 - split
+ts1_feats <- t1_feats
+ts1_photos <- t1_photos
+
+valid <- ts1[filter == 1,]
+ts1[filter == 1, 'interest_level' ] <- '-1'
+###
+
+# ts1 <- rbind(t1, s1)
+# rm(t1, s1);gc()
+# ts1_feats <- rbind(t1_feats, s1_feats)
+# rm(t1_feats, s1_feats);gc()
+# ts1_photos <- rbind(t1_photos, s1_photos)
+# rm(t1_photos, s1_photos);gc()
 
 ts1[,":="(created=as.POSIXct(created)
           ,dummy="A"
