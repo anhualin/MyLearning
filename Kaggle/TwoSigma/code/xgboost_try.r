@@ -14,6 +14,7 @@ library(lubridate)
 library(stringr)
 library(Hmisc)
 library(Matrix)
+library(stringi)
 
 catNWayAvgCV <- function(data, varList, y, pred0, filter, k, f, g=1, lambda=NULL, r_k, cv=NULL){
   # It is probably best to sort your dataset first by filter and then by ID (or index)
@@ -179,9 +180,10 @@ varnames <- setdiff(colnames(ts1), c("photos","pred0_high", "pred0_low","pred0_m
 # Convert dataset to sparse format
 print("converting data to sparse format")
 t1_sparse <- Matrix(as.matrix(ts1[filter==0, varnames, with=FALSE]), sparse=TRUE)
-s1_sparse <- Matrix(as.matrix(ts1[filter==2, varnames, with=FALSE]), sparse=TRUE)
-listing_id_test <- ts1[filter %in% c(2), listing_id]
+s1_sparse <- Matrix(as.matrix(ts1[filter==1, varnames, with=FALSE]), sparse=TRUE)
+listing_id_test <- ts1[filter %in% c(1), listing_id]
 labels <- ts1[filter %in% c(0), class]
+test_labels <- ts1[filter %in% c(1), class]
 rm(ts1);gc()
 
 print("converting data into xgb format")
@@ -223,4 +225,31 @@ xgb2 <- xgb.train(data = dtrain,
 
 sPreds <- as.data.table(t(matrix(predict(xgb2, dtest), nrow=3, ncol=nrow(dtest))))
 colnames(sPreds) <- class$interest_level
+valid <- data.table(listing_id = listing_id_test, true_label = test_labels,
+                    sPreds[,list(high,medium,low)])
+class2label <- function(i){
+  if(i==0){
+    "low"
+  }else if(i==1){
+    "medium"
+  }else{
+    "high"
+  }
+}
+
+valid$interest_level <- apply(valid[, .(true_label)], 1, class2label)
+
+logloss <- function(result){
+  score <- 0
+  for(i in 1:nrow(result)){
+    score <- score - log(result[i, as.character(result[i, 'interest_level']), with = FALSE])
+  }  
+  score <- score/nrow(result)
+} 
+
+valid[1, 'interest_level']
+valid[1, as.character(valid[1, 'interest_level']), with = FALSE]
+
+print(logloss(valid))
+
 fwrite(data.table(listing_id=listing_id_test, sPreds[,list(high,medium,low)]), "submission.csv")
