@@ -163,6 +163,10 @@ final_df <- final_df %>%
          manager_id, building_id) %>%
   mutate(logprice = log(price))
 
+final_df$lvl <- as.integer(final_df$interest_level) - 1
+final_df$mid <- as.integer(as.factor(final_df$manager_id))
+final_df$building_id <- as.integer(as.factor(final_df$building_id))
+
 
 logloss <- function(result){
   score <- 0
@@ -176,12 +180,64 @@ logloss <- function(result){
 
 train_df <- final_df %>%
   filter(cat == 'train')
+
+
 library(caTools)
 
 split <- sample.split((1:nrow(train_df)), SplitRatio = 0.7)
 train <- train_df[split,]
 valid <- train_df[!split, ]
 
+
+## xgboost ##
+varnames <- setdiff(names(train), c('cat', 'listing_id', 'interest_level',
+                                    'manager_id', 'lvl'))
+library(xgboost)
+library(Matrix)
+train_sparse <- Matrix(as.matrix(train[, varnames]), sparse=TRUE)
+valid_sparse <- Matrix(as.matrix(valid[, varnames]), sparse=TRUE)
+#listing_id_test <- ts1[filter %in% c(1), listing_id]
+labels <- train$lvl
+#labels <- ts1[filter %in% c(0), class]
+test_labels <- ts1[filter %in% c(1), class]
+rm(ts1);gc()
+
+print("converting data into xgb format")
+dtrain <- xgb.DMatrix(data=train_sparse, label=labels)
+dvalid <- xgb.DMatrix(data=valid_sparse)
+
+param <- list(booster="gbtree",
+              objective="multi:softprob",
+              eval_metric="mlogloss",
+              nthread=13,
+              num_class=3,
+              eta = .02,
+              gamma = 1,
+              max_depth = 4,
+              min_child_weight = 1,
+              subsample = .7,
+              colsample_bytree = .5
+)
+
+xgb2 <- xgb.train(data = dtrain,
+                  params = param,
+                  # watchlist=watch,
+                  # nrounds = xgb2cv$best_ntreelimit
+                  nrounds = 3100
+)
+
+pred <- predict(xgb2, dvalid)
+m1 <- t(matrix(pred, nrow = 3, ncol = nrow(dvalid)))
+score <- 0
+for(i in 1:nrow(valid)){
+  l <- valid$lvl[i]
+  score <- score - log(m1[i, l+1])
+}
+score <- score/nrow(valid)
+print(score)
+
+
+## end of xgboost##
 ### try adding manager feature
 # interest_by_manager <- function(df1, target_id){
 #   tmp_df <- df1[, c(target_id, "interest_level")]

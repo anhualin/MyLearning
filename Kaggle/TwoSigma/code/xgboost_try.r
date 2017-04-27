@@ -247,8 +247,7 @@ logloss <- function(result){
   score <- score/nrow(result)
 } 
 
-valid[1, 'interest_level']
-valid[1, as.character(valid[1, 'interest_level']), with = FALSE]
+
 
 print(logloss(valid))
 
