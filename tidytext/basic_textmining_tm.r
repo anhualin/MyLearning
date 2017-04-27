@@ -3,6 +3,15 @@ library(tm)
 library(SnowballC)
 library(wordcloud)
 
+
+
+
+if (Sys.info()[1] == 'Windows'){
+  setwd('C:/Users/alin/Documents/SelfStudy/MyLearning/tidytext/')
+}else{
+  setwd('/home/alin/MyLearning/tidytext/')  
+}
+
 #https://github.com/dipanjanS/text-analytics-with-python/blob/master/Chapter-7/movie_reviews.csv
 
 reviews = read.csv("movie_reviews.csv", stringsAsFactors = F)
@@ -30,7 +39,16 @@ review_dtm
 
 inspect(review_dtm[1,1:20])
 
-findFreqTerms(review_dtm, 1000)
+findFreqTerms(review_dtm, 5000)
 
 freq = data.frame(sort(colSums(as.matrix(review_dtm)), decreasing=TRUE))
 wordcloud(rownames(freq), freq[,1], max.words=50, colors=brewer.pal(1, "Dark2"))
+
+review_dtm_tfidf <- DocumentTermMatrix(review_corpus, control = list(weighting = weightTfIdf))
+review_dtm_tfidf = removeSparseTerms(review_dtm_tfidf, 0.95)
+review_dtm_tfidf
+
+inspect(review_dtm_tfidf[1,1:20])
+
+freq = data.frame(sort(colSums(as.matrix(review_dtm_tfidf)), decreasing=TRUE))
+wordcloud(rownames(freq), freq[,1], max.words=100, colors=brewer.pal(1, "Dark2"))
