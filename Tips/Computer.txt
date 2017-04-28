@@ -13,6 +13,9 @@ sudo systemctl restart network-manager.service
   Resolved by: sudo apt-get install libcurl4-openssl-dev libssl-dev
    Similar trouble with unable to install xml, solved with
    sudo apt-get install libxml2-dev.
+
+   Similar trouble with topic models, solved with
+   sudo apt-get install libgsl0-dev
 5. Sound problem: use alsamixer to adjust.
 
 6. Python virtual env:
