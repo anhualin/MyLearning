@@ -1,0 +1,106 @@
+10/6/2015:
+installed virtualenv on MDDBIOPS1,
+but when running it, I encounter the error like prefix not python 2.7.
+The reason is the virtualenv point is virtualevn-3.4.
+1. I succeeded by using the --python=E:\Python2.7\python.exe option and created virtual env mlf (machine learning foundations).
+2. mlf/Scripts/activate  to make mlf active.
+3. Then when I tried to use pip to install packages in mlf, I encountered error "No module named _socket".
+4. I overcame this problem by setting PYTHONPATH=E:\Python2.7;E:\Python2.7\Lib;E:\Python2.7\DLLs. (set PYTHONPATH=%PYTHONPATH%;E:\Python27\DLLs)
+
+10/12/2015:
+Forget how to run Ipython server on mddboops1:
+(1) Start mlf
+(2) Remember to set PYTHONPATH=E:\Python27\DLLs
+(3) G:\Temp\Anhua\mlf\Scripts\ipython notebook
+To use GraphLab Create:
+set GRAPHLAB_PRODUCT_KEY=E860-72A9-538A-491D-3FFE-337C-2B55-1196
+ 
+ 
+11/2/2015:
+get disk usage:
+du --max-depth=1 -h | sort -hr > diskusage.txt
+
+3/30/2015:
+PYTHONPATH:  C:\Python27\Lib\site-packages
+
+4/19/2015:
+trouble installing scipy on windows, 
+go to "http://www.lfd.uci.edu/~gohlke/pythonlibs/" to download the corresponding wheel and put it in the site packages.
+do pip install ..\sitepackage\...whl
+4/28/2015:
+installed python 2.7.11, virtualenv on my computer.
+create virtualenv datascience, installed jupyter, then encountered the problem of 0 kernel and blank page.
+It turns out to be IE problem. Used the following way to set chrome as default:
+1. jupyter notebook --generate-config  (creat the config file jupyter_notebook_config.py  in C:\Users\alin\.jupyter\)
+2. add 
+import webbrowser
+webbrowser.register('chrome', None, webbrowser.GenericBrowser(u'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'))
+c.NotebookApp.browser = 'chrome'
+
+DONE, changed to chrome and everything works.
+
+4/29/2016:
+After upgradeing python to 2.7.11, pyscripter no longer works.
+Have to do the following to fix it:
+Go to command line:
+run: REG COPY Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Python\PythonCore\2.7 Computer\HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Python\PythonCore\2.7-32 /s
+What it does is to create a copy of registry key 2.7 to 2.7-32.
+Registry can be checked by run "regedit"
+
+6/24/2016
+Installed python2.7 64bit.
+Installed jupyter.  To run: C:\Python27_64\Scripts\jupyter-notebook
+
+8/24/2016:
+try to insall spark.
+Spark 2.0.0 doesn't work because I get Java 51.0 error, but I cannot install java8, no response.
+So I installed Spark 1.3.
+Got a couple Hadoop related exception.
+Solution:
+###################################################
+The good news is you're not doing anything wrong, and your code will run after the error is mitigated.
+
+Despite the statement that Spark will run on Windows without Hadoop, it still looks for some Hadoop components. The bug has a JIRA ticket (SPARK-2356), and a patch is available. As of Spark 1.3.1, the patch hasn't been committed to the main branch yet.
+
+Fortunately, there's a fairly easy work around.
+
+Create a bin directory for winutils under your Spark installation directory. In my case, Spark is installed in D:\Languages\Spark, so I created the following path: D:\Languages\Spark\winutils\bin
+Download the winutils.exe from Hortonworks and put it into the bin directory created in the first step. Download link for Win64: http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe
+Create a "HADOOP_HOME" environment variable that points to the winutils directory (not the bin subdirectory). You can do this in a couple of ways:
+a. Establish a permanent environment variable via the Control Panel -> System -> Advanced System Settings -> Advanced Tab -> Environment variables. You can create either a user variable or a system variable with the following parameters:
+
+Variable Name=HADOOP_HOME
+ Variable Value=D:\Languages\Spark\winutils\
+b. Set a temporary environment variable inside your command shell before executing your script
+
+set HADOOP_HOME=d:\\Languages\\Spark\\winutils
+
+set HADOOP_HOME=C:\\Users\\alin\\spark-1.3.0-bin-hadoop2.4\\winutils
+Run your code. It should work without error now.
+
+############################
+
+Dec 8, 2016
+Try to run git bash from command line
+
+E:\Program Files (x86)\Git\bin
+eval "$(/e/Program Files (x86)/Git/bin/ssh-agent -s)"
+eval $(ssh-agent -s)
+
+eval $(/e/Program\ Files\ \(x86\)/Git/bin/ssh-agent -s)  /*  this works */
+/e/Program\ Files\ \(x86\)/Git/bin/ssh-add  /g/LOEUK/.ssh/id_rsa 
+/e/Program\ Files\ \(x86\)/Git/bin/git add .
+/e/Program\ Files\ \(x86\)/Git/bin/git commit -m "daily update"
+/e/Program\ Files\ \(x86\)/Git/bin/git push
+
+"C:\Program Files (x86)\Git\bin\sh.exe" --login -i -c "git archive master | tar -x -C $0" "%~1
+
+"E:\Program Files (x86)\Git\bin\sh.exe" --login -i -c "git --git-dir=/G/LOEUK_Batch/Datasets/UK_First_Module_Reports/ status"
+
+"E:\Program Files (x86)\Git\bin\sh.exe" --login -i -c "git status" > log.txt
+
+################################################
+March 2, 2017.
+SAS code for loeuk locked by previous running SAS.
+(1) Use Process Explorer to Ctrl F (file name) find the pid.
+(2) use Resource monitor to find the process and kill it.
