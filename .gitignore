@@ -2,3 +2,4 @@
 *.gz
 *.csv
 *.data
+*.class
