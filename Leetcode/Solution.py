@@ -7,17 +7,20 @@ Created on Sun Apr  2 15:00:52 2017
 """
 
 class Solution(object):
-  def reverse(self, x):
+  def myAtoi(self, s):
         """
-        :type x: int
+        :type str: str
         :rtype: int
         """
-        sign = -1 if x < 0  else 1
-        a = str(x)
-        y = a[1:len(a)] if x < 0  else a
-        z = sign * int(y[len(y)-1:0:-1] + y[0])
-        if z < -2147483648 or z > 2147483647:
+        if len(s) == 0:
             return 0
-        return  z
+        i = 0
+        for i in range(len(s)):
+            if s[i] != ' ':
+                break
+            print i
+       
+        print i
+        return i
 sol = Solution()
-print sol.reverse(1534236469)
+print sol.myAtoi('\t')

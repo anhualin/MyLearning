@@ -23,11 +23,10 @@ for link in soup.find_all('a'):
     if re.findall('\.mp3', address):
         store.append(address)
         
-folder = "/home/alin/SpanishMp3/"
+folder = "C:/Users/alin/Documents/MyStuff/SpanishMP3/"
 file_in_folder = os.listdir(folder)
 for link in store:
     filename = re.findall('spanish_\d+_\d+\.mp3', link)[0]
-    print filename 
     if filename not in file_in_folder:
         mp3file = urllib2.urlopen(link)
         to_file = folder + filename
