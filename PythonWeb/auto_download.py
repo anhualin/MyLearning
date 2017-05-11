@@ -10,7 +10,7 @@ Created on Wed May 03 10:29:05 2017
 import urllib
 import urllib2
 import re
-from bs4 import BeautifulSoup 
+from bs4 import BeautifulSoup
 import os
 
 url = 'http://www.sbs.com.au/podcasts/yourlanguage/spanish/'
@@ -22,14 +22,15 @@ for link in soup.find_all('a'):
     address = link.get('href')
     if re.findall('\.mp3', address):
         store.append(address)
-        
+
 folder = "C:/Users/alin/Documents/MyStuff/SpanishMP3/"
 file_in_folder = os.listdir(folder)
 for link in store:
     filename = re.findall('spanish_\d+_\d+\.mp3', link)[0]
     if filename not in file_in_folder:
+        print filename
         mp3file = urllib2.urlopen(link)
         to_file = folder + filename
         with open(to_file, "wb") as output:
             output.write(mp3file.read())
-        
+
