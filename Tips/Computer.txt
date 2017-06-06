@@ -32,3 +32,4 @@ sudo systemctl restart network-manager.service
 
  MARKER_EXPR = originalTextFor(MARKER_EXPR(""))("marker")
 
+8. Trouble with python 3.5 pickle.load(file), got unicode decoding error. Fixed by using pickle.load(file, 'latin')

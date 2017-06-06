@@ -66,7 +66,7 @@ class KNearestNeighbor:
         # Compute the l2 distance between the ith test point and the jth    #
         # training point, and store the result in dists[i, j]               #
         #####################################################################
-        pass
+        dists[i,j] = np.linalg.norm(X[i,] - self.X_train[j,])
         #####################################################################
         #                       END OF YOUR CODE                            #
         #####################################################################
@@ -88,7 +88,7 @@ class KNearestNeighbor:
       # Compute the l2 distance between the ith test point and all training #
       # points, and store the result in dists[i, :].                        #
       #######################################################################
-      pass
+      dists[i,:] = np.sqrt(np.sum((self.X_train - X[i,])**2, axis = 1))
       #######################################################################
       #                         END OF YOUR CODE                            #
       #######################################################################
@@ -112,7 +112,10 @@ class KNearestNeighbor:
     # HINT: Try to formulate the l2 distance using matrix multiplication    #
     #       and two broadcast sums.                                         #
     #########################################################################
-    pass
+    ba = X.dot(X_train.T)
+    B2 = np.sum(X_test**2, axis = 1).reshape(num_test, 1).dot(np.ones((1, num_train)))
+    A2 = np.ones((num_test,1)).dot(np.sum(X_train**2, axis = 1).reshape(1, num_train))
+    dists = np.sqrt(A2 + B2 - 2*ba)
     #########################################################################
     #                         END OF YOUR CODE                              #
     #########################################################################
