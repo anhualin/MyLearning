@@ -7,38 +7,18 @@ Created on Sun Apr  2 15:00:52 2017
 """
 
 class Solution(object):
-  def myAtoi(self, s):
+    def isPalindrome(self, x):
         """
-        :type str: str
-        :rtype: int
+        :type x: int
+        :rtype: bool
         """
-        digits = [str(d) for d in range(10)]
-        if len(s) == 0:
-            return 0
-        i = 0
-        
-        for i in range(len(s)):
-            if s[i] != ' ':
-                break
-           
-        
-        if i < len(s):
-            pm = 1
-            if s[i] == '+':
-                i += 1
-            elif s[i] == '-':
-                pm = -1
-                i += 1
-            if i == len(s) or s[i] not in  digits:
-                return 0
-            a = 0
-            while(i < len(s) and s[i] in digits):
-                a = 10 * a + int(s[i])
-                i += 1
-            a = pm * a
-            a = max(min(a, 2147483647), -2147483648)
-            return a
-        else:
-            return 0
+        if x <0 or (x > 0 and x % 10 == 0):
+            return False
+        rev = 0
+        while x > rev:
+            rev = rev * 10 + x % 10
+            x = int(x / 10)
+        return x == rev or (int(rev/10) == x)
+
 sol = Solution()
-print sol.myAtoi('')
+print sol.isPalindrome(-1221)
