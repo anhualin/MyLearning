@@ -112,9 +112,9 @@ class KNearestNeighbor:
     # HINT: Try to formulate the l2 distance using matrix multiplication    #
     #       and two broadcast sums.                                         #
     #########################################################################
-    ba = X.dot(X_train.T)
-    B2 = np.sum(X_test**2, axis = 1).reshape(num_test, 1).dot(np.ones((1, num_train)))
-    A2 = np.ones((num_test,1)).dot(np.sum(X_train**2, axis = 1).reshape(1, num_train))
+    ba = X.dot(self.X_train.T)
+    B2 = np.sum(X**2, axis = 1).reshape(num_test, 1).dot(np.ones((1, num_train)))
+    A2 = np.ones((num_test,1)).dot(np.sum(self.X_train**2, axis = 1).reshape(1, num_train))
     dists = np.sqrt(A2 + B2 - 2*ba)
     #########################################################################
     #                         END OF YOUR CODE                              #
@@ -155,7 +155,7 @@ class KNearestNeighbor:
       # Store this label in y_pred[i]. Break ties by choosing the smaller     #
       # label.                                                                #
       #########################################################################
-      label_counts = [(closest_y[t], t) for t in set(closest_y)]
+      label_counts = [(closest_y.count(t), t) for t in set(closest_y)]
       sorted_label = sorted(label_counts, key = lambda x: (x[0], -x[1]), reverse = True)
       y_pred[i] = sorted_label[0][1]
       #########################################################################
