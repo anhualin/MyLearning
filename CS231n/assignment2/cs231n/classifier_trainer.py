@@ -55,7 +55,7 @@ class ClassifierTrainer(object):
     N = X.shape[0]
 
     if sample_batches:
-      iterations_per_epoch = N / batch_size # using SGD
+      iterations_per_epoch = int(N / batch_size) # using SGD
     else:
       iterations_per_epoch = 1 # using GD
     num_iters = num_epochs * iterations_per_epoch
@@ -65,8 +65,8 @@ class ClassifierTrainer(object):
     loss_history = []
     train_acc_history = []
     val_acc_history = []
-    for it in xrange(num_iters):
-      if it % 10 == 0:  print 'starting iteration ', it
+    for it in range(num_iters):
+      if it % 10 == 0:  print('starting iteration ', it)
 
       # get batch of data
       if sample_batches:
@@ -90,14 +90,16 @@ class ClassifierTrainer(object):
         elif update == 'momentum':
           if not p in self.step_cache: 
             self.step_cache[p] = np.zeros(grads[p].shape)
-          dx = np.zeros_like(grads[p]) # you can remove this after
+          #dx = np.zeros_like(grads[p]) # you can remove this after
+          self.step_cache[p] = momentum * self.step_cache[p] - learning_rate * grads[p]
+          dx = self.step_cache[p]
           #####################################################################
           # TODO: implement the momentum update formula and store the step    #
           # update into variable dx. You should use the variable              #
           # step_cache[p] and the momentum strength is stored in momentum.    #
           # Don't forget to also update the step_cache[p].                    #
           #####################################################################
-          pass
+          
           #####################################################################
           #                      END OF YOUR CODE                             #
           #####################################################################
@@ -105,12 +107,14 @@ class ClassifierTrainer(object):
           decay_rate = 0.99 # you could also make this an option
           if not p in self.step_cache: 
             self.step_cache[p] = np.zeros(grads[p].shape)
-          dx = np.zeros_like(grads[p]) # you can remove this after
+          #dx = np.zeros_like(grads[p]) # you can remove this after
+          self.step_cache[p] = decay_rate * self.step_cache[p] + (1 - decay_rate) * (grads[p]**2)
+          dx = -learning_rate * grads[p] / (np.sqrt(self.step_cache[p]) + 1e-6)
           #####################################################################
           # TODO: implement the RMSProp update and store the parameter update #
           # dx. Don't forget to also update step_cache[p]. Use smoothing 1e-8 #
           #####################################################################
-          pass
+         
           #####################################################################
           #                      END OF YOUR CODE                             #
           #####################################################################
@@ -118,7 +122,7 @@ class ClassifierTrainer(object):
           raise ValueError('Unrecognized update type "%s"' % update)
 
         # update the parameters
-        model[p] += dx
+        model[p] = model[p] +  dx
 
       # every epoch perform an evaluation on the validation set
       first_it = (it == 0)
@@ -163,7 +167,7 @@ class ClassifierTrainer(object):
                  % (epoch, num_epochs, cost, train_acc, val_acc, learning_rate))
 
     if verbose:
-      print 'finished optimization. best validation accuracy: %f' % (best_val_acc, )
+      print('finished optimization. best validation accuracy: %f' % (best_val_acc, ))
     # return the best model and the training history statistics
     return best_model, loss_history, train_acc_history, val_acc_history
 
