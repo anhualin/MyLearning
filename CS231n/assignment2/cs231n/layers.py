@@ -129,15 +129,32 @@ def conv_forward_naive(x, w, b, conv_param):
     W' = 1 + (W + 2 * pad - WW) / stride
   - cache: (x, w, b, conv_param)
   """
-  out = None
-  #############################################################################
-  # TODO: Implement the convolutional forward pass.                           #
-  # Hint: you can use the function np.pad for padding.                        #
-  #############################################################################
-  pass
-  #############################################################################
-  #                             END OF YOUR CODE                              #
-  #############################################################################
+
+  N, C, H, W = x.shape
+  F, C, HH, WW = w.shape
+  pad = conv_param['pad']
+  stride = conv_param['stride']
+  x1 = np.lib.pad(x, ((0,0), (0,0), (pad,pad), (pad,pad)), 'constant')
+  N1, C1, H1, W1 = x1.shape
+  Hp = int(1 + (H + 2 * pad - HH) / stride)
+  Wp = int(1 + (W + 2 * pad - WW) / stride)
+  x2 = np.zeros((N1, C1*HH*WW, Hp * Wp ))
+  w1 = w.reshape(F,-1)
+  out1 = np.zeros((N1, F, Hp * Wp))
+  b1 = np.dot(b.reshape(F,-1), np.ones((1, Hp * Wp )))
+ 
+  for n in range(N1):
+      k = 0
+      for i in range(0, H1-HH+1, stride):
+          for j in range(0, W1-WW+1, stride):
+              x2[n,:, k] = x1[n,:,i:i+HH, j:j+WW].reshape(C1*HH*WW,)
+              k += 1
+      out1[n,:,:] = np.dot(w1, x2[n,:,:]) + b1
+    
+  
+  out = out1.reshape(N1, F, Hp, Wp)
+  
+####
   cache = (x, w, b, conv_param)
   return out, cache
 
