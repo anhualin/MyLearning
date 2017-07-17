@@ -153,10 +153,13 @@ def conv_forward_naive(x, w, b, conv_param):
     
   
   out = out1.reshape(N1, F, Hp, Wp)
+
+
   
 ####
   cache = (x, w, b, conv_param)
   return out, cache
+
 
 
 def conv_backward_naive(dout, cache):
@@ -172,16 +175,90 @@ def conv_backward_naive(dout, cache):
   - dw: Gradient with respect to w
   - db: Gradient with respect to b
   """
+  x, w, b, conv_param = cache
+  p = conv_param['pad']
+  s = conv_param['stride']
   dx, dw, db = None, None, None
+  dx = np.zeros_like(x)
+  N, C, H, W = x.shape
+  F, C, HH, WW = w.shape
+  
+  for n in range(N):
+      for c in range(C):
+          for h in range(H):
+              for g in range(W):
+                  delta = 0.0
+                  l0 = int(np.ceil((h+p-HH-1)/s))
+                  l0 = np.maximum(0, l0)
+                  l1 = int(np.floor((h+p)/s))
+                  k0 = int(np.maximum(0,np.ceil((g+p-WW-1)/s)))
+                  k1 = int(np.floor((g+p)/s))
+                  for l in range(l0,l1+1):
+                      for k in range(k0, k1+1):
+                          for f in range(F):
+                              print("h=%d, p=%d, l=%d, s=%d, g=%d, k=%d" % (h,p,l,s, g,k))
+                              print("k0=%d" % (k0))
+                              a0 = w[f,c,h + p - l * s, g + p - k*s]
+                              a1 = dout[n,f,l,k]
+                              delta = delta +  a0 * a1
+          
+                  dx[n,c,h,g] = delta  
+#  
+#   Input:
+#  - x: Input data of shape (N, C, H, W)
+#  - w: Filter weights of shape (F, C, HH, WW)
+#  - b: Biases, of shape (F,)
+#  - conv_param: A dictionary with the following keys:
+#    - 'stride': The number of pixels between adjacent receptive fields in the
+#      horizontal and vertical directions.
+#    - 'pad': The number of pixels that will be used to zero-pad the input.
+#
+#  Returns a tuple of:
+#  - out: Output data, of shape (N, F, H', W') where H' and W' are given by
+#    H' = 1 + (H + 2 * pad - HH) / stride
+#    W' = 1 + (W + 2 * pad - WW) / stride
+#  - cache: (x, w, b, conv_param)
   #############################################################################
   # TODO: Implement the convolutional backward pass.                          #
   #############################################################################
-  pass
+  
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
   return dx, dw, db
 
+
+
+
+##############################################
+from cs231n.gradient_check import eval_numerical_gradient_array, eval_numerical_gradient
+x = np.random.randn(4, 3, 5, 5) #5,5
+w = np.random.randn(2, 3, 3, 3)
+b = np.random.randn(2,)
+dout = np.random.randn(4, 2, 5, 5)
+conv_param = {'stride': 1, 'pad': 1}
+cache = (x,w,b,conv_param)
+
+dx_num = eval_numerical_gradient_array(lambda x: conv_forward_naive(x, w, b, conv_param)[0], x, dout)
+dw_num = eval_numerical_gradient_array(lambda w: conv_forward_naive(x, w, b, conv_param)[0], w, dout)
+db_num = eval_numerical_gradient_array(lambda b: conv_forward_naive(x, w, b, conv_param)[0], b, dout)
+out, cache = conv_forward_naive(x, w, b, conv_param)
+
+dx, dw, db = conv_backward_naive(dout, cache)
+
+
+np.sum(x[0,0,0:2,0:2] * w[0,0,1:3,1:3]) + b[0]
+
+a = w[0,0,1,1] * dout[0,0,0,0] + w[0,0,1,0] * dout[0,0,0,1]
+a = a + w[0,0,0,1] * dout[0,0,1,0] + w[0,0,0,0] * dout[0,0,1,1]
+a = a + w[1,0,1,1] * dout[0,1,0,0] + w[1,0,1,0] * dout[0,1,0,1]
+a = a + w[1,0,0,1] * dout[0,1,1,0] + w[1,0,0,0] * dout[0,1,1,1]
+
+
+print(dx_num[0,0,0,0])
+print(a)
+
+###########
 
 def max_pool_forward_naive(x, pool_param):
   """
