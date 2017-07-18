@@ -178,85 +178,81 @@ def conv_backward_naive(dout, cache):
   x, w, b, conv_param = cache
   p = conv_param['pad']
   s = conv_param['stride']
-  dx, dw, db = None, None, None
+  
   dx = np.zeros_like(x)
   N, C, H, W = x.shape
   F, C, HH, WW = w.shape
-  
+  lmin = 0
+  lmax = int((H + 2*p - HH)/s)
+  kmin = 0
+  kmax = int((W + 2*p - WW)/s)
   for n in range(N):
       for c in range(C):
           for h in range(H):
               for g in range(W):
                   delta = 0.0
-                  l0 = int(np.ceil((h+p-HH-1)/s))
-                  l0 = np.maximum(0, l0)
-                  l1 = int(np.floor((h+p)/s))
-                  k0 = int(np.maximum(0,np.ceil((g+p-WW-1)/s)))
-                  k1 = int(np.floor((g+p)/s))
+                  l0 = int(np.maximum(lmin, np.ceil((h+p-HH+1)/s)))
+                  l1 = int(np.minimum(lmax, np.floor((h+p)/s)))
+                  k0 = int(np.maximum(kmin,np.ceil((g+p-WW+1)/s)))
+                  k1 = int(np.minimum(kmax, np.floor((g+p)/s)))
                   for l in range(l0,l1+1):
                       for k in range(k0, k1+1):
                           for f in range(F):
-                              print("h=%d, p=%d, l=%d, s=%d, g=%d, k=%d" % (h,p,l,s, g,k))
-                              print("k0=%d" % (k0))
-                              a0 = w[f,c,h + p - l * s, g + p - k*s]
-                              a1 = dout[n,f,l,k]
-                              delta = delta +  a0 * a1
+                              delta += w[f,c,h + p - l * s, g + p - k*s] * dout[n,f,l,k]
           
                   dx[n,c,h,g] = delta  
-#  
-#   Input:
-#  - x: Input data of shape (N, C, H, W)
-#  - w: Filter weights of shape (F, C, HH, WW)
-#  - b: Biases, of shape (F,)
-#  - conv_param: A dictionary with the following keys:
-#    - 'stride': The number of pixels between adjacent receptive fields in the
-#      horizontal and vertical directions.
-#    - 'pad': The number of pixels that will be used to zero-pad the input.
-#
-#  Returns a tuple of:
-#  - out: Output data, of shape (N, F, H', W') where H' and W' are given by
-#    H' = 1 + (H + 2 * pad - HH) / stride
-#    W' = 1 + (W + 2 * pad - WW) / stride
-#  - cache: (x, w, b, conv_param)
-  #############################################################################
-  # TODO: Implement the convolutional backward pass.                          #
-  #############################################################################
   
-  #############################################################################
-  #                             END OF YOUR CODE                              #
-  #############################################################################
+  dw = np.zeros_like(w)  
+  for f in range(F):
+      for c in range(C):
+          for i in range(HH):
+              for j in range(WW):
+                  delta = 0.0
+                  l0 = int(np.maximum(lmin, np.ceil((p-i)/s)))
+                  l1 = int(np.minimum(lmax, np.floor((p-i+H-1)/s)))
+                  k0 = int(np.maximum(kmin, np.ceil((p-j)/s)))
+                  k1 = int(np.minimum(kmax, np.floor((p-j+W-1)/s)))
+                  for l in range(l0, l1 + 1):
+                      for k in range(k0, k1 + 1):
+                          for n in range(N):
+                              delta += x[n,c,-p+l*s+i, -p+k*s+j] * dout[n,f,l,k]
+      
+                  dw[f,c,i,j] = delta
+
+  db = np.sum(dout, axis=(0,2,3))
+ ##########
   return dx, dw, db
 
 
-
-
-##############################################
-from cs231n.gradient_check import eval_numerical_gradient_array, eval_numerical_gradient
-x = np.random.randn(4, 3, 5, 5) #5,5
-w = np.random.randn(2, 3, 3, 3)
-b = np.random.randn(2,)
-dout = np.random.randn(4, 2, 5, 5)
-conv_param = {'stride': 1, 'pad': 1}
-cache = (x,w,b,conv_param)
-
-dx_num = eval_numerical_gradient_array(lambda x: conv_forward_naive(x, w, b, conv_param)[0], x, dout)
-dw_num = eval_numerical_gradient_array(lambda w: conv_forward_naive(x, w, b, conv_param)[0], w, dout)
-db_num = eval_numerical_gradient_array(lambda b: conv_forward_naive(x, w, b, conv_param)[0], b, dout)
-out, cache = conv_forward_naive(x, w, b, conv_param)
-
-dx, dw, db = conv_backward_naive(dout, cache)
-
-
-np.sum(x[0,0,0:2,0:2] * w[0,0,1:3,1:3]) + b[0]
-
-a = w[0,0,1,1] * dout[0,0,0,0] + w[0,0,1,0] * dout[0,0,0,1]
-a = a + w[0,0,0,1] * dout[0,0,1,0] + w[0,0,0,0] * dout[0,0,1,1]
-a = a + w[1,0,1,1] * dout[0,1,0,0] + w[1,0,1,0] * dout[0,1,0,1]
-a = a + w[1,0,0,1] * dout[0,1,1,0] + w[1,0,0,0] * dout[0,1,1,1]
-
-
-print(dx_num[0,0,0,0])
-print(a)
+#
+#
+###############################################
+#from cs231n.gradient_check import eval_numerical_gradient_array, eval_numerical_gradient
+#x = np.random.randn(4, 3, 5, 5) #5,5
+#w = np.random.randn(2, 3, 3, 3)
+#b = np.random.randn(2,)
+#dout = np.random.randn(4, 2, 5, 5)
+#conv_param = {'stride': 1, 'pad': 1}
+#cache = (x,w,b,conv_param)
+#
+#dx_num = eval_numerical_gradient_array(lambda x: conv_forward_naive(x, w, b, conv_param)[0], x, dout)
+#dw_num = eval_numerical_gradient_array(lambda w: conv_forward_naive(x, w, b, conv_param)[0], w, dout)
+#db_num = eval_numerical_gradient_array(lambda b: conv_forward_naive(x, w, b, conv_param)[0], b, dout)
+#out, cache = conv_forward_naive(x, w, b, conv_param)
+#
+#dx, dw, db = conv_backward_naive(dout, cache)
+#
+#
+#np.sum(x[0,0,0:2,0:2] * w[0,0,1:3,1:3]) + b[0]
+#
+#a = w[0,0,1,1] * dout[0,0,0,0] + w[0,0,1,0] * dout[0,0,0,1]
+#a = a + w[0,0,0,1] * dout[0,0,1,0] + w[0,0,0,0] * dout[0,0,1,1]
+#a = a + w[1,0,1,1] * dout[0,1,0,0] + w[1,0,1,0] * dout[0,1,0,1]
+#a = a + w[1,0,0,1] * dout[0,1,1,0] + w[1,0,0,0] * dout[0,1,1,1]
+#
+#
+#print(dx_num[0,0,0,0])
+#print(a)
 
 ###########
 
