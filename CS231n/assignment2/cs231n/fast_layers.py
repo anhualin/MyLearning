@@ -2,9 +2,9 @@ import numpy as np
 try:
   from cs231n.im2col_cython import col2im_cython, im2col_cython
 except ImportError:
-  print 'run the following from the cs231n directory and try again:'
-  print 'python setup.py build_ext --inplace'
-  print 'You may also need to restart your iPython kernel'
+  print('run the following from the cs231n directory and try again:')
+  print('python setup.py build_ext --inplace')
+  print('You may also need to restart your iPython kernel')
 
 from cs231n.im2col import *
 
@@ -23,8 +23,8 @@ def conv_forward_fast(x, w, b, conv_param):
   assert (H + 2 * pad - filter_height) % stride == 0, 'height does not work'
 
   # Create output
-  out_height = (H + 2 * pad - filter_height) / stride + 1
-  out_width = (W + 2 * pad - filter_width) / stride + 1
+  out_height = int((H + 2 * pad - filter_height) / stride) + 1
+  out_width = int((W + 2 * pad - filter_width) / stride) + 1
   out = np.zeros((N, num_filters, out_height, out_width), dtype=x.dtype)
 
   # x_cols = im2col_indices(x, w.shape[2], w.shape[3], pad, stride)
@@ -113,8 +113,8 @@ def max_pool_forward_reshape(x, pool_param):
   assert pool_height == pool_width == stride, 'Invalid pool params'
   assert H % pool_height == 0
   assert W % pool_height == 0
-  x_reshaped = x.reshape(N, C, H / pool_height, pool_height,
-                         W / pool_width, pool_width)
+  x_reshaped = x.reshape(N, C, int(H / pool_height), pool_height,
+                         int(W / pool_width), pool_width)
   out = x_reshaped.max(axis=3).max(axis=4)
 
   cache = (x, x_reshaped, out)

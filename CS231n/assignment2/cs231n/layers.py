@@ -272,6 +272,18 @@ def max_pool_forward_naive(x, pool_param):
   - cache: (x, pool_param)
   """
   out = None
+  N, C, H, W = x.shape
+  ph = pool_param['pool_height']
+  pw = pool_param['pool_width']
+  stride = pool_param['stride']
+  H1 = int(H/stride)
+  W1 = int(W/stride)
+  out = np.zeros((N,C,H1,W1))
+  for n in range(N):
+      for c in range(C):
+          for i in range(H1):
+              for j in range(W1):
+                  out[n,c,i,j] = np.max(x[n,c,i*stride: i*stride + ph, j*stride: j*stride+ pw])
   #############################################################################
   # TODO: Implement the max pooling forward pass                              #
   #############################################################################
@@ -294,15 +306,41 @@ def max_pool_backward_naive(dout, cache):
   Returns:
   - dx: Gradient with respect to x
   """
-  dx = None
+  x, pool_param = cache
+  ph = pool_param['pool_height']
+  pw = pool_param['pool_width']
+  stride = pool_param['stride']
+  dx = np.zeros_like(x)
+  N, C, H, W = x.shape
+  H1 = int(H / stride)
+  W1 = int(W / stride)
+  for n in range(N):
+      for c in range(C):
+          for i in range(H1):
+              for j in range(W1):
+                  max_val = np.max(x[n,c,i*stride: i*stride + ph, j*stride: j*stride+ pw])
+                  max_ind = np.where(x[n,c,i*stride:i*stride + ph, j*stride:j*stride+pw] == max_val)
+                  dx[n,c,i*stride + max_ind[0][0], j*stride + max_ind[1][0]] = dout[n,c,i,j]
+                  
   #############################################################################
   # TODO: Implement the max pooling backward pass                             #
   #############################################################################
-  pass
+  
   #############################################################################
   #                             END OF YOUR CODE                              #
   #############################################################################
   return dx
+
+#from cs231n.gradient_check import eval_numerical_gradient_array, eval_numerical_gradient
+#
+#x = np.random.randn(3, 2, 8, 8)
+#dout = np.random.randn(3, 2, 4, 4)
+#pool_param = {'pool_height': 2, 'pool_width': 2, 'stride': 2}
+#
+#dx_num = eval_numerical_gradient_array(lambda x: max_pool_forward_naive(x, pool_param)[0], x, dout)
+#
+#out, cache = max_pool_forward_naive(x, pool_param)
+#dx = max_pool_backward_naive(dout, cache)
 
 
 def svm_loss(x, y):
