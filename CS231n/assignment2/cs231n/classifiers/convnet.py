@@ -140,7 +140,7 @@ def mytry1(X, model, y=None, reg=0.0):
   # Unpack weights
   W1, b1=  model['W1'], model['b1']
   W2, b2 = model['W2'], model['b2']
-#  W3, b3 = model['W3'], model['b3']
+  W3, b3 = model['W3'], model['b3']
   W4, b4 =  model['W4'], model['b4']
   N, C, H, W = X.shape
 
@@ -164,17 +164,17 @@ def mytry1(X, model, y=None, reg=0.0):
   conv_param['pad'] = int((conv_filter_height - 1) / 2)
   
   a2, cache2 = conv_relu_pool_forward(a1, W2, b2, conv_param, pool_param)
-#  
-#  conv_filter_height, conv_filter_width = W3.shape[2:]
-#  assert conv_filter_height == conv_filter_width, 'Conv filter must be square'
-#  assert conv_filter_height % 2 == 1, 'Conv filter height must be odd'
-#  assert conv_filter_width % 2 == 1, 'Conv filter width must be odd'
-#  conv_param['pad'] = int((conv_filter_height - 1) / 2)
-#  
-#  a3, cache3 =  conv_relu_forward(a2, W3, b3, conv_param)
-#  
-#  scores, cache4 = affine_forward(a3, W4, b4)
-  scores, cache4 = affine_forward(a2, W4, b4)
+  
+  conv_filter_height, conv_filter_width = W3.shape[2:]
+  assert conv_filter_height == conv_filter_width, 'Conv filter must be square'
+  assert conv_filter_height % 2 == 1, 'Conv filter height must be odd'
+  assert conv_filter_width % 2 == 1, 'Conv filter width must be odd'
+  conv_param['pad'] = int((conv_filter_height - 1) / 2)
+  
+  a3, cache3 =  conv_relu_forward(a2, W3, b3, conv_param)
+  
+  scores, cache4 = affine_forward(a3, W4, b4)
+#  scores, cache4 = affine_forward(a2, W4, b4)
   if y is None:
     return scores
 
@@ -182,28 +182,28 @@ def mytry1(X, model, y=None, reg=0.0):
   data_loss, dscores = softmax_loss(scores, y)
 
   # Compute the gradients using a backward pass
-  da2, dW4, db4 = affine_backward(dscores, cache4)
-#  da3, dW4, db4 = affine_backward(dscores, cache4)
-#  da2, dW3, db3 = conv_relu_backward(da3, cache3)
+#  da2, dW4, db4 = affine_backward(dscores, cache4)
+  da3, dW4, db4 = affine_backward(dscores, cache4)
+  da2, dW3, db3 = conv_relu_backward(da3, cache3)
   da1, dW2, db2 = conv_relu_pool_backward(da2, cache2)
   dX,  dW1, db1 = conv_relu_pool_backward(da1, cache1)
 
   # Add regularization
   dW1 += reg * W1
   dW2 += reg * W2
-#  dW3 += reg * W3
+  dW3 += reg * W3
   dW4 += reg * W4
   
-#  Ws = [W1, W2, W3, W4]
-  Ws = [W1, W2, W4]
+  Ws = [W1, W2, W3, W4]
+#  Ws = [W1, W2, W4]
   reg_loss = 0.5 * reg * sum(np.sum(W * W) for W in Ws)
 
   loss = data_loss + reg_loss
   grads = {'W1': dW1, 'b1': db1}
   grads['W2'] =  dW2
   grads['b2'] = db2
-#  grads['W3'] = dW3
-#  grads['b3'] = db3
+  grads['W3'] = dW3
+  grads['b3'] = db3
   grads['W4'] =  dW4
   grads['b4'] =  db4
   
@@ -222,7 +222,7 @@ def mytry1(X, model, y=None, reg=0.0):
 ###################3
 
 def init_mytry1(weight_scale=1e-3, bias_scale=0, input_shape=(3, 32, 32),
-                           num_classes=10, num_filters=(32,32), filter_sizes=(5,5)):
+                           num_classes=10, num_filters=(32,32,32), filter_sizes=(5,5,5)):
   """
   Initialize the weights for a two-layer ConvNet.
 
@@ -254,10 +254,10 @@ def init_mytry1(weight_scale=1e-3, bias_scale=0, input_shape=(3, 32, 32),
   model['b1'] = bias_scale * np.random.randn(num_filters[0])
   model['W2'] = weight_scale * np.random.randn(num_filters[1], num_filters[0], filter_sizes[1], filter_sizes[1])
   model['b2'] = bias_scale * np.random.randn(num_filters[1])
-#  model['W3'] = weight_scale * np.random.randn(num_filters[2], num_filters[1], filter_sizes[2], filter_sizes[2])
-#  model['b3'] = bias_scale * np.random.randn(num_filters[2])
+  model['W3'] = weight_scale * np.random.randn(num_filters[2], num_filters[1], filter_sizes[2], filter_sizes[2])
+  model['b3'] = bias_scale * np.random.randn(num_filters[2])
   
-  model['W4'] = weight_scale * np.random.randn(int(num_filters[1] * H * W / 16), num_classes)
+  model['W4'] = weight_scale * np.random.randn(int(num_filters[2] * H * W / 16), num_classes)
   model['b4'] = bias_scale * np.random.randn(num_classes)
   return model
 

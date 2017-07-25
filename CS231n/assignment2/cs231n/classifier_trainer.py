@@ -83,6 +83,17 @@ class ClassifierTrainer(object):
       loss_history.append(cost)
 
       # perform a parameter update
+      if update == 'adam':
+        if it == 0:
+          beta1 = 0.9
+          beta2 = 0.999
+          eps = 1e-8
+          beta1t = beta1
+          beta2t = beta2
+        else:
+          beta1t *= beta1
+          beta2t *= beta2
+          
       for p in model:
         # compute the parameter step
         if update == 'sgd':
@@ -114,7 +125,19 @@ class ClassifierTrainer(object):
           # TODO: implement the RMSProp update and store the parameter update #
           # dx. Don't forget to also update step_cache[p]. Use smoothing 1e-8 #
           #####################################################################
+        elif update == 'adam':
+          
+          if not ('m',p) in self.step_cache:
+              self.step_cache[('m',p)] = np.zeros_like(grads[p])
+              self.step_cache[('v',p)] = np.zeros_like(grads[p])
          
+          m = beta1 * self.step_cache[('m', p)] + (1 - beta1) * grads[p]
+          mt = m / (1 - beta1t)
+          v = beta2 * self.step_cache[('v', p)] + (1 - beta2) * grads[p] * grads[p]
+          vt = v / (1 - beta2t)
+          dx = -learning_rate * mt / (np.sqrt(vt) + eps)
+          self.step_cache[('m', p)] = m
+          self.step_cache[('v', p)] = v
           #####################################################################
           #                      END OF YOUR CODE                             #
           #####################################################################
