@@ -22,7 +22,7 @@ for link in soup.find_all('a'):
     address = link.get('href')
     if re.findall('\.mp3', address):
         store.append(address)
-
+store = list(set(store))
 folder = "C:/Users/alin/Documents/MyStuff/SpanishMP3/"
 file_in_folder = os.listdir(folder)
 for link in store:
@@ -34,3 +34,7 @@ for link in store:
         with open(to_file, "wb") as output:
             output.write(mp3file.read())
 
+print "*************"
+
+for link in soup.find_all('a'):
+    print link.get('href')
