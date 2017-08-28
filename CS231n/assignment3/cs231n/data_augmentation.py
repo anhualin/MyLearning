@@ -45,12 +45,16 @@ def random_crops(X, crop_shape):
   N, C, H, W = X.shape
   HH, WW = crop_shape
   assert HH < H and WW < W
-
+  
   out = np.zeros((N, C, HH, WW), dtype=X.dtype)
+  Hlist = np.random.randint(0, H - HH - 1, N)
+  Wlist = np.random.randint(0, W - WW - 1, N)
+  for i in range(N):
+      out[i,:,:,:] = X[i,:,Hlist[i]:Hlist[i] + HH, Wlist[i]:Wlist[i] + WW]
   #############################################################################
   # TODO: Implement the random_crops function. Store the result in out.       #
   #############################################################################
-  pass
+  
   #############################################################################
   #                           END OF YOUR CODE                                #
   #############################################################################
@@ -76,11 +80,12 @@ def random_contrast(X, scale=(0.8, 1.2)):
   low, high = scale
   N = X.shape[0]
   out = np.zeros_like(X)
-
+  contrast = np.random.rand(N) * 0.4 + 0.8
   #############################################################################
   # TODO: Implement the random_contrast function. Store the result in out.    #
   #############################################################################
-  pass
+  for i in range(N):
+      out[i,:,:,:] = X[i,:,:,:] * contrast[i]
   #############################################################################
   #                           END OF YOUR CODE                                #
   #############################################################################
@@ -106,11 +111,14 @@ def random_tint(X, scale=(-10, 10)):
   low, high = scale
   N, C = X.shape[:2]
   out = np.zeros_like(X)
-
+  tint = np.random.randint(scale[0],scale[1], N * C)
+  for i in range(N):
+      for c in range(C):
+          out[i,c,:,:] = X[i,c,:,:] + tint[i * C + c]
   #############################################################################
   # TODO: Implement the random_tint function. Store the result in out.        #
   #############################################################################
-  pass
+  
   #############################################################################
   #                           END OF YOUR CODE                                #
   #############################################################################
@@ -140,8 +148,8 @@ def fixed_crops(X, crop_shape, crop_type):
   N, C, H, W = X.shape
   HH, WW = crop_shape
 
-  x0 = (W - WW) / 2
-  y0 = (H - HH) / 2
+  x0 = int((W - WW) / 2)
+  y0 = int((H - HH) / 2)
   x1 = x0 + WW
   y1 = y0 + HH
 
