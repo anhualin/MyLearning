@@ -153,7 +153,7 @@ def load_models(models_dir):
   for model_file in os.listdir(models_dir):
     with open(os.path.join(models_dir, model_file), 'rb') as f:
       try:
-        models[model_file] = pickle.load(f)['model']
+        models[model_file] = pickle.load(f, encoding = 'latin')['model']
       except pickle.UnpicklingError:
         continue
   return models

@@ -360,6 +360,7 @@ def five_layer_convnet(X, model, y=None, reg=0.0, dropout=1.0,
   a4, cache4 = affine_relu_forward(a3, W4, b4)
 
   if extract_features:
+    return a4
     ###########################################################################
     # TODO: Return features extracted from X.                                 #
     # HINT: This should be VERY simple!                                       #
@@ -367,7 +368,7 @@ def five_layer_convnet(X, model, y=None, reg=0.0, dropout=1.0,
     ###########################################################################
     #                         END OF YOUR CODE                                #  
     ###########################################################################
-    raise NotImplementedError()
+    #raise NotImplementedError()
   d4, cache5 = dropout_forward(a4, dropout_param)
   scores, cache6 = affine_forward(d4, W5, b5)
 
