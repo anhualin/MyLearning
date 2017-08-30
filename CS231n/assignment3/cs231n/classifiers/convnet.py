@@ -386,7 +386,7 @@ def five_layer_convnet(X, model, y=None, reg=0.0, dropout=1.0,
   da3, dW4, db4 = affine_relu_backward(da4, cache4)
   da2, dW3, db3 = conv_relu_pool_backward(da3, cache3)
   da1, dW2, db2 = conv_relu_pool_backward(da2, cache2)
-  _, dW1, db1 = conv_relu_pool_backward(da1, cache1)
+  dX, dW1, db1 = conv_relu_pool_backward(da1, cache1)
 
   if compute_dX:
     ###########################################################################
@@ -396,7 +396,8 @@ def five_layer_convnet(X, model, y=None, reg=0.0, dropout=1.0,
     ###########################################################################
     #                         END OF YOUR CODE                                #  
     ###########################################################################
-    raise NotImplementedError()
+    return dX
+    #raise NotImplementedError()
 
   grads = {
     'W1': dW1, 'b1': db1, 'W2': dW2, 'b2': db2,
