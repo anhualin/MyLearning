@@ -51,6 +51,7 @@ def affine_backward(dout, cache):
     - db: Gradient with respect to b, of shape (M,)
     """
     x, w, b = cache
+   
     dx = np.dot(dout, w.T).reshape(x.shape)
     dw = np.dot(x.reshape(x.shape[0], -1).T, dout)
     db = np.sum(dout, axis = 0)
@@ -99,6 +100,7 @@ def relu_backward(dout, cache):
     - dx: Gradient with respect to x
     """
     x = cache
+   
     dx = dout * (x > 0)
     ###########################################################################
     # TODO: Implement the ReLU backward pass.                                 #
@@ -156,7 +158,7 @@ def batchnorm_forward(x, gamma, beta, bn_param):
     running_mean = bn_param.get('running_mean', np.zeros(D, dtype=x.dtype))
     running_var = bn_param.get('running_var', np.zeros(D, dtype=x.dtype))
 
-    cache = {}
+    cache = None
     if mode == 'train':
         
         #print('x', x)
@@ -164,31 +166,28 @@ def batchnorm_forward(x, gamma, beta, bn_param):
         #print('batch_mean', batch_mean)
         batch_var = np.var(x, axis = 0)
         #print('batch_var', batch_var)
-        x_nor = (x - batch_mean) / np.sqrt(batch_var + eps)
+        #x_nor = (x - batch_mean) / np.sqrt(batch_var + eps)
         
         #### try layers 
-        x_a = x
-        x_b = np.mean(x, axis = 0)
-        x_c = np.mean(x*x, axis = 0)
-        x_d = x_a
-        x_e = x_b
-        x_f = x_c - x_b * x_b + eps
-#        x_nor = (x_d - x_e) / np.sqrt(x_f)
-#        print('diff=',np.linalg.norm(x_nor1 - x_nor))
-        
-        ####
-        
+        x_a = np.mean(x, axis = 0)
+        x_b = x - x_a
+        x_c = x_b**2
+        x_d = np.mean(x_c, axis = 0) + eps
+        x_nor = x_b / np.sqrt(x_d)
         out = gamma * x_nor + beta
+        
         running_mean = momentum * running_mean + (1 - momentum) * batch_mean
         running_var = momentum * running_var + (1 - momentum) * batch_var
-        cache['batch_std'] = np.sqrt(batch_var + eps)
-        cache['x_nor'] = x_nor
-        cache['x'] = x
-        cache['x_b'] = x_b
-        cache['x_c'] = x_c
-        cache['x_f'] = x_f
-        cache['gamma'] = gamma
-        cache['beta'] = beta
+        
+        cache = (x, gamma, beta, eps)
+#        cache['x_nor'] = x_nor
+#        cache['x'] = x
+#        cache['x_a'] = x_a
+#        cache['x_b'] = x_b
+#        cache['x_c'] = x_c
+#        cache['x_d'] = x_d
+#        cache['gamma'] = gamma
+#        cache['beta'] = beta
        
         
         #######################################################################
@@ -250,35 +249,34 @@ def batchnorm_backward(dout, cache):
     - dbeta: Gradient with respect to shift parameter beta, of shape (D,)
     """
     dx, dgamma, dbeta = None, None, None
-    gamma = cache['gamma']
-    beta = cache['beta']
-    batch_std = cache['batch_std']
-    x_nor = cache['x_nor']
-    x = cache['x']
-    x_a = x
-    x_b = cache['x_b']
-    x_c = cache['x_c']
-    x_d = x_a
-    x_e = x_b
-    x_f = cache['x_f']
+    x, gamma, beta, eps = cache
+    x_a = np.mean(x, axis = 0)
+    x_b = x - x_a
+    x_c = x_b**2
+    x_d = np.mean(x_c, axis = 0) + eps
+    x_nor = x_b / np.sqrt(x_d)
+#    gamma = cache['gamma']
+#    beta = cache['beta']
+#    x_nor = cache['x_nor']
+#   # x = cache['x']
+#   # x_a = cache['x_a']
+#    x_b = cache['x_b']
+#    x_c = cache['x_c']
+#    x_d = cache['x_d']
+    N, D = dout.shape
+    
     dx_nor = dout * gamma
-    print('dx_nor', dx_nor)
+
+    tmp = dx_nor * x_b /np.sqrt(x_d**3) * (-0.5)
+    dx_d = np.sum(tmp, axis = 0)
+    dx_c = dx_d * np.ones((N,D))/N 
+    dx_b = 2 * x_b * dx_c + dx_nor / np.sqrt(x_d)
+    dx_a = -np.sum(dx_b, axis = 0)
+    dx = dx_b + dx_a * np.ones((N,D)) /N
+    
     dgamma = np.sum(dout * x_nor, axis = 0)
     dbeta = np.sum(dout, axis = 0)
-    dx_d = dx_nor * (1/np.sqrt(x_f))
-    print('dx_d', dx_d)
-    dx_e = np.sum(dx_nor, axis = 0) * (-1/np.sqrt(x_f))
-    print('dx_e', dx_e)
-    dx_f = -0.5 * np.sum(dx_nor, axis = 0) * np.sum((x_d - x_e)/np.sqrt(x_f**3), axis = 0)
-    print('dx_f', dx_f)
-    dx_a = dx_d
-    print('dx_a', dx_a)
-    dx_b = dx_e - 2*dx_f*x_b
-    print('dx_b', dx_b)
-    dx_c = dx_f
-    print('dx_c', dx_c)
-    dx = dx_a + dx_b/dout.shape[0] + 2 * dx_c * x /dout.shape[0]
-    print('dx', dx)
+  
     ###########################################################################
     # TODO: Implement the backward pass for batch normalization. Store the    #
     # results in the dx, dgamma, and dbeta variables.                         #
@@ -348,6 +346,9 @@ def dropout_forward(x, dropout_param):
     out = None
 
     if mode == 'train':
+        p = dropout_param['p']
+        mask = (np.random.rand(x.shape[0], x.shape[1]) > p)
+        out = (x * mask) / (1-p)
         #######################################################################
         # TODO: Implement training phase forward pass for inverted dropout.   #
         # Store the dropout mask in the mask variable.                        #
@@ -360,7 +361,7 @@ def dropout_forward(x, dropout_param):
         #######################################################################
         # TODO: Implement the test phase forward pass for inverted dropout.   #
         #######################################################################
-        pass
+        out = x
         #######################################################################
         #                            END OF YOUR CODE                         #
         #######################################################################
@@ -387,7 +388,7 @@ def dropout_backward(dout, cache):
         #######################################################################
         # TODO: Implement training phase backward pass for inverted dropout   #
         #######################################################################
-        pass
+        dx = dout * mask /(1 - dropout_param['p'])
         #######################################################################
         #                          END OF YOUR CODE                           #
         #######################################################################

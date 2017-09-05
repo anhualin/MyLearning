@@ -174,6 +174,10 @@ class FullyConnectedNet(object):
             self.params['b'+str(i)] = np.zeros((1, hidden_dims[i-1]))
         self.params['W'+str(self.num_layers)] = np.random.randn(hidden_dims[self.num_layers - 2], num_classes) * weight_scale
         self.params['b'+str(self.num_layers)] = np.zeros((1, num_classes))
+        if use_batchnorm:
+            for i in range(1, self.num_layers):
+                self.params['gamma' + str(i)] = np.ones(hidden_dims[i-1])
+                self.params['beta' + str(i)] = np.zeros(hidden_dims[i-1])
         ############################################################################
         # TODO: Initialize the parameters of the network, storing all values in    #
         # the self.params dictionary. Store weights and biases for the first layer #
@@ -234,10 +238,35 @@ class FullyConnectedNet(object):
         
         caches = []
         a_pre = X
+#         {affine - [batch norm] - relu - [dropout]} x (L - 1) - affine - softmax
         for i in range(1, self.num_layers):
-            a_cur, cache_cur = affine_relu_forward(a_pre, self.params['W'+str(i)], self.params['b'+str(i)])
-            a_pre = a_cur
-            caches.append(cache_cur)
+            if self.use_batchnorm:
+                W = self.params['W' + str(i)]
+                b = self.params['b' + str(i)]
+                gamma = self.params['gamma' + str(i)]
+                beta = self.params['beta' + str(i)]
+                aa, cache_a = affine_forward(a_pre, W, b)
+                ab, cache_b = batchnorm_forward(aa, gamma, beta, self.bn_params[i-1])
+                ar, cache_r = relu_forward(ab)
+                if not self.use_dropout:
+                    a_pre = ar
+                    caches.append((cache_a, cache_b, cache_r))
+                else:
+                    ad, cache_d = dropout_forward(ar, self.dropout_param)
+                    a_pre = ad
+                    caches.append((cache_a, cache_b, cache_r, cache_d))
+            else:
+                
+                a_cur, cache_cur = affine_relu_forward(a_pre, self.params['W'+str(i)], self.params['b'+str(i)])
+                if not self.use_dropout:
+                    a_pre = a_cur
+                    caches.append(cache_cur)
+                else:
+                    ad, cache_d = dropout_forward(a_cur, self.dropout_param)
+                    a_pre = ad
+                    caches.append((cache_cur, cache_d))
+                
+                    
         a_last, cache_last = affine_forward(a_pre, self.params['W'+str(self.num_layers)], self.params['b'+str(self.num_layers)])
         
         ############################################################################
@@ -270,7 +299,26 @@ class FullyConnectedNet(object):
         grads['b'+str(i)] = db 
         loss += 0.5 * self.reg * (np.linalg.norm(self.params['W' + str(i)])**2)
         for i in range(self.num_layers - 1, 0, -1):
-            da, dW, db = affine_relu_backward(da, caches[i-1])
+            if self.use_batchnorm:
+                if self.use_dropout:
+                    cache_a, cache_b, cache_r, cache_d = caches[i-1]
+                    da_d = dropout_backward(da, cache_d)
+                else:
+                    cache_a, cache_b, cache_r = caches[i-1]
+                    da_d = da
+                da_r = relu_backward(da_d, cache_r)
+                da_b, dgamma, dbeta = batchnorm_backward(da_r, cache_b)
+                da, dW, db = affine_backward(da_b, cache_a)
+                grads['gamma' + str(i)] = dgamma
+                grads['beta' + str(i)] = dbeta
+            else:
+                if self.use_dropout:
+                    cache_ar, cache_d = caches[i-1]
+                    da_d = dropout_backward(da, cache_d)
+                else:
+                    cache_ar = caches[i-1]
+                    da_d = da
+                da, dW, db = affine_relu_backward(da_d, cache_ar)
             grads['W'+str(i)] = dW + self.reg * self.params['W' + str(i)]
             grads['b'+str(i)] = db
             loss += 0.5 * self.reg * (np.linalg.norm(self.params['W' + str(i)])**2)
