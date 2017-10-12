@@ -15,6 +15,7 @@ m = 2*t
 n = 8
 X_sk = np.random.rand(m,n)
 y_sk = np.r_[np.ones(t), -np.ones(t)]
+y_sk = np.random.permutation(y_sk)
 
 
 lgr = LogisticRegression(random_state=42, tol=1e-6, C=C)
@@ -42,14 +43,17 @@ print(np.linalg.norm(grad_sk))
 def fetch_batch_indices(epoch, batch_index, batch_size, m):
     np.random.seed(epoch + batch_index)
     #indices = np.random.randint(m, size=batch_size)
-    indices = np.random.choice(m, size=batch_size, replace=False)
+    #indices = np.random.choice(m, size=batch_size, replace=False)
+    indices = [i for i in range(batch_index * batch_size, (batch_index + 1) * batch_size)]
     return indices
+
+
 
 def logistic_regression(X_train, y_train, n_epochs=1000, lrate=0.01, batch_size=10):
     m, n = X_train.shape
-    #n_batches = int(np.ceil(m / batch_size))
-    n_batches = 1
-    batch_size = m
+    #batch_size = m
+    n_batches = int(np.ceil(m / batch_size))
+   
     y_train = y_train.reshape(-1, 1)
     X = tf.placeholder(tf.float32, shape=(None, n), name='X')
     y = tf.placeholder(tf.float32, shape=(None, 1), name='y')
@@ -80,8 +84,7 @@ def logistic_regression(X_train, y_train, n_epochs=1000, lrate=0.01, batch_size=
         best_c = c.eval()
     return best_w, best_c
 
-w0, c0 = logistic_regression(X_train=X_sk, y_train=y_sk, n_epochs=1000, batch_size=400)
-
+w0, c0 = logistic_regression(X_train=X_sk, y_train=y_sk, n_epochs=2000, lrate = 0.005, batch_size=20)
 
 
 w_tf = w0
