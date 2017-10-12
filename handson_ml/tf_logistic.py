@@ -30,12 +30,29 @@ coef_sk = coef_sk.reshape(m,1)
 grad_sk = w_sk - C * np.dot(X_sk.T, coef_sk)
 print(np.linalg.norm(grad_sk))
 
+#
+#### tensor flow
+#def fetch_batch(epoch, batch_index, batch_size):
+#    np.random.seed(epoch * n_batches + batch_index)  # not shown in the book
+#    indices = np.random.randint(m, size=batch_size)  # not shown
+#    X_batch = scaled_housing_data_plus_bias[indices] # not shown
+#    y_batch = housing.target.reshape(-1, 1)[indices] # not shown
+#    return X_batch, y_batch
 
-### tensor flow
-def logistic_regression(X_train, y_train, n_epochs=1000, lrate=0.01):
+def fetch_batch_indices(epoch, batch_index, batch_size, m):
+    np.random.seed(epoch + batch_index)
+    #indices = np.random.randint(m, size=batch_size)
+    indices = np.random.choice(m, size=batch_size, replace=False)
+    return indices
+
+def logistic_regression(X_train, y_train, n_epochs=1000, lrate=0.01, batch_size=10):
     m, n = X_train.shape
-    X = tf.placeholder(tf.float32, shape=(m, n), name='X')
-    y = tf.placeholder(tf.float32, shape=(m, 1), name='y')
+    #n_batches = int(np.ceil(m / batch_size))
+    n_batches = 1
+    batch_size = m
+    y_train = y_train.reshape(-1, 1)
+    X = tf.placeholder(tf.float32, shape=(None, n), name='X')
+    y = tf.placeholder(tf.float32, shape=(None, 1), name='y')
     w = tf.Variable(tf.random_uniform([n, 1], -1., 1.), dtype=tf.float32, name='W')
     c = tf.Variable(tf.random_uniform([1, 1], -1., 1.), dtype=tf.float32, name='c')
 
@@ -51,54 +68,21 @@ def logistic_regression(X_train, y_train, n_epochs=1000, lrate=0.01):
     with tf.Session() as sess:
         sess.run(init)
         for epoch in range(n_epochs):
-            if epoch % 100 == 0:
-                print("Epoch", epoch, "Los = ", sess.run(loss, {X:X_train, y:y_train.reshape(m,1)}))
-                      #"Prob = ", sess.run(prob, {X: X_tf, y: y_tf}),
-                      #"Score =", sess.run(score, {X: X_tf, y: y_tf}),
-                      #"W = ", w_tf.eval(), "c=", c_tf.eval())
-            sess.run(train_op, {X:X_train, y:y_train.reshape(m,1)})
+            for batch_index in range(n_batches):
+                batch_indices = fetch_batch_indices(epoch, batch_index, batch_size, m)
+                X_batch = X_train[batch_indices]
+                y_batch = y_train[batch_indices]
+                #X_batch = X_train
+                #y_batch = y_train
+                sess.run(train_op, feed_dict={X:X_batch, y:y_batch})
         
         best_w = w.eval()
         best_c = c.eval()
     return best_w, best_c
 
-w0, c0 = logistic_regression(X_sk, y_sk)
+w0, c0 = logistic_regression(X_train=X_sk, y_train=y_sk, n_epochs=1000, batch_size=400)
 
 
-
-n_epochs = 3000
-X_tf = X_sk
-y_tf = y_sk.reshape(-1,1)
-
-
-tf.reset_default_graph()
-X = tf.placeholder(tf.float32, shape=(None, n), name='X')
-y = tf.placeholder(tf.float32, shape=(None, 1), name='y')
-
-w_tf = tf.Variable(tf.random_uniform([n, 1], -1., 1.), dtype=tf.float32, name='W')
-c_tf = tf.Variable(tf.random_uniform([1, 1], -1., 1.), dtype=tf.float32, name='c')
-
-score = tf.multiply(tf.matmul(X, w_tf) + c_tf, y)
-prob = tf.sigmoid(score)
-loss = 0.5 * tf.reduce_sum(w_tf * w_tf)- C* tf.reduce_sum(tf.log(prob)) 
-
-optimizer = tf.train.GradientDescentOptimizer(learning_rate = 0.005)
-train_op = optimizer.minimize(loss)
-
-init = tf.global_variables_initializer()
-
-with tf.Session() as sess:
-    sess.run(init)
-    for epoch in range(n_epochs):
-        if epoch % 100 == 0:
-            print("Epoch", epoch, "Los = ", sess.run(loss, {X:X_tf, y:y_tf}))
-                  #"Prob = ", sess.run(prob, {X: X_tf, y: y_tf}),
-                  #"Score =", sess.run(score, {X: X_tf, y: y_tf}),
-                  #"W = ", w_tf.eval(), "c=", c_tf.eval())
-        sess.run(train_op, {X:X_tf, y:y_tf})
-        
-    best_w = w_tf.eval()
-    best_c = c_tf.eval()
 
 w_tf = w0
 c_tf = c0
