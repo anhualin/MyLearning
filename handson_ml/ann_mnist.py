@@ -14,9 +14,16 @@ X, y = mnist['data'], mnist['target']
 y = y.astype(np.int)
 X_train, X_test, y_train, y_test = X[:60000], X[60000:], y[:60000], y[60000:]
 
+shuffle_index = np.random.permutation(60000)
+X_train, y_train = X_train[shuffle_index], y_train[shuffle_index]
+
 from sklearn.model_selection import train_test_split
 X_t, X_v, y_t, y_v = train_test_split(X_train, y_train, test_size=0.33, random_state=42)
 import tensorflow as tf
+
+from tensorflow.examples.tutorials.mnist import input_data
+
+mnist_tf = input_data.read_data_sets("/tmp/data/")
 
 def ann_mnist1(X, y, hidden_units, n_classes):
     config = tf.contrib.learn.RunConfig(tf_random_seed=42)
@@ -47,6 +54,13 @@ ann_select1([300, 100], X_train, y_train, X_test, y_test) #94.37
 
 
 #######################################
+
+def reset_graph(seed=42):
+    tf.reset_default_graph()
+    tf.set_random_seed(seed)
+    np.random.seed(seed)
+    
+    
 def add_layer(X, n_out, name, activation=None):
     with tf.name_scope(name):
         n_in = int(X.get_shape()[1])
@@ -64,6 +78,7 @@ def add_layer(X, n_out, name, activation=None):
     
 def ann_mnist2(X_train, y_train, hidden_units, n_classes, lrate=0.01, n_epochs = 40,
                batch_size=50):
+    reset_graph()
     m, n0 = X_train.shape
     n_batches = int(np.ceil(m / batch_size))
     X = tf.placeholder(tf.float32, shape=(None, n0), name='X')
@@ -73,6 +88,10 @@ def ann_mnist2(X_train, y_train, hidden_units, n_classes, lrate=0.01, n_epochs =
         Z = add_layer(Z, hidden_units[i], 'level' + str(i), tf.nn.relu)
         
     logits = add_layer(Z, n_classes, 'output')
+#    with tf.name_scope('dnn'):
+#        Z1 = add_layer(X, hidden_units[0], 'level0', tf.nn.relu)
+#        Z2 = add_layer(Z1, hidden_units[1], 'level1', tf.nn.relu)
+#        logits = add_layer(Z2, n_classes, 'output')
     with tf.name_scope('loss'):
         xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits)
         loss = tf.reduce_mean(xentropy, name='loss')
@@ -90,13 +109,16 @@ def ann_mnist2(X_train, y_train, hidden_units, n_classes, lrate=0.01, n_epochs =
         sess.run(init)
         for epoch in range(n_epochs):
             for batch_index in range(n_batches):
-                batch_indices = np.random.choice(m, batch_size, replace =False)
-                X_batch, y_batch = X_train[batch_indices], y_train[batch_indices] 
+                X_batch, y_batch = mnist_tf.train.next_batch(batch_size)
+#                batch_indices = np.random.choice(m, batch_size, replace =False)
+#                X_batch, y_batch = X_train[batch_indices], y_train[batch_indices] 
                 sess.run(training_op, feed_dict={X: X_batch, y: y_batch})
             if epoch % 5 == 0:
-                loss_val = loss.eval({X: X_batch, y:y_batch})
+                loss_val = loss.eval({X: X_train, y:y_train})
                 acc_train = accuracy.eval({X: X_train, y: y_train})
                 print('Epoch:', epoch, ' Loss:', loss_val, 'Train_accuracy', acc_train)
 
-ann_mnist2(X_t, y_t, [300], 10)
-        
+ann_mnist2(X_train=X_t, y_train=y_t, hidden_units=[300,100], n_classes=10, 
+           lrate=0.01, n_epochs = 20, batch_size=200)
+ann_mnist2(X_train=X_train, y_train=y_train, hidden_units=[300,100], n_classes=10, 
+           lrate=0.01, n_epochs = 10, batch_size=200)
