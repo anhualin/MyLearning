@@ -36,7 +36,8 @@ def ann_mnist(hidden_units, lrate=0.01, n_epochs = 40, batch_size=50):
     n0 = 28 * 28
     n_batches = m // batch_size
     n_classes = 10
-
+    best_loss = np.inf
+    epochs_no_progress = 0
     X = tf.placeholder(tf.float32, shape=(None, n0), name='X')
     y = tf.placeholder(tf.int64, shape=(None), name='y')
     with tf.name_scope('dnn'):
@@ -60,7 +61,8 @@ def ann_mnist(hidden_units, lrate=0.01, n_epochs = 40, batch_size=50):
         accuracy_summary = tf.summary.scalar('accuracy', accuracy)
         
     init = tf.global_variables_initializer()
-    
+    saver = tf.train.Saver()
+    final_model_path = '/tmp/my_deep_mnist_model'
     with tf.Session() as sess:
         sess.run(init)
         for epoch in range(n_epochs):
@@ -69,12 +71,32 @@ def ann_mnist(hidden_units, lrate=0.01, n_epochs = 40, batch_size=50):
                 sess.run(training_op, feed_dict={X: X_batch, y: y_batch})
                 accuracy_val, loss_val, accuracy_summary_str, loss_summary_str = sess.run([
                         accuracy, loss, accuracy_summary, loss_summary], feed_dict={X:X_valid, y:y_valid})
-            if epoch >0 :
+            if epoch % 5 == 0:
 #                print("Epoch:", epoch,
 #                  "\tValidation accuracy: {:.3f}%".format(accuracy_val * 100),
 #                  "\tLoss: {:.5f}".format(loss_val)
                 print('Epoch:', epoch, 
-                      '\tLoss: {:.5f}', loss_val, 
-                      '\tValidation_accuracy: {:.3f%}'.format(accuracy_val*100))
+                      '\t Loss: {:.5f}', loss_val, 
+                      '\t Validation_accuracy:', accuracy_val)
+                if loss_val < best_loss:
+                    best_loss = loss_val
+                    saver.save(sess, final_model_path)
+                else:
+                    epochs_no_progress += 5
+                    if epochs_no_progress > 10:
+                        print('Early Stopping')
+                        break
 
-ann_mnist([300], lrate=0.01, n_epochs = 40, batch_size=50)
+ann_mnist([300, 150, 75], lrate=0.01, n_epochs = 20, batch_size=400)
+
+# below not working, need to further study saver 
+with tf.Session() as sess:
+    saver = tf.train.Saver()
+    saver.restore(sess, '/tmp/my_deep_mnist_model')
+    accuracy_val = accuracy.eval(feed_dict={X: X_test, y:y_test})
+    print(accuracy_val)
+
+sess = tf.Session()
+saver = tf.train.Saver()
+saver.restore(sess, '/tmp/my_deep_mnist_model')
+sess.run(loss, feed_dict={X: X_test, y:y_test})
