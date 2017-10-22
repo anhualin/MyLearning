@@ -155,6 +155,9 @@ saver = tf.train.Saver()
 n_epochs = 20
 batch_size = 200
 
+for op in (X, y, accuracy, training_op):
+    tf.add_to_collection("my_important_ops", op)
+    
 with tf.Session() as sess:
     init.run()
     for epoch in range(n_epochs):
@@ -166,3 +169,38 @@ with tf.Session() as sess:
         print(epoch, "Test accuracy:", accuracy_val)
 
     save_path = saver.save(sess, "/tmp/my_model_final.ckpt")
+
+########################################################################################
+reset_graph()
+saver = tf.train.import_meta_graph('/tmp/my_model_final.ckpt.meta')
+
+#for op in tf.get_default_graph().get_operations():
+#    print(op.name)
+#    
+#X = tf.get_default_graph().get_tensor_by_name("X:0")
+#y = tf.get_default_graph().get_tensor_by_name("y:0")
+#
+#accuracy = tf.get_default_graph().get_tensor_by_name("eval/accuracy:0")
+#
+#training_op = tf.get_default_graph().get_operation_by_name("GradientDescent")
+
+X, y, accuracy, training_op = tf.get_collection("my_important_ops")
+
+n_epochs = 20
+batch_size = 200
+with tf.Session() as sess:
+    saver.restore(sess, "/tmp/my_model_final.ckpt")
+    for epoch in range(n_epochs):
+        for iteration in range(mnist.train.num_examples // batch_size):
+            X_batch, y_batch = mnist.train.next_batch(batch_size)
+            sess.run(training_op, feed_dict={X: X_batch, y: y_batch})
+        accuracy_val = accuracy.eval(feed_dict={X: X_test,
+                                                y: y_test})
+        print(epoch, "Test accuracy:", accuracy_val)
+
+#try test
+with tf.Session() as sess:
+    saver.restore(sess, '/tmp/my_model_final.ckpt')
+    accuracy_val = accuracy.eval(feed_dict={X: X_test, y: y_test})
+    print("Test accuracy:", accuracy_val)
+    
