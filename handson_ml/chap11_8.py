@@ -44,6 +44,8 @@ n_hidden4 = 100
 n_hidden5 = 100
 n_outputs = 5
 
+reset_graph()
+
 X = tf.placeholder(tf.float32, shape=(None, n_inputs), name='X')
 y = tf.placeholder(tf.int64, shape=(None), name='y')
 
@@ -65,7 +67,7 @@ with tf.name_scope('loss'):
     xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits)
     loss = tf.reduce_mean(xentropy, name="loss")
         
-learning_rate = 0.01
+learning_rate = 0.001
 with tf.name_scope('train'):
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate)
     training_op = optimizer.minimize(loss)
@@ -75,19 +77,30 @@ with tf.name_scope('eval'):
     accuracy = tf.reduce_mean(tf.cast(correct, tf.float32))
     
 init = tf.global_variables_initializer()
+saver = tf.train.Saver()
 n_epochs = 20
 batch_size = 200
 n_batchs = X_train.shape[0] // batch_size
+best_accuracy = -np.inf
+no_improve = 0
+threshold = 4
 with tf.Session() as sess:
     sess.run(init)
     for epoch in range(n_epochs):
-        for batch_index in range(n_batchs):
-            X_batch, y_batch = mnist.train.next_batch(batch_size)
-            X_batch1 = X_batch[y_batch < 5]
-            y_batch1 = y_batch[y_batch < 5]
-            sess.run(training_op, feed_dict={X: X_batch1, y: y_batch1})
-        accuracy_val = accuracy.eval({X: X_valid1, y:y_valid1})
-        print(epoch, '  Valid accuracy:',  accuracy_val)
+        if no_improve < threshold:
+            for batch_index in range(n_batchs):
+                X_batch, y_batch = mnist.train.next_batch(batch_size)
+                X_batch1 = X_batch[y_batch < 5]
+                y_batch1 = y_batch[y_batch < 5]
+                sess.run(training_op, feed_dict={X: X_batch1, y: y_batch1})
+            accuracy_val = accuracy.eval({X: X_valid1, y:y_valid1})
+            print(epoch, '  Valid accuracy:',  accuracy_val)
+            if accuracy_val > best_accuracy:
+                best_accuracy = accuracy_val
+                save_path = saver.save(sess, "/tmp/chap11_8.ckpt")
+                no_improve = 0
+            else:
+                no_improve += 1
+            
     
-    
-    
+    #0.9933542  lrate = 0.001
