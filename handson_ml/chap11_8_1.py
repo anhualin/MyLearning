@@ -190,8 +190,8 @@ class DNNClassifier(BaseEstimator, ClassifierMixin):
         return {gvar.op.name: value for gvar, value in zip(gvars, self._session.run(gvars))}
 
     def _restore_model_params(self, model_params):
-        gvar_names = list(model_params.keys)
-        assign_ops = {gvar_name: self._graph.get_operation_by_name(gvar_name, +'/Assign') for gvar_name in gvar_names}
+        gvar_names = list(model_params.keys())
+        assign_ops = {gvar_name: self._graph.get_operation_by_name(gvar_name +'/Assign') for gvar_name in gvar_names}
         init_values = {gvar_name: assign_op.inputs[1] for gvar_name, assign_op in assign_ops.items()}
         feed_dict = {init_values[gvar_name]: model_params[gvar_name] for gvar_name in gvar_names}
         self._session.run(assign_ops, feed_dict=feed_dict)
@@ -226,10 +226,10 @@ class DNNClassifier(BaseEstimator, ClassifierMixin):
                     X_batch, y_batch = X[rnd_indices], y[rnd_indices]
                     feed_dict = {self._X: X_batch, self._y: y_batch}
                     if self._training is not None:
-                        feed_dict['training'] = True
+                        feed_dict[self._training] = True
                     sess.run(self._training_op, feed_dict=feed_dict)
                     if extra_update_ops:
-                        sess.run(extra_update_ops, feed_dict=feed_dick)
+                        sess.run(extra_update_ops, feed_dict=feed_dict)
                      
                 if X_valid is not None and y_valid is not None:
                     loss_val, acc_val = sess.run([self._loss, self._accuracy],
@@ -271,4 +271,56 @@ class DNNClassifier(BaseEstimator, ClassifierMixin):
     
 ###############################################################
 dnn_clf = DNNClassifier(random_state=42)
-dnn_clf.fit(X_train1, y_train1, X_valid=X_valid1, y_valid=y_valid1)
+dnn_clf.fit(X_train1, y_train1, n_epochs=5, X_valid=X_valid1, y_valid=y_valid1)
+y_pred = dnn_clf.predict(X_test1)
+
+from sklearn.metrics import accuracy_score
+print(accuracy_score(y_test1, y_pred))
+
+#####################################
+from sklearn.model_selection import RandomizedSearchCV
+from scipy.stats import uniform
+
+
+def leaky_relu(alpha=0.01):
+    def parametrized_leaky_relu(z, name=None):
+        return tf.maximum(alpha * z, z, name=name)
+    return parametrized_leaky_relu
+
+param_distribs = {
+        "n_neurons": [50, 100],
+        "learning_rate": uniform(0.001, 0.01),
+        "activation": [tf.nn.elu, leaky_relu(alpha=0.01)],
+        }
+
+rnd_search = RandomizedSearchCV(DNNClassifier(random_state=42), param_distribs,
+                                n_iter=20, 
+                                fit_params={"X_valid": X_valid1, "y_valid": y_valid1, "n_epochs": 30},
+                                random_state=42, verbose=2)
+rnd_search.fit(X_train1, y_train1)
+
+y_pred1 = rnd_search.predict(X_test1)
+print(accuracy_score(y_test1, y_pred1))
+
+rnd_search.best_estimator_.save(modeldir + '/my_best_mnist_0_4')
+
+dnn_clf = DNNClassifier(learning_rate=0.0011596625, batch_size=200)
+dnn_clf.fit(X_train1, y_train1, n_epochs=30, X_valid = X_valid1, y_valid = y_valid1)
+y_pred = dnn_clf.predict(X_test1)
+accuracy_score(y_test1, y_pred)
+y_pred_train = dnn_clf.predict(X_train1)
+accuracy_score(y_train1, y_pred_train)
+
+dnn_clf_bn = DNNClassifier(learning_rate=0.0011596625, batch_size=200, batch_norm_momentum=0.95)
+dnn_clf_bn.fit(X_train1, y_train1, n_epochs=30, X_valid = X_valid1, y_valid = y_valid1)
+y_pred = dnn_clf_bn.predict(X_test1)
+accuracy_score(y_test1, y_pred)
+
+dnn_clf_do = DNNClassifier(learning_rate=0.0011596625, batch_size=200, 
+                           dropout_rate=0.5)
+dnn_clf_do.fit(X_train1, y_train1, n_epochs=30, X_valid = X_valid1, y_valid = y_valid1)
+
+y_pred = dnn_clf_do.predict(X_test1)
+accuracy_score(y_test1, y_pred)
+y_pred_train = dnn_clf_do.predict(X_train1)
+accuracy_score(y_train1, y_pred_train)
