@@ -277,6 +277,18 @@ y_pred = dnn_clf.predict(X_test1)
 from sklearn.metrics import accuracy_score
 print(accuracy_score(y_test1, y_pred))
 
+dnn_clf.save(modeldir + '/my_best_mnist_0_4')
+
+
+### test saver,, doesn't work ##
+
+with tf.Session() as sess:
+    saver = tf.train.import_meta_graph(modeldir + "/my_best_mnist_0_4.meta")
+    saver.restore(sess, modeldir + '/my_best_mnist_0_4')
+    accuracy_test = accuracy.eval({X:X_test1, y:y_test1})
+    print('test accuracy:', accuracy_test)
+
+
 #####################################
 from sklearn.model_selection import RandomizedSearchCV
 from scipy.stats import uniform
