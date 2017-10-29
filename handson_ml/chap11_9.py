@@ -17,8 +17,8 @@ if platform == 'win32':
     tmpdir = 'C:/Users/alin/Documents/Temp/data'
     modeldir = 'C:/Users/alin/Documents/Temp/model'
 else:
-    tmpdir = '/tmp/data'
-    modeldir = '/tmp/model'
+    tmpdir = '/home/alin/Temp/data'
+    modeldir = '/home/alin/Temp/model'
     
     
 mnist = input_data.read_data_sets(tmpdir)
@@ -126,5 +126,102 @@ print("Total training time: {:.1f}s".format(t1 - t0))
 
 with tf.Session() as sess:
     five_frozen_saver.restore(sess, modeldir + '/my_mnist_5_9_frozen')
+    acc_test = accuracy.eval(feed_dict={X: X_test2, y: y_test2})
+    print('test accuracy:', acc_test)
+    
+    
+################################################33
+hidden5_out = tf.get_default_graph().get_tensor_by_name('hidden5_out:0')
+with tf.Session() as sess:
+    init.run()
+    restore_saver.restore(sess, modeldir + '/my_best_mnist_0_4')
+    for var in output_layer_vars:
+        var.initializer.run()
+        
+    t0 = time.time()
+    hidden5_train = hidden5_out.eval(feed_dict={X: X_train2, y:y_train2})
+    hidden5_valid = hidden5_out.eval(feed_dict={X: X_valid2, y:y_valid2})
+    
+    for epoch in range(n_epochs):
+        rnd_idx = np.random.permutation(len(X_train2))
+        for rnd_indicies in np.array_split(rnd_idx, len(X_train2) // batch_size):
+            h5_batch, y_batch = hidden5_train[rnd_indicies], y_train2[rnd_indicies]
+            sess.run(training_op, feed_dict={hidden5_out: h5_batch, y: y_batch})
+        loss_val, acc_val = sess.run([loss,accuracy], feed_dict={hidden5_out: hidden5_valid, y: y_valid2})
+        if loss_val < best_loss:
+            save_path = five_frozen_saver.save(sess, modeldir + '/my_mnist_5_9_frozen')
+            best_loss = loss_val
+            checks_without_progress = 0
+        else:
+            checks_without_progress += 1
+            if checks_without_progress > max_checks_without_progress:
+                print ('Early stopping!')
+                break
+        print("{}\tValidation loss: {:.6f}\tBest loss: {:.6f}\tAccuracy: {:.2f}%".format(epoch, loss_val, best_loss, acc_val * 100))
+
+t1 = time.time()
+print("Total training time: {:.1f}s".format(t1 - t0))
+
+with tf.Session() as sess:
+    five_frozen_saver.restore(sess, modeldir + '/my_mnist_5_9_frozen')
+    acc_test = accuracy.eval(feed_dict={X: X_test2, y: y_test2})
+    print('test accuracy:', acc_test)
+    
+############################
+reset_graph()
+n_outputs = 5
+restore_saver = tf.train.import_meta_graph(modeldir + '/my_best_mnist_0_4.meta')
+X = tf.get_default_graph().get_tensor_by_name('X:0')
+y = tf.get_default_graph().get_tensor_by_name('y:0')
+
+hidden4_out = tf.get_default_graph().get_tensor_by_name('hidden4_out:0')
+logits = tf.layers.dense(hidden4_out, n_outputs, kernel_initializer=he_init,
+                         name='new_logits')
+Y_proba = tf.nn.softmax(logits)
+xentropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=y, logits=logits)
+loss = tf.reduce_mean(xentropy)
+correct = tf.nn.in_top_k(logits, y, 1)
+accuracy = tf.reduce_mean(tf.cast(correct, tf.float32), name='accuracy')
+
+learning_rate = 0.005
+output_layer_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='new_logits')
+optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate, name='Adam2')
+training_op = optimizer.minimize(loss, var_list=output_layer_vars)
+init = tf.global_variables_initializer()
+four_frozen_saver = tf.train.Saver()
+
+n_epochs = 40
+batch_size = 200
+
+max_checks_without_progress = 20
+checks_without_progress = 0
+best_loss = np.infty
+
+with tf.Session() as sess:
+    init.run()
+    restore_saver.restore(sess, modeldir + '/my_best_mnist_0_4')
+    for var in output_layer_vars:
+        var.initializer.run()
+        
+   
+    for epoch in range(n_epochs):
+        rnd_idx = np.random.permutation(len(X_train2))
+        for rnd_indicies in np.array_split(rnd_idx, len(X_train2) // batch_size):
+            X_batch, y_batch = X_train2[rnd_indicies], y_train2[rnd_indicies]
+            sess.run(training_op, feed_dict={X: X_batch, y: y_batch})
+        loss_val, acc_val = sess.run([loss,accuracy], feed_dict={X: X_valid2, y: y_valid2})
+        if loss_val < best_loss:
+            save_path = five_frozen_saver.save(sess, modeldir + '/my_mnist_5_9_four_frozen')
+            best_loss = loss_val
+            checks_without_progress = 0
+        else:
+            checks_without_progress += 1
+            if checks_without_progress > max_checks_without_progress:
+                print ('Early stopping!')
+                break
+        print("{}\tValidation loss: {:.6f}\tBest loss: {:.6f}\tAccuracy: {:.2f}%".format(epoch, loss_val, best_loss, acc_val * 100))
+
+with tf.Session() as sess:
+    five_frozen_saver.restore(sess, modeldir + '/my_mnist_5_9_four_frozen')
     acc_test = accuracy.eval(feed_dict={X: X_test2, y: y_test2})
     print('test accuracy:', acc_test)
