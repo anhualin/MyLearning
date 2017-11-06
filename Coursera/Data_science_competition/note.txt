@@ -1,0 +1,55 @@
+Preprocessing:
+Numerical features
+1. For non-tree models, do scaling.
+2. For outliers, can try clipping by value or percentage (winsorization).
+3. rank transformation. scipy.stats.rankdata()
+4. very helpful for non-tree model esp neural net.
+   Log transform np.log(1 + x),  raising to power <1: np.sqrt(x + 2/3)
+
+Feature generation:
+1. ratio, e.g. price per meter square.
+2. add/ subtract/ multiplication/ division are helpful.
+  e.g. even though GBM is powerful, it still has difficulty to approximate
+  + - */, it may be very helpful to add such features manually.
+3. fractionaly part: e.g. 2.49 ---> 0.49 (price)
+
+Categorical features:
+1. label encoding: sklearn.preprocessing.LabelEncoder or Pandas.factorize
+2. frequency encoding: map value to their frequencies
+label encoding and frequency encoding are often used for tree-based methods.
+
+3 for non-tree based model, maybe 1-hot
+4. May consider replacing levels by the mean of certain numerical features
+BEFORE imputation.
+
+feature generation:
+1. feature-interaction: pclass + sex ---> 1male, 2female etc. Often for non-tree based models.
+
+Datetime:
+1. Periodicity: day number in week, month, season, year. Second, minute, hour etc.
+
+2. Time-since:
+ a) Since an independent time such as 2000/1/1
+ b) Eg. number of days left until next holiday / after last holiday.
+
+3. Difference between days
+
+Coordinates
+1. interesting places from given data or additional data, eg. distance to the nearest blah blah
+2. calculate aggregate statistics for objects surrounding the area
+3. clustering, distance to the center
+4. if train decision tree from coordinates, can add slightly rotated coordinates as new features.
+
+Missing values:
+1. hidden Nan: use plots such as histogram.
+2. add "isnull" feature
+3. Sometimes outliers can be treated as missing value.
+
+Feature extraction from text:
+1. Preprocessing: lowercase, stemming, lemmatization, stopwords
+2. Ngram can help
+3. Postprocessing: TFIDF
+
+Word2vec:
+Words: Word2vec, Glove, FastText etc.
+Sentences: Doc2vec.
