@@ -33,3 +33,9 @@ sudo systemctl restart network-manager.service
  MARKER_EXPR = originalTextFor(MARKER_EXPR(""))("marker")
 
 8. Trouble with python 3.5 pickle.load(file), got unicode decoding error. Fixed by using pickle.load(file, 'latin')
+
+9. Add Brother HL2340DW printer
+  (1) install hpijs package
+    sudo apt-get update
+    sudo apt-get install hpijs-ppds
+  (2) System setting --> Add Printer --> use Brother HL-2170W Foomatic/hpijs-pcl5e
