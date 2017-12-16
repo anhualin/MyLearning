@@ -1,0 +1,32 @@
+1. Practice problem (I)
+   Factor the expression x^2 - 12 x + 32 and 
+   x^2 -12x - 45.
+
+2. Practice problem (II)
+   Factor the expression 6x^2+x-15.
+	
+3. Practice problem (III) 
+   
+   Factor the expression -21x^2 + 31x -4.
+4. Practice problem (IV)
+   Factor the expression 4x^2 - 12xy + 9y^2.
+ 
+
+5. Practice problem (V)
+    Factor the expression 27 - 8x^3.
+
+
+Not GCF. But you need to consider all possible ways to factor the first coefficient 6 and the last number -5.
+In other words, we are trying to find four integers a, b, c, d such that (ax + b)(cx+d) = 6x^2 +x - 15.
+Expanding the left hand side gives (ac)x^2 + (ad+bc)x + bd = 6x^2 + x - 15.
+So they need to satisfy 
+(1) ac = 6
+(2) bd = -15
+(3) ad + bc = 1
+
+Usually we start with the first two equations: What are the possible values of a and c? well, quite a few possibilities.
+(a=1, c=6) (a=2, c=3) (a=3, c=2), (a=6, c=1). Then when are the possible values of b and d, (b=1, d = -15),
+(b=3, d = -5), (b=5, d = -3), (b=15, d = -1) ..., actually a lot.
+
+Then theoretically you have to try them all to see which values also make the (3) equations hold, in other words,
+ad + bc = 1. And you will see that a = 3, b= 5, c = 2, d = -3 is the answer. You may wonder, there are so many possibilities, how can I try them all?  Well, if you are writing a computing program to do it, then you need to ask the computer to try all values.  My experience of doing this by hand is that after some practice, you would sort of get the hang of it and can easily and quickly discard most of them and only focus on a few promising ones. But if you have never done this before, it will take some practice. Be patient, and do it slowly. 

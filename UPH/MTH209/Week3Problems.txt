@@ -1,0 +1,26 @@
+1. Practice problem (I)
+   Simplify the following rational expression:
+   (x^2-8x-9)/(2x^2-21x+27)
+
+2. Practice problem (II)
+   Simplify the expression.
+   1/(2x+5) - 1/(2x-5)
+	
+3. Practice problem (III) 
+   Solve the equation:
+   (x+1)/(x-1)  =  (x+3)/x
+
+4. Practice problem (IV)
+   Simplify the expression (3-sqrt(2))/(3+sqrt(2)). 
+
+Excellent work! This is the correct way of doing this problem and your answer is also correct. 
+A pair of numbers with form like a + sqrt(b) and a - sqrt(b) where a is any integer while b is any positive integer are called conjugate.
+When you multiply them together (a+sqrt(b))(a-sqrt(b)), you will get a + b since the square root terms get cancelled.  Therefore when the 
+denominator is of this form, we can multiply both the numerator and the denominator by the conjugate of the denominator to de-radical the denominator.   As another example,  say I want to simplify (6+sqrt(5))/(6-sqrt(5)).  The denominator is 6 - sqrt(5)  and its conjugate is 6 + sqrt(5).
+So we multiply both top and bottom by 6 + sqrt(5) to get (41 + 12  sqrt(5))/ 31.
+
+
+
+One perspective that I like is to think a math course as a training process. I agree that lots of material in this course or other math courses won't be used in the day-jobs of most people (as a side note, I'm a trained statistician and use polynomials, rational expression and radical expression a lot in our modeling). And for people who do need them, there are lots of sophisticated software that are able to solve them easily. But I think math can provide a good training for your logical, analytical thinking ability, and maybe patience, those of you who survived the AMP 3a may attest to this. Our brain is just like our body, it needs exercise. We all know jogging/swimming are good for our health. But how many of us need to run/swim in our jobs? I think it's a good idea to take this course as a training for your mind and hopefully enjoy the challenge. If you don't challenge yourself, you are never going to get better
+
+Please review the quiz problems that you got wrong and try to work them out.  Let me know if you have any questions.

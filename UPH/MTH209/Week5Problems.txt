@@ -1,0 +1,42 @@
+1. Practice problem (I)
+	If f(x) = 2x+5, find the inverse function of f(x).
+	Very good. The composition of functions is a very important concept. It can be thought as a chain of operations. Imagine that we have an object "x" which we would like to apply some complicated operation to it. A lot of times this big operation can be decomposed to a sequence of simpler operations. In this problem, we first apply G() to x, then apply F() to the result from G().  In this example, we chain two simple functions g(x) = 3x+2 and f(x) = 2x+1 to get a more complicated function 6x+5. Of course, 6x+5 isn't so bad either. But in real applications we may need to chain various trig functions, radical functions and polynomial functions. We have good understanding of these types of funcitons independently, but to deal with them all together will be a great pain.
+
+2. Practice problem (II)
+     If f(x) = 2x+1, g(x)= 3x+2, find f(g(x)).
+
+3. Practice problem (III)
+  If f(x) = (3x+1)/4, find the inverse function of f(x).
+
+	
+4. Practice problem (IV)
+   If we know log(10^x) = 5, then what is x?
+
+On the other hand, there is also a simple interest theory about which I will give an example in another post.
+
+
+
+
+
+(5)  is part of the  series corresponding to the sequence ak = k^3 (k=1,2,3,4,5,6,......). It means the sum of the first 4 terms: a1+a2+a3+a4.
+So we just need to figure out what is each term: a1 = 1^3 = 1, a2=2^3 = 8, a3=3^3 = 27, a4=4^3 = 64, hence 
+the answer is 1+8 + 27 + 64 = 100.
+
+Let's look at another more complicated example: Double click to edit
+Here the corres
+
+ponding sequence is ak = (k+1)^2.  But the summation  starts from the second term and ends at the fifth term, i.e. we are looking for 
+a2+a3+a4+a5 = (2+1)^2 + (3+1)^2+(4+1)^2+(5+1)^2 = 3^2 + 4^2 + 5^2+6^2 = 9 + 16 + 25 + 36 = 86.
+
+Please try to review as many problems  in all quizzes as possible before taking the final exam since  similar types of problems may appear in the final. Let me know if you have any questions. 
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++
+
+
+(43) a1 = 4*1 = 4.
+
+(44) a1 = 2^(1-1) = 2^0 = 1, a4=2^(4-1)=2^3 = 8.
+
+(45) Sum = 1^2 + 2^2 + 3^2 + 4^2 + 5^2 = 1 + 4  +9 + 16 + 25 = 55

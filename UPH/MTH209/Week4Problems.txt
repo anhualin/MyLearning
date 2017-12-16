@@ -1,0 +1,35 @@
+1. Practice problem (I)
+	Solve 2x^2 + 5 = 11x
+
+Very good. The quadratic formula is a sure-kill for any quadratic equations and it can be easily written into computer code.
+On the other hand, this problem can also be solved by factoring.
+Notice 2x^2 - 11x + 5 = (x-5)(2x-1), then in order to make 2x^2 - 11x + 5 =0, one of x-5 and 2x-1 must be equal to 0.
+From this we can get the same two solutions.
+
+Since I don't like the radical staff very much, usually I try factoring method first, if I cannot factor the polynomial, then I resort to the quadratic formula.
+But there is nothing wrong with using the quadratic formula directly. Just different personal preference.
+
+2. Practice problem (II)
+	f(x) = x + 1 and g(x) = x^2.
+    Find (f+g)(x), (f-g)(x), (fg)(x), and (f/g)(x)	
+3. Practice problem (III) 
+   Solve x^2 + 10x + 25 = 0
+4. Practice problem (IV)
+   Find the x-intercepts of the parabola y = x^2 - 3x - 3.
+
+Please try to complete this assignment.
+
+(2) Your numerator is correct as the product of 9 and 7.  The denominator should be the product of x-1 and x-3, hence (x-1)(x-3).
+In other words, the answer should be 63/[(x-1)(x-3)].
+
+(5) The numerator should be 8x + 3x - 6 = 11x - 6.
+
+(5) x/(3x-6) + 1/8 = x(8)/[(3x-6)(8)] + (3x-6)/[(3x-6)(8)] = (8x+3x-6)/[24(x-2)] = (11x-6)/[24(x-2)]
+
+(7) The height of the object should be proportional to the length of its shadow. Hence
+x/16.5 = 16.2/5.4 ---> x = 49.5
+
+(10) You need to multiply both the numerator and the denominator by 8 - sqrt(7).
+
+
+(9) sqrt(5) (9 - sqrt(5)) + 2sqrt(5) = 9sqrt(5) - 5 + 2sqrt(5) = 11sqrt(5) - 5

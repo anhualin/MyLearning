@@ -1,0 +1,48 @@
+1. Practice Problem (I)
+  A line passes through the points (1,3) and (-4, 1). 
+  (a) What is the slope of this line?
+  (b) What is the y-intercept of the line?
+
+2. Practice Problem (II)
+   We have two lines L1 and L2. We know L1 and L2 are parallel to each other. We also know that the equation of L1 is 
+y=3x+1.
+   (a) What is the slope of L1?
+   (b) What is the slope of L2? (Note: parallel lines have the same slope)
+   (c) If we know the point (2,9) is on L2, what is the slope-intercept form of L2?
+
+3. Practice Problem (III)
+   Given two numbers a and b. If the product a*b = -1, we say that a and b are  negative reciprocal of each other. 
+Please find the negative reciprocal of  1, 2/3,  -3/4, 6/5, -7/3.
+
+You need to be able to find the negative reciprocal of any given number to solve the next practice problem.
+4. Practice Problem (IV)
+   We have two lines L1 and L2. We know L1 and L2 are perpendicular to each other. We also know that the equation of L1 is y=3x+1.
+   (a) What is the slope of L1?
+   (b) What is the slope of L2? (Note: the slopes of perpendicular lines are negative reciprocal of each other
+   (c) If we know the point (3,9) is on L2, what is the slope-intercept form of L2?
+
+To find b, we just need to find a specific point on the line and plug in the corresponding x,y-coordinates. Then we will
+get an equation of b solving which gives us the value of y-intercept. Exactly which point on the line that will be plugged 
+into the equation doesn'ts matter. They should all give the same result.
+For example, we can plug in (-4,1), in other words, x = -4, y = 1.
+So y = 2/5x + b ---> 1 = 2/5 (-4) + b ----> 1 = -8/5 + b ---> b = 1 + 8/5 = 13/5.
+
+
+4. Discussion Topic (I)
+   Explain the concept of modeling. Can you think of a real life example?
+  
+Please review the quiz problems that you didn't get right and try to work them out.
+
+How to find the slope of a line:
+Given two points on a line, you can use the two point formula to find its slope: m =(y1 - y2)/(x1- x2) = (y2-y1)/(x2-x1).
+
+For example, if we know two points (1, 2)  and (4, -1) are on a line, then we can find the slope of that line.
+
+We have x1 = 1 and y1 = 2 (note, the first number is the x-coordinate and the second number is the y-coordinate), x2 = 4 and y2 = -1.
+
+So the slope m = (y1 - y2)/(x1-x2) = (2 - -1)/(1 - 4) = (2 + 1) / (1-4) = 3/(-3) = -1.
+
+
+A special case that often appears in tests is given the x-intercept and y-intercept and to find the slope. In this case a simplified formula
+
+m = - y-intercept / x-intercept can be used. For example, if a line has x-intercept = 2 and y-intercept = 5, then its slope = - 5 / 2 = -5/2.

@@ -1,0 +1,43 @@
+There are a few things that I would like you to know.  Some of you already asked me about them in private message. I think it's better to let everyone aware of them.
+
+A) Participation credits:
+
+You need to post 8 substantive messages each week to get the full credit (4). In other words, each substantive message counts as 0.5 point.
+There are several ways to contribute substantive messages:
+
+(1) Try to solve the practice problems that I post in the Learning Activity/Reading section and post your solutions with work and your posts will be marked as substantive.
+
+(2) Try to share comments/opinions/discussions about the two First Messages and other people's posts about them. However, your post here need to have some "meat" to be considered substantive. A rule of thumb is to have at least 3 sentences. 
+
+(3) You can also share your thoughts or comment/answer other's posts in the Video or Assignment/Quiz Section. Again, the posts here need to have "meat" to be counted as substantive
+
+B) Adaptive Math Practice Assignment:
+(1) The deadline for all AMP assignments is the LAST DAY of the CLASS.  At the end of each week, I will give you a temporary score for the AMP assignment of that week.  At the end of the class, all AMP scores will be updated according to your progress. But it's a good idea to try to complete as much as possible in each corresponding week.
+(2) The AMP scores are essentially given by the software which works kind of like a blackbox. Neither you nor I have much control over it.  It will give you a score based on its measurement about how many technique points that you have mastered.  So it may happen that even if you have completed all problems, you still don't get a 100% score. One reason for this scenario is that it "thinks" that you still need to work on a technique but it simply runs out of problems for you.
+
+C) Quiz:
+The deadline for each quiz is the last day of the corresponding week.
+
+Please Let me know if you have any questions.
+Mary
+
+########################################################
+The user interface for me is different from that for your guys. So I'm not sure what worked for me will work for you. 
+I'm using Google Chrome. First I got to this page of assignment 1a. In the upper right corner of chrome, there is a shield symbol. If you let your mouse stay on the shield symbol, you will see a message that this page contains scripts from unauthenticated sources. Then I clicked the shield symbol, a pop up box appeared asking me to decide whether to click "Launch the unsafe script" which I did. The page reloaded and the white space in the assignment 1a window now had a link "click here to launch". Clicking that link showed the assignment.
+
+########################################################
+The material of week 5 is generally considered the easiest so that you can have sufficient time to work on the final.  The final exam is comprehensive covering all materials for all the five weeks. I strongly recommend you to do the following before starting the exam (of course, you need to reserve enough time for it):
+1. Review every problem in the previous quizzes, especially those that you didn't get right. Similar types of problems may appear in the final.
+2. Since there is no quiz for week 5, make sure that you understand how to solve every problem in the pre-quiz for week5. 
+
+Mary
+
+
+#########################
+ELIZABETH SEALE:
+Please help me understand this. The "degree" was stated to be the sum of the power of the variables. For example, 6ab2 was stated as having 3 degrees; the number 6 has zero, the letter "a" has 1 and the letter "b2" has 2. When all are added, the total is 3. In the video the dark haired woman (I can't remember her name and after you watch the video it disappears), gave an example of:
+a trinomial was written 4y2 - y + 7. at the time elapsed point of 3:52, she said the 4y2 had 2, the y had 1, and the 7 had zero. She then stated the degree was 2.
+Aren't you supposed to add the exponents, so 2 + 1+ 0 = 3. Can someone clarify this for me please? Finally the last problem she wrote had her answer as being 2 and I thought it should have been 3. HELP!!!
+
+Scott
+My understanding of the concept is that you take the "degree" of the largest like variables. For example: 4x5 - x + 2 with like variables being x you take the larger degree of the two. So, 4x5 and x1 the larger of the two is x5 the answer is 5 because the like variables rule comes into play. If anyone else has a different explanation please present it, so we are not offering corrupt information.

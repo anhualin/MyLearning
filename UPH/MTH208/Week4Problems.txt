@@ -1,0 +1,28 @@
+1. Practice Problem (I)
+ Solve the following system of equation:
+3x-2y=5
+x+6y = -5
+
+How many solution does this system have? 
+What is the geometric meaning of this problem, in terms of the two line  3x - 2y = 5 and x + 6y = -5?
+		
+2. Practice Problem (II)
+Solve the following system of equation:
+2x-3y=8
+9y = 6x - 24
+
+How many solution does this system have?   
+What is the geometric meaning of this problem, in terms of the two lines 2x - 3y = 8 and 9y = 6x - 24?
+
+3. Practice Problem (III)
+Solve the following system of equation:
+6x + 4y = 8
+3x + 2y = 7
+
+How many solution does this system have?
+
+4. Practice Problem (IV) 
+Tom and Jim both went to buy apples. Tom bought 4 times as many as Jim did. Together they bought 20 apples. How many apple did Tom buy?
+
+5. Discussion Topic (I)
+What are the two symbolic techniques to solve system of linear equation? Use example to explain them.

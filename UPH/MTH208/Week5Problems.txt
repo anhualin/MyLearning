@@ -1,0 +1,17 @@
+1. Practice Problem (I)
+	Simplify (3x)^2 + 3^2x
+2. Practice Problem (II)
+    Simplify (x^3)(x^8)(2x^6)
+3. Practice Problem (III)
+    ((x^2y)^(-3))/(x^(-1)y)^2
+
+4. Express 0.0003901 in scientific notation
+
+5. Express 58009 in scientific notation.
+
+6. Discussion Topic (I)
+
+
+
+#################################
+Please review all problems in quiz1 to quiz4. Similar types of problems may appear in the final.

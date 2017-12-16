@@ -1,0 +1,11 @@
+Practice problems:
+(1) There are 100 students, 50 of them registered for the English class,  60 of them registered for the Math class,  10 of them didn't register for neither. 
+How many of them registered for both classes?  Try to use Venn Diagram to solve this problem.
+
+If there are 50 students registered for both, and we know there are 50 registered for English. Hence these should be the same 50 students.  But then there is the problem, the rest 40 students must be for Math only.  so all 90 have registered for Math which is against 
+the fact that only 60 registered for Math.
+
+You are right that there are 90 students who registered for at least one course.  It's hard for me to draw diagram here.  Try to picture this:
+Consider groups of A) English only, B) Math only, and C) both.
+
+We know A + B + C = 90.  Now if I add the 50 English with the 60 Math I get 110, which group is counted twice?

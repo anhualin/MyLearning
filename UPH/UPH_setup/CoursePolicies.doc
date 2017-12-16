@@ -1,0 +1,163 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <title>Course Policies</title>
+    <!--[if gte mso 9]>
+        <xml>
+            <w:WordDocument>
+                
+                <w:View>
+                    Print
+                </w:View>
+                    
+                <w:Zoom>
+                    100
+                </w:Zoom>
+                    
+                <w:DoNotOptimizeForBrowser/>
+                    
+            </w:WordDocument>
+        </xml>
+    <![endif]-->
+    <style> 
+        <!-- 
+            @page
+            { 
+                margin:1.0in 1.0in 1.0in 1.0in;
+            }
+            @page Section1
+            {
+                margin:1.0in 1.0in 1.0in 1.0in;
+            }
+            div.Section1
+            {
+                page: Section1;
+            }
+        -->
+    </style>
+</head>
+<body lang="EN-US" style="font-family: Arial; font-size: 13px;">
+    <div class="Section1">
+        <table border="0" cellspacing="0" cellpadding="0" width="100%" style="font-family: Arial;
+            font-size: 10pt;">
+            <tr>
+                <!--Header Image-->
+                <td>
+                    <img src="http://corptrain.phoenix.edu/policybuilder/img/mainOutputLogo.gif" alt="University of Phoenix Logo" />
+                </td>
+                <!--Header Text-->
+                <td style="text-align: right;">
+                    <!--Title Text-->
+                    <div style="font-size: 22pt;">Instructor Policies</div>
+                    <div style="font-weight: bold;">MTH208</div>
+                    <div>College Mathematics I</div>
+                </td>
+            </tr>
+            
+        </table>
+        <table border="0" cellspacing="20" cellpadding="0" width="100%" style="font-family: Arial;
+            font-size: 10pt;">
+            <tr id="FacInfo">
+                <td colspan="2">
+                    <div style="text-decoration: underline; font-style: italic; font-weight: bold; font-size: 12pt;">Facilitator Information &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <br />
+                    <div style="font-weight: bold;">Mary Lin</div>
+                    <div>
+                        <a href='mailto:marylin03@email.phoenix.edu'>marylin03@email.phoenix.edu</a> (University of Phoenix)</div>
+                    <div>
+                        <a href='mailto:xuemarylin@yahoo.com'>xuemarylin@yahoo.com</a> (Personal)</div>
+                    <div>
+                        <span style="font-weight: bold;">6156316329</span> (EST)</div>
+                    <br />
+                    <div style="font-weight: bold;">Facilitator Availability</div>
+                    <p>
+                        I am available from 9 a.m.-9 p.m. Central Time on most days, but I attempt to reserve Sunday for my family. On Saturdays, I tend to be online in the morning only. If these times are not convenient for you, please let me know. I will be happy to accommodate your schedule, if possible. I provide you with these times to make it easier to communicate with me, and not to limit our contact.<br/><br/>I want you to know that, should you need to contact me outside these time frames, you should not hesitate to do so.
+                    </p>
+                    
+                    <p>For emergencies, when you are not able to gain access to messages in the classroom, please send a message to my personal email address. In the event a third party needs to contact me, please direct them to my contact information listed under "facilitator information." No third party should use your login credentials to gain access to the classroom.</p>
+                    
+                </td>
+            </tr>
+            
+            <tr id="LateAssignments">
+                <td colspan="2">
+                    <div style="text-decoration: underline; font-style: italic; font-weight: bold; font-size: 12pt;">Late Assignments &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <p>Late assignments receive a 10% deduction for each day they are late if assignments are not posted by 11:59 p.m. M.S.T. on the day they are due. Assignments more than 1  day  late will not be accepted. Technological issues are not considered valid grounds for late assignment submission. In the event of a University of Phoenix server or classroom outage, students should submit assignments to the instructor via email to demonstrate timely submission and when systems are restored, submit those assignments according to syllabus instructions. Unless an Incomplete grade has been granted, learner assignments submitted after the last day of class will not be accepted.</p>
+                </td>
+            </tr>
+            
+            <tr id="LearningTeams">
+                <td colspan="2">
+                    <div style="text-decoration: underline; font-style: italic; font-weight: bold; font-size: 12pt;">Learning Teams&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    
+                    <p>One of the learning goals at the University is to help students develop the skill of effective collaboration and team competence.</p>
+                    
+                    
+                    <p>University of Phoenix students are expected to work effectively in diverse groups and teams to achieve tasks. They must collaborate and function well in team settings as both leaders and followers. They should respect human diversity and behave in a tolerant manner toward colleagues and peers. If you experience difficulties working with your team, you are expected to resolve them within the team if possible using the terms of the Learning Team Charter. However, please feel free to contact me for guidance if you have concerns in this area.</p>
+                    <p>It is expected that you will actively participate with your learning team and contribute to the team discussions and assignments by a) contributing original work that is accepted and used by the team with proof of originality b) participating in the project from assignment organizing through meaningful final review of the team project for submission, and c) ensuring to your team that your contributions are your original work and properly quoted, cited, and referenced.</p>
+                    <p>While Learning Team projects will be evaluated on outcomes, <b>individual students may receive differing grades based on individual contributions and collaboration.</b></p>
+                    <p>Learning Teams should provide a brief summary of any communication held outside the classroom. Therefore, if you hold conference calls, work in a real-time chat room, or get together outside the classroom environment in another way, please post a log, transcript, or summary in the <b>Learning Team</b> discussion section. Further, do not use any of these supplementary communication tools unless everyone on your Learning Team agrees to the method and to the schedule. If you have any questions, please contact me.</p>
+                </td>
+            </tr>
+            
+
+            <tr id="Grading">
+                <td colspan="2">
+                    <div style="text-decoration: underline; font-style: italic; font-weight: bold; font-size: 12pt;">Grading Scale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                    <br />
+                    
+                    <table style="border-width: 0px; border-collapse: collapse; border-style: none; border-spacing: 0px;
+                        text-align: center; width: 6.45in; font-family: Arial; font-size: 10pt">
+                        <tr>
+                            <td style='border: 1px solid #808080; font-weight: bold; font-style: italic;' bgcolor="#CCCCCC">
+                                <b>Grade</b>
+                            </td>
+                            <td style='border: 1px solid #808080;'>A</td>
+                            <td style='border: 1px solid #808080;'>A-</td>
+                            <td style='border: 1px solid #808080;'>B+</td>
+                            <td style='border: 1px solid #808080;'>B</td>
+                            <td style='border: 1px solid #808080;'>B-</td>
+                            <td style='border: 1px solid #808080;'>C+</td>
+                            <td style='border: 1px solid #808080;'>C</td>
+                            <td style='border: 1px solid #808080;'>C-</td>
+                            <td style='border: 1px solid #808080;'>D+</td>
+                            <td style='border: 1px solid #808080;'>D</td>
+                            <td style='border: 1px solid #808080;'>D-</td>
+                            <td style='border: 1px solid #808080;'>F</td>
+                        </tr>
+                        <tr>
+                            <td style='border: 1px solid #808080; font-weight: bold; font-style: italic;' bgcolor="#CCCCCC">
+                                <b>Percentage</b>
+                            </td>
+                            <td style='border: 1px solid #808080;'>95+</td>
+                            <td style='border: 1px solid #808080;'>90-94</td>
+                            <td style='border: 1px solid #808080;'>87-89</td>
+                            <td style='border: 1px solid #808080;'>84-86</td>
+                            <td style='border: 1px solid #808080;'>80-83</td>
+                            <td style='border: 1px solid #808080;'>77-79</td>
+                            <td style='border: 1px solid #808080;'>74-76</td>
+                            <td style='border: 1px solid #808080;'>70-73</td>
+                            <td style='border: 1px solid #808080;'>67-69</td>
+                            <td style='border: 1px solid #808080;'>64-66</td>
+                            <td style='border: 1px solid #808080;'>60-63</td>
+                            <td style='border: 1px solid #808080;'>&lt;60</td>
+                        </tr>
+                    </table>
+                    
+                </td>
+            </tr>
+            
+            
+                <tr id="NCOnlineParticipation">
+                    <td colspan="2">
+                        <div style="text-decoration: underline; font-style: italic; font-weight: bold; font-size: 12pt;">Participation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <p>For full participation credit during participation weeks, you are required to contribute a total of eight substantive messages each week in the classroom. The eight messages must occur on at least three different days during the online week to earn full credit.</p>
+                        <p></p>
+                    </td>
+                </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

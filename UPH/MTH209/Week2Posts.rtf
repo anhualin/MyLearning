@@ -1,0 +1,151 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 6.3.9600}\viewkind4\uc1 
+\pard\nowidctlpar\b\i\f0\fs24 MATH209.\par
+\b0\par
+\b Week 2 Discussion Question1\i0 :\par
+\fs20 What is the greatest common factor? How do you know when you have found the greatest one?\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Say we have two positive numbers A and B. And let's assume A>B.  Then we can write A as a multiple of B plus a remainder R. For example, if A=98, B= 10, then 98 can be written 90 + 8 where 90 is a multiple of 10 and the remainder R is 8.  Note that R is always strictly less than B otherwise we can still pull a B out of R.  By that we mean usually we won't write 98 as 80 + 18 because you can still get a 10 out of 18.  A long way to look at this is: say I have $98 and want to buy as many large cheese pizza as possible. If each large cheese pizza costs $10, how many pizzas can I buy and how much money will be left.  Can you convince yourself that I can buy at most 9 pizzas with $8 left?\par
+\par
+The above is the concept of remainder.  So for any positive integers A>B, we can write A=m*B + R where m is another positive integer and R is the remainder  (0<=R<B). In the pizza example, m=9 is the number of pizzas that I can buy while R=8 is the money left.  Now here's an important observation: every common factor of A and B is also a factor of R; and every common factor B and R is also a factor of A. Can you convince yourself to accept this?\par
+\par
+With this observation, we can say that GCD of A and B is exactly the GCD of B and R.  It would be nice to deal with B and R because they are smaller than A and B. Think about 10 and 8 v.s. 98 and 10.  If B and R are still too big, we can apply this remainder process again until they become sufficiently small. This process is the Euclidean algorithm.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar\par
+Yes, any group of integers always have a common factor 1. If 1 is the only common factor (ignoring negative factors), then we say that these are relatively prime. For example, because \par
+GCF(8,15)=1, so 8 and 15 are relatively prime. On the other hand, because GCF(24,18) = 6 >1, so 24 and 18 are not relatively prime.  Similarly this concept can be generated to the case of polynomials.  If two polynomials only has 1 as a common factor (again, we ignore negative sign), then we say they are relatively prime. But finding the GCF is harder in the polynomail situation. The following link has some good examples: {{\field{\*\fldinst{HYPERLINK http://hotmath.com/hotmath_help/topics/relatively-prime.html }}{\fldrslt{http://hotmath.com/hotmath_help/topics/relatively-prime.html\ul0\cf0}}}}\f0\fs20\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Most part of your answer is correct except the greatest common multiple.  For any two integers (or polynomials), there is no greatest common multiple. For example, let's consider a = 2 and b=3. The multiple of a and b are 6, 12, 18, 24 ,....., there is no upper bound. On the other hand, 6 is the smallest multiple of a and b which is usually called the least common multiple. GCD and LCM are two related and very important concepts.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\fs24\par
+
+\pard\nowidctlpar\i\par
+\b0 As your second example shows, the greatest common factor of several integers is the highest number that is common FACTOR to all other numbers. But in this course we need to deal with polynomials. So the greatest common factor of several polynomials is one of the focus of this chapter. As a simple example, finding the greatest common factor of 12x^3, 16x^2, and 20x can be carried out in three steps: (1) Find the GCF of the coefficients GCF(12,16,20)=4 as shown by you, (2) Find the GCF of the simple (with coefficient =1) monomials, GCF(x^3, x^2, x) = x (why?) (3) Finally the GCF(12x^3,16x^2,20x) is just the product of the results from previous two steps, i.e. 4x.\par
+\par
+By the way, I think you have typo in your second example, instead of 12x^2+16x+20x, it should be 12x^2+16x+20.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Unfortunately factoring "large" numbers is very difficult. Of course, the definition of "large" depends on your skill, experience and most importantly what kind of tool do you have. \par
+If you just do mental calculation, then factoring a number close to 1000 would be quite difficult for most people; if you have paper and pencil, then you can handle much larger ones;\par
+if you have a good computer and can write computer programs, then factoring a number at the order of million would be a piece of cake. \par
+One catch in factoring a relative large number is to notice that it must have a factor that's less than or equal to its square root. For example, say I want to factor 1147. First I find or \par
+roughly guess its square root which is around 33. Then I'll test from 33 to 1 to find the first factor of 1147. After some calculation, we can see that 31 is a factor of 1147 which leads to 1147=31*37.\par
+\par
+As I mentioned in my previous post, factoring a "large" number is very difficult. Interestingly, this difficulty finds application in cryptography. For example,say, the key to decrypt a message depends on whether you can factor the number 489527 since one factor will lead to the key.  Without a computer, it's going to take a while for ordinary people to factor it. Therefore this is pretty secure against \par
+computer-less attack. For real applications, the number has to be really really big so that even with a computer it's very hard to factor. Of course, we can always find numbers that are sufficiently large since positive integers can go to infinity.  \par
+See {{\field{\*\fldinst{HYPERLINK http://en.wikipedia.org/wiki/RSA_Factoring_Challenge }}{\fldrslt{http://en.wikipedia.org/wiki/RSA_Factoring_Challenge\ul0\cf0}}}}\f0\fs24  for interesting challenge related to this topic.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar There is one way that can be used to find the GCF of two integers with probably less factoring.  This method uses the concept of remainder which I believe that you have learned.\par
+If not, see {{\field{\*\fldinst{HYPERLINK http://www.mathsisfun.com/numbers/division-remainder.html }}{\fldrslt{http://www.mathsisfun.com/numbers/division-remainder.html\ul0\cf0}}}}\f0\fs24  for an explanation. Here are a few simple examples: the remainder of 7 divided by 2 is 1, the remainder of 13 divided by 5 is 3, the remainder of 16 divided by 4 is 0.\par
+\par
+Now let's say I want to find GCF(m,n) where m and n are two integers and m>n.  Let r be the remainder of m divided by n. Then if r=0, we know n is a factor of m so n itself is the CCF (why?); if r>0, then there is a theorem stating GCF(m,n) = GCF(n,r) which will replace the bigger number m by the smaller number r. \par
+\par
+Using your example: GCF(36,24)=?\par
+The remainder of 36 divided by 24 is 12, so GCF(36,24)=GCF(24,12). Now since 12 is a factor of 24, so GCF(24,12)=12, i.e. GCF(36,24)=12.\par
+\par
+Now the numbers n and r are still too big, we can apply this reduction process repetitively until they become sufficiently small.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720 Prime factorization is very important in mathematics especially for number theory. The theorem states that every integer>1 can be factorized into a sequence of prime number(s). If that sequence only contains the original number, then that number is a prime number itself. This seems to be an obvious fact.  Interestingly, we can use it to prove that there are infinitely many prime numbers:\par
+
+\pard\nowidctlpar            Now suppose there are only n prime numbers p1,p2, .... pn. We can create another number P=p1*p2*p3.....*pn + 1.  Clearly P is bigger than any one of the known prime number and none of the prime is a factor of P. Therefore P has to be a prime itself which contradicts with the assumption that p1-pn are all primes. Hence there are infinitely many primes.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Shon, you misread Tina's post. She didn't say that 1 is always the least GCF, instead she said that 1 is always the least common factor which is true. So it's very easy to find the least common factor. But this fact is seldom useful except in the case that 1 is also the GCF. When two integers share no common positive factors other than 1, we say they are relatively prime. This is an important concept in number theory and has find applications in some other applied field.\par
+\par
+By the way, great discussion on prime factorization, good job everyone!\par
+\b Week 2 Discussion Question2:\par
+\i0\fs20 Explain how to factor the following trinomials forms: \i x^2\i0  + \i bx\i0  + \i c\i0  and \i ax^2\i0  + \i bx\i0  + \i c\i0 . Is there more than one way to factor this? Show your answer using examples.\par
+\par
+\par
+\par
+Good post. Just a few points that need a bit clarification in the second part ax^2+bx+c. \par
+\par
+Firstly c may not be positive. For example, ax^2+bx+c = 2x^2-x-6 where c = -6. Of course we can always make c positive (assuming it's not 0) by pulling out a negative sign. In other words,\par
+2x^2-x-6 = -[-2x^2+x+6] and deal with -2x^2+x+6 first.\par
+\par
+Secondly we may need to factor a. " the sum of y and z multiplied by a is b"  may not hold. For example, considering 4x^2-4x+1. If you don't factor the leading coeffiient 4, you cannot factor this polynomial.  It can be factored as 4x^2-4x+1 = (2x-1)(2x-1) = (2x-1)^2. \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar As practice and review, please factor the following trinomials or indicate that they cannot be factored using integers. Your solution will be counted as one substantive message.\par
+1. x^2+6x+8 =\par
+2. x^2-8x-105=\par
+3. 6x^2-7x-90=?\par
+4. 3x^2-8x+9=?\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\fi-360\li1080\par
+
+\pard\widctlpar\li360\par
+\b0 Very good. However, the case of ax^2+bx+c is actually more complicated. For example, consider 6x^2+5x+1 where a=6, b=5 and c=1. You can never find integer d and e such that b=a*e+d and c=d*e. The correct factorization is 6x^2+5x+1=(3x+1)(2x+1). Hence you have to consider all possible factoring of a. The method that you described only works when a is a prime.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\b\par
+
+\pard\nowidctlpar\b0 Although x(x+b) is a factorization of x^2+bx, x(x+b)+c is not a factorization of x^2+bx+c.  Factorization means rewriting an expression as the product of several simpler ones. \par
+x^2+bx is the product of x and x+b. But x^2+bx+c is the sum of x(x+b)  and c. To factor x^2+bx+c you need to find two integers d and e such that (x^2+bx+c)=(x+d)(x+e). Since \par
+(x+d)(x+e)= x^2+(d+e)x + d*e,  our job is equivalent to find d and e so that d+e = b and d*e=c.  For example, say I want to factor x^2+3x+2, so b=3 and c=2.  Then d and e must satisfy d+e=3 and d*e=2, it's easy to see that d=2 and e=1 are just what we need. So (x^2+3x+2)=(x+2)(x+1).  When such d, e don't exist, then the x^2+bx+c cannot be factored.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Please note that factoring x^2+bx+c as x(x+b) +c is NOT correct. The correct factoring of x^2+bx+c has to be of the form (x+d)(x+e) where d and e are some integers. \par
+For example, x^2+8x+7 = (x+1)(x+7),  x^2+6x+8 =(x+2)(x+4), x^2+8x+15=(x+3)(x+8).  Of course a lot times x^2+bx+c maybe unfactorable in which case the required d and e don't exist.\par
+\par
+Similarly, factoring ax^2+bx+c as x(ax+b) +c is also wrong.  The correct factoring of ax^2+bx+c has to be of the form (dx+e)(fx+g). For example, 2x^2+5x+2=(2x+1)(x+2),\par
+6x^2+31x+35 = (2x+7)(3x+5).  Of course many ax^2+bx+c may also be unfactorable. \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Very good and detailed answer. The trial and error method is very important but has to carefully executed since it's very easy to miss some scenarios.\par
+\par
+Your discussion on factorization of ax^2+bx+c is excellent.  I would like to add a more complicated example: factor 6x^2+13x+6.\par
+Here a=6, b=13, c=6. So we're looking for m and n such that m*n=a*c=36 and m+n=b=13.  Suppose I'm new to this method, so I have to try all possible combination of m and n.\par
+I'll start with m*n=36. Since 36=1*36=2*18=3*12=4*9=6*6.  So I'll try (m=1,n=36), (m=2,n=18), (m=3,n=12),(m=4,n=9) and (m=6,n=6) to see whether one of them satisfies m+n=13.\par
+Clearly (m=4,n=9) does. So 6x^2+13x+6=6x^2+4x+9x+6 = (6x^2+4x) + (9x+6) = 2x(3x+2) + 3(3x+2) = (3x+2)(2x+3).\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar\par
+The best way is to use computer software, just kidding, well, sort of. Unfortunately there is no short cut. Theoretically you have to try all possibilities until find the right one or show it's impossible to factor it. Of course after lots of practice, you will develop a better sense which can help you quickly rule out unlikely candidates. As I know, there is at least one computer software MATHEMATICA that can factor quite complicated polynomials and is very popular among mathematicians.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Generally to factor a trinomial   a x^2 + b x + c where a is not 1, you have to try all possible ways to factor a and c. \par
+The following is the reason.  If a x^2 + bx + c can indeed be factored, then we can write it as \par
+a x^2 + b x + c = (m x + g) (n x + t) for some m, g, n, t. And our job is to find these four numbers or show that they don't exist.\par
+Expanding the right hand side gives  (mn) x + (mt + gn)x + gt.  Comparing this with a x^2 + b x + c, we see that we need to find numbers such that \par
+(1) a = mn\par
+(2) c = gt\par
+(3) b = mt + gn.\par
+\par
+(1)  and (2) are easy because they only involve factoring an integer a (or c).  So this is the basic routine. \par
+(i) find all possible ways to factor a, in other words, all candidates of (m, n)\par
+(ii) find all possible ways to factor c, in other words, all candidates of (g, t) \par
+(iii)  check whether there is a pair (m,n ) and a pair (g, t) such that b = mt + gn. If so, then we find our factoring.  If not,  then the original\par
+trinomial cannot be factored.\par
+\par
+3x^2 + 7x + 2 is relatively simple because here a = 3 and c = 2 are prime numbers. \par
+So here goes:\par
+(i) a = 3, the candidates of (m, n) are (3, 1) (1, 3), (-3, - 1), (-1, -3).\par
+(ii) c = 2, the candidates of (g, t) are (2, 1) (1, 2), (-2, -1), (-1, -2).\par
+(iii) After some calculation, we see that  (m=3, n=1) and (g=1, t = 2) satisfies mt+gn = 3*2 + 1*1 = 7 =b. So our facoring is \par
+3x^2 + 7x + 2 = (3x + 1) (x+2).\par
+\par
+It appears that lots of calculations are needed.  After sufficient practice, for relatively small numbers, you usually can quickly\par
+go through most possibliites in mind.  There are different ways to lay out this strategy, but essentially it is the only method. \par
+When the numbers are very large and have many factors, the problem becomes very difficult. But that won't happen in this course.\par
+}
+ 

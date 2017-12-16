@@ -1,0 +1,218 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 6.3.9600}\viewkind4\uc1 
+\pard\nowidctlpar\b\i\f0\fs24 MATH208.\par
+Week 3 Discussion Question1:\par
+\i0 Explain the concept of modeling. How does a model describe known data and predict future data? How do models break down? Can you think of an example?\par
+\b0\fs20 quote:\par
+1. "chemotherapy can be a life-saver, but it is fraught with severe side effects, among them an increased risk of infection. Until now, the major criterion for assessing this risk has been the blood cell count: if the number of white blood cells falls below a critical threshold, the risk of infection is thought to be high. A new model built by Weizmann Institute mathematicians in collaboration with physicians from the Meir Medical Center in Kfar Saba and from the Hoffmann-La Roche research center in Basel, Switzerland, suggests that for proper risk assessment, it is essential to evaluate not only the quantity of these blood cells, but also their quality, which varies from one person to another. The study was performed by researchers with an unusual combination of backgrounds. Lead author, Weizmann Institute's mathematician Prof. Vered Rom-Kedar, specializes in the investigation of dynamic systems. The first author, Dr. Roy Malka, an electrical engineer who has become an applied mathematician, conducted this research as part of his Ph.D. studies at Weizmann; he is now conducting postdoctoral research on related subjects at Harvard Medical School."\par
+\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar   General mathematical/statistical modeling goes like this: \par
+1. identify our target variable y  and possible related factors x1, x2, ...,xn (if there is only one factor, then just x). \par
+  This step needs a lot of expertise and experience of specific field. \par
+2. figure out the relation about how does y depend on x1--xn, in other words, find a function  such that y is approximately f(x1,x2,...,xn) + a random error.\par
+  In general, the form of f() can be very complicated. But a lot of times we use linear formula such as  y= a*x for its simplicity, and it is used in Clare's example.\par
+3. Now we need to estimate the parameters in the formula of f() using historical data. The 1.05 was probably calculated this way.\par
+\par
+So it's not a magic number.  Based on historical data we believe (needs lots of evidence and justification) that the relation between y and x is y=a*x.  Then using those data we estimate the value of a is 1.05 (again needs lots of calculation a little beyond current material). Then we use the model y=1.05*x to do forecasting.  \par
+\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good discussion LaDale. Indeed \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar It's good to know that you use predictive models in your work.  Nowadays many companies have a business intelligence department (or a similar name). This department consists of analysts with background in math, statistics, computer science or some other analytic oriented fields. One of their main responsibility is to develop various models that can predict some future target. For example, a bank issuing credit cards would like to know how many people will cancel their accounts etc.  Of course unless in some extremely simple case, no model can give prediction with 100% accuracy. But usually as long as the prediction is not too far off, it's already a big help to the business leadship. \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good post Mirella. I believe analysts in auto industry must have sophisticated models developed for this kind of problem. I'm no expert in cars. But as a general procedure of modeling, we start with finding our target and related factors. Here the target is clearly the MPG.  Now what factors does the MPG depend on? Some easy ones are like the current speed of the car, the road condition, traffic condition, etc. This step is not easy which needs specific field expertise. After getting all factors we need a relation between the MPG and those factors.  This relation has to be a mathematical expression. In other words something like a speed that's too fast may hurt the MPG is not good enough.  Everything must be quantified so that we may have MPG= f(x1,x2,....,xn) + error. This step can be really difficult. A lot of training and experience in math/stat is needed.  And sometimes trade-off has to be made. Finally the model can be put in various use that may help the business.  \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar Very good point. Forecasting or prediction models are used a lot in many fields, stock markets, weather forecasting, business intelligence, to name a few. Essentially these models try to learn patterns from historical information and assume that the future would be similar. First that's a big assumption since future may very well be totoall different. Second learning historical patterns is very hard itself since the data are almost always noisy so a lot of simplifications have to be made and important information maybe lost. Many people in wall street build predictive models for stock market for a living (they are often called the quants for quantative analysts), but it's well known that predicting stocks is extremely hard. On the other hand, nowadays weather forecasting is often quite accurate.  \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar    Indeed the material is getting harder. In my opinion, five weeks are a little too short. It takes time and lots of practice to fully master the concepts and  techniques that are covered  in this course. It would have been better to have eight weeks or everyone is a full-time student with study as the only time-consuming thing in life. Unfortunately life is not so ideal. I hope you won't get frustrated. And please try to squeeze time to do as many exercises as possible. Let me know if you need any help.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Interesting discussion LaDale. I'm always interested in the models related to the stock market but never really spend time studying them. Is the market really predictable, I mean, for ordinary people, not someone with inside information? This reminds me of a 2011 movie "Margin Call" which has Kevin Spacey and Demi Moore in it. The movie tells a story happened right before the 2008 financial crisis if I remember correctly.  A model of a risk-analyst sort of predict the coming crisis. I think it's an interesting film. Personally I just feel that there are too many factors that may affect stock market.  \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\b\par
+
+\pard\nowidctlpar\b0 Good answer Colleen. The formula you have given is actually the simplest linear model. In a separate post I'll give a toy example to show the main idea behind it. Usually real life phenomena are very complicated, they often have no close-form formula, not to say linear ones. So modelers often face a dilemma: should they choose a complicated model that can better describe the real phenomenon or a simpler one that has easy interpretation and solution? For example, suppose in\par
+your example y and c are actually approximately related by y^3+2cy+b=0 which is much harder to solve than m*c+d, which one to use? There is no definite answer, a trade-off has to be made dependent on modeler's experience, computing power available etc.\par
+\b\fs24\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar\b0\fs20 Good question, Susan, I would like to ask the same thing. If it's just a shrinking of a map, then it's probably not a mathematical model. A kind of math model sort of related to this is often used in the delivery business. For example,  what's the best route to deliver packages to multiple destinations.  First step is to set up the math model where we simplify the map into a plane graph with several points (representing the destinations and middle stops)  connected by edges (representing the distance between them). All fancy details of the map that aren't related to the problem won't show in the graph.  Technically this problem belongs to  the operations research branch of applied mathematics. \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Consider a toy example of linear model: say we want to build a model to predict 10 year-old children's heights from their mothers' heights.  Of course there are many other factors that may affect a person's height, but let's only consider mother's height. \par
+\par
+We first need to collect data, for example, 100 pair ( x=mom's height, y=kid's height,). Clearly we want to find the relation about how does y depend on x. To start we can plot these 100 points on a plane to see the trend.  If it's look more like a curve, we may have to use some nonlinear function such as y=ax^2+bx+c.  But ideally, let's assume that the graph looks quite like a line.  But there may exist many lines that are close to these points. So we have to do some math to get the "best" one.  Say after some hard work we decide to use  y(x)= m*x+b as our model.  Then given a new mom's height  x0,  we can predict that the height of her kid at 10-year-old would be y(x0)=m*x0+b. \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Another related problem is often called facility location problem. \par
+Here is a simplest example. Say we have 3 factories located at \par
+different cities and we want to build a center facility serving them.\par
+The question is where should we put this facility center. In reality\par
+a lot of factors need to be considered. For the simplest case, say we\par
+only want to minimize the total distance from the center facility to\par
+the three factories. If you look at the map, there are lots of unnecessary\par
+details. So again the first step is to simplify the map into a \par
+mathematical graph where we only have several points representing \par
+the factories and some middle stops and some edges connecting them.\par
+The exact formula is beyond  the scope of this course. But this type \par
+of problems (much more complicated version) appear a lot in industry.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good example, Ashly. Indeed a lot of companies and government agencies have analysts\par
+and modelers whose main task is to analyze historical data, find important factors and build\par
+predictive mathematical/statistical models that can be used by the leadship. Of course, real\par
+life scenarios are often far more complicated than anything we see in a textbook. Predicting the future\par
+can be really difficult, otherwise there wouldn't have been the financial crisis. But still more\par
+and more sophisticated models are used in business.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar  Very good post. I have the same feeling about technology. On the one hand, they are very\par
+handy, on the other hand, we become so dependent on them that we sort of lose some of our \par
+abilities. For example, when I was in high school, calculator was a rare thing and we did all\par
+complicated calculations by hand. Now I use softwares to do almost all calculations except the\par
+simplest ones. I'm not happy with this but I also lack the will or motivation to go back to \par
+paper and pencil.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good advice and nice method. Divide and conquer is a popular and powerful method is \par
+mathematics (sounds like it came from computer games). It is frequently used in handling very\par
+complicated problems. The main idea is just as you suggested. In order to simplify the original\par
+problem, we break it into several smaller ones which can be handled easily. After solving each\par
+small problem, the original problem becomes simpler and can be solved.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar It is true that a lot of math (or science for that regard) that you learned in high school and/or\par
+university won't be used in your everyday life and job. But that by no means to say it's useless.\par
+I believe the main purpose of education is give your brain an all-round training while teaching knowledge\par
+is the second goal. Take math course as an example. You have to face challenges and struggle a lot\par
+to solve all those math problems. During the process your analytical skills and logical thinking\par
+ability get improved. Even if you complete forget all the knowledge right after the final exam, you still\par
+benefit from your struggle through this journey. \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720  \par
+{\pntext\f1\'B7\tab}\fs24 Nowadays many companies have a business intelligence department (or a similar name). This department consists of analysts with background in math, statistics, computer science or some other analytic oriented fields. One of their main responsibility is to develop various models that can predict some future target. For example, a bank issuing credit cards would like to know how many people will cancel their accounts etc.  Of course unless in some extremely simple case, no model can give prediction with 100% accuracy. But usually as long as the prediction is not too far off, it's already a big help to the business leadship. \par
+{\pntext\f1\'B7\tab}\par
+
+\pard\nowidctlpar Weather prediction is a very good example of modeling. \par
+ General mathematical/statistical modeling often goes like this: \par
+1. identify our target variable y(temperature for example)  and possible related factors x1, x2, ...,xn (if there is only one factor, then just x). This step needs a lot of expertise and experience of specific field. \par
+2. figure out the relation about how does y depend on x1--xn, in other words, find a function  such that y is approximately f(x1,x2,...,xn) + a small random error.\par
+  In general, the form of f() can be very complicated and a closed formula may not exist. But a lot of times we use linear formula such as  y= a*x for its simplicity.\par
+3. Now we need to estimate the parameters in the formula of f() using historical data. \par
+\par
+Of course, the real weather forecasting is much more complicated. The following link gives some introduction:\par
+{{\field{\*\fldinst{HYPERLINK http://www.wrf-model.org/index.php }}{\fldrslt{http://www.wrf-model.org/index.php\ul0\cf0}}}}\f0\fs24\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Your summary "The model provides an abstraction that reduces a problem to its essential characteristics." is very accurate.  Usually real life phenomena are very complicated, they often have no close-form formula, not to say linear ones as often used. So modelers often face a dilemma: should they choose a complicated model that can better describe the real phenomenon or a simpler one that has easy interpretation and solution? There is no definite answer, a trade-off has to be made dependent on modeler's experience, computing power available etc.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720  \par
+
+\pard\nowidctlpar Consider a toy example of linear model: say we want to build a model to predict 10 year-old children's heights from their mothers' heights.  Of course there are many other factors that may affect a person's height, but let's only consider mother's height. \par
+\par
+We first need to collect data, for example, 100 pair ( x=mom's height, y=kid's height,). Clearly we want to find the relation about how does y depend on x. To start we can plot these 100 points on a plane to see the trend.  If it's look more like a curve, we may have to use some nonlinear function such as y=ax^2+bx+c.  But ideally, let's assume that the graph looks quite like a line.  But there may exist many lines that are close to these points. So we have to do some math to get the "best" one.  Say after some hard work we decide to use  y(x)= m*x+b as our model.  Then given a new mom's height  x0,  we can predict that the height of her kid at 10-year-old would be y(x0)=m*x0+b. \par
+\par
+\par
+ \par
+\b\par
+\par
+\i Week 3 Discussin Question2\i0 :\par
+If a line has no y-intercept, what can you say about the line? What if a line has no x-intercept? Think of a real-life situation where a graph would have no x- or y-intercept. Will what you say about the line always be true in that situation?\par
+\b0\fs20\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good example Ben. If I want you to draw the graph of that car with x-axis representing its speed and y-axis for time, what would you get? It's going to be the  vertical line x=70.  The special line x=0 is exactly y-axis.  All vertical lines have the form x=constant that none of them have y-intercept.   Now if I switch the x,y axis, in other words, I want to use x-axis to represent time which is standard\par
+and y-axis for the speed of that car, what kind of graph will I get?\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Ahh, pizza, very interesting example. In real life, you cannot buy part of a slice. So the graph will consist of a couple of points. In other words,  they're never going to allow you to buy  2.32 slices of pizza. But for the purpose of modeling, connecting those points with a line is a common idea.  Let's consider two scenarios.\par
+(1) In a food court of a shopping mall. Let's assume that a slice of cheese pizza costs $3.  If I want you to draw a graph with x-axis representing the number of slices I buy, and y-axis representing the total money I need to pay, what kind of line will you get? More specifically what's the slope of this line? (2) In a pizza buffet (e.g.. CiCi's pizza). It's been years since I went to a pizza buffet, but let's assume the price is $10. Again I would like you to draw a graph as in (1), what kind of line will you get?   \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Very good example! I'll rephrase your example a bit in pizza (because I like pizza more than steak).  I want to draw a graph with  x-axis representing the number of slices I buy, and y-axis representing the total money I need to pay. \par
+In real life, you cannot buy part of a slice. So the graph will consist of a couple of points. In other words,  they're never going to allow you to buy  2.32 slices of pizza. But for the purpose of modeling, connecting those points with a line is a common idea.  Let's consider two scenarios.\par
+(1) In a food court of a shopping mall. Let's assume that a slice of cheese pizza costs $3.  What kind of line will I get? More specifically what's the slope of this line? (2) In a pizza buffet (e.g.. CiCi's pizza). It's been years since I went to a pizza buffet, but let's assume the price is $10. Again I would like to draw a graph as in (1), what kind of line will I get?   \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar I agree, that example needs some clarification.  Let's consider a similar example.  Say I'm on a weight program. Let y and x denote my height and weight from each measurement, respectively.  And I'll put those points on the x,y-coordinate plane system.  So I get a bunch of points each one of which corresponding to one measurement. Since I'm an adult, my height (y) should be a constant (yes, I heard that a person's height does fluctuate a bit, but that can be ignored compared with the weight change).  So all these points should be on the same level. The line going through them is a horizontal line with no x-intercept.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Strictly speaking, there are three concepts involved:\par
+(1) A line consists of all points on a straight path that extends to infinity in BOTH directions.\par
+(2) A ray is part of a line.  It has one end-point and extends to infinity in ONE direction.\par
+(3) A line segment is a part of line that has two end-points.\par
+\par
+A lot of time we use these concepts interchangeably without confusion. But when we talk about intercept and slope, usually we mean the first one.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar In pure mathematics a line or curve on the x,y- coordinate plane shows the relation between y and x, in particular, it tracks how does y change with respect the change of x.  So a horizontal line shows a relationship in which y doesn't change.  For real life examples, you have to assign real meaning to x and y. For example, we can let x to denote time (though usually in this case we'll use t instead of x),  then think about a real life scenario where something doesn't change for a while (with respect to time). An unpleasant thought might be, salary....\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar You're right Susan. There is no line on a plane that has neither x-intercept nor y-intercept.  A line cannot be parallel to both x-axis and y-axis. Our usual formula \par
+y=mx+b only includes non-vertical line because it already assumes the existence of the y-intercept (b).  Sometimes another formula which switches the role of x and y:  x=gy+c is more convenient. It covers all non-horizontal line because it assumes the existence of the x-intercept (c).\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Very good point Charlie. I think I have read somewhere that a person  starts to get shorter after 35.  So if we want to take this factor into account then we won't have a horizontal or vertical line.  This begs the question when should we consider the change of height.  Any model is a simplification of the corresponding real life scenario in which we ignore unimportant factors while only focus on a few important ones. For example, if our focus is on the change of weight during a relatively short period, say 6 months or one year, then the change of height is negligible. On the other hand, if we want to study how height varies during a long period, then the change of height has to be included in the model.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar I think you mean a parabola.  A parabola is not a line. It's actually a quadratic curve, arguably the simplest and most well studied curve. A standard parabola has equation as y=a*x^2 or x=a*y^2.  It's a very useful concept in both pure and applied math because it's more complicated than linear function (line) thus can be used to model more sophisticated scenario, yet not too hard to defy solution.  In reality, modelers often start with linear models trying to model the real scenario with lines. But when they find lines are not good enough,  they will try quadratic models based on parabolas.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar I agree, to get a real life example for this problem is a bit hard.  Let's consider the following example.  Say I'm on a weight program. Let y and x denote my height and weight from each measurement, respectively.  And I'll put those points on the x,y-coordinate plane system.  So I get a bunch of points each one of which corresponding to one measurement. Since I'm an adult, my height (y) should be a constant (yes, I heard that a person's height does fluctuate a bit, but that can be ignored compared with the weight change).  So all these points should be on the same level. The line going through them is a horizontal line with no x-intercept.\par
+ \par
+\par
+}
+ 

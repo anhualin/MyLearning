@@ -1,0 +1,16 @@
+check point:
+1. Scientific notation <--> ordinary notation.
+3. death per hour
+
+
+Practice problem (i)
+ (1) Write -3983.483 in scientific notation.
+(2) Write  0.008389 in scientific notation
+
+Practice problem (ii)
+(1) Multiply  3.1 * 10^2  and 3 * 10^5
+(2) Divide  6*10^2  by 2 * 10^3.
+
+Practice problem (iii)
+(1) Multiply 8 * 10^2 and 3.8 * 10^5
+(2) Divide  2 * 10^2 by 8 * 10^4.

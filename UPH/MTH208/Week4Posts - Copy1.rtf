@@ -1,0 +1,335 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033\deflangfe2052{\fonttbl{\f0\fswiss\fprq2\fcharset0 Arial;}{\f1\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 6.3.9600}\viewkind4\uc1 
+\pard\nowidctlpar\b\i\f0\fs24 MATH208.\par
+Week 4 Discussion Question1:\par
+\i0 What are two symbolic techniques used to solve linear equations? Which do you feel is better? Explain why.\par
+\b0\fs20\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar You are kind of different Clare. Most people including myself and many former students were thrown off by the elimination method at first.  The substitution method seems to be very natural. But once I took time to understand the purpose of elimination, I found that it's a very powerful method and could be easily applied to larger problems. All I need to do to keep eliminating until the problem becomes simple enough.  As I mentioned before, many software implemented various variations of this method to tackle huge problems (tens of thousands of equations/variables).\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar The elimination method can indeed be used to figure out whether a\par
+linear system has no/one/many solutions. But the main idea of elimination\par
+method is to reduce the coefficients of the equations without changing\par
+the solution set.\par
+For example, consider\par
+2x + 0y =4\par
+0x + 3y =9,\par
+where I intentionally keep the zero-coefficients there.\par
+\par
+\par
+We can easily find x=4/2=2 and y=9/3=3.\par
+\par
+Now how about \par
+2x+6y=22\par
+x+2y=8\par
+which is clearly harder.\par
+\par
+Now compare the difference between the coefficients of we can see the\par
+main difference is that the first system has 0's at the off diagonal.\par
+The point of elimination is to transform the second system so that it\par
+will have the same property.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Intuition is very important for doing research in mathematics. Great mathematicians (those genius) can often see through the maze and just know the answer without writing anything down. But for ordinary people who don't plan to do pure theoretical math research as a career, math is a useful tool. In this case, careful repetition is the key to master various techniques. Of course, how many repetition are necessary depends on your personal skill level. \par
+ \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Graphical method for solving system of linear equations with two variables  is very visual and easy to understand, but it is not a symbolic method.   When the coefficients are not integers, things become tricky. If you encounter irrational coefficients such as sqrt(2), pi, etc., it's impossible to exactly draw the line. Hence the solution can only be approximated. Symbolic methods, on the other hand, can produce the exact formula of the solution at  the cost of more algebraic calculations.  \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar You're right. For small problems the substitution method is often easier, at least not harder than the elimination method. Which one to use is simply personal preference. One important aspect of the elimination method is that it helped generating the concept of  matrix (not the movie).  Given a  aligned equation-system, e.g.:\par
+2x+3y=5\par
+3x+2y=6\par
+we can ignore the variables and only pay attention to the coefficients and the right-hand-side:\par
+[2   3  5]\par
+[3   2  6]\par
+which is called a 2(row) by 3(column) matrix.  Then the elimination method corresponds to doing row-operations (adding two rows, subtracting the multiple of a row from another row etc.) to transform the matrix to a simpler form . This topic belongs to linear algebra which is more advanced than our current course.  The point is, when the problem is large (say, with thousands of variables/equations) as are most real problems,  the elimination method can be easily carried out by \par
+computers. That's why it is the method implemented in most mathematical software.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good observation.  Given one linear equation, for example, x+y=5, we know it represents a line on a plane with x,y-coordinate system. For this particular example, we can find some properties that can uniquely determine this line: x-intercept=5, y-intercept=5, slope=-1, in other words, there is exactly one line having these properties.  Any point (x*,y*) on this line must satisfy the relation x*+y*=5. \par
+ \par
+Now consider 2x+2y=10, again it represents a line. And we can find its properties: x-intercept=5, y-intercept=5, slope=1. You can see that actually these two equations represents the same line. \par
+\par
+When we have two lines on a plane, three scenarios may happen:\par
+1. they are not parallel to each other (different slopes),  then they must intersect at the unique solution point of the equations.\par
+\par
+2. they are paralel to each other (same slope) but with different x,y-intercepts. In this case they don't intersect, and the equations have no solution.\par
+3. they are actually the same line, in this case every point on that line satisfy both equations, hence there are infinite number of solutions. This is the case of the above example.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Given a system of equations, we first align them in appropriate order, in particular: x appears before y, both are at the left hand side, the constant is at the right hand side, if either x or y doesn't appear in the equation, we still put them there with coefficient = 0.\par
+For example, (1) 2x+3y=5 is in order,  (2) 2x=5-3y is not, it needs to be rearranged as 2x+3y=5, (3)  x+y-6=0 is not in order, it needs to be rearranged as x+y=6; (4) the systems:  3x-y=3 and 2x=8 is not in order. The first one is, while the second only has x, we need to write it as 2x+0y=8.\par
+\par
+With this arrangement, any system of equations with two variables can be written as\par
+a1*x +b1*y=c1\par
+a2*x+b2*y=c2\par
+which can be uniquely determined by the coefficient  matrix\par
+[a1  b1  c1]\par
+[a2  b2  c2].\par
+In other words, once the locations of x, y are fixed, we just need to know the coefficients to write out the equations.\par
+To do elimination in matrix is just like doing that in the equations form only without writing out x,y explicitly. I'll give you one example.\par
+Consider equations:\par
+3x+2y=5 and\par
+x+y=1\par
+To eliminate y we can multiply the second equation by -2 and add the resulting equation to the first equation:\par
+3x+2y=5   plus -2x-2y=-2 gives  x=3, so the system becomes\par
+x         =3\par
+x+y    =1\par
+\par
+To do the same thing in matrix form, first we write the coefficient matrix\par
+[3  2  5]\par
+[1  1  1]\par
+We multiply the second row by -2 and add the resulting row to the first row. We get\par
+[1  0  3]\par
+[1  1  1]\par
+which is exactly the coefficient matrix of the previous system. \par
+Note this is already  beyond of this course, so if you don't understand every bit of detail, it's ok.\par
+(8)\par
+The best way to think about a math course is as a training. I agree that most material in this course won't be used in the day-jobs of  most people. And for people who do need them, there are lots of sophisticated software that are able to solve them easily.  But I think math can provide a good training for your logical, analytical thinking ability. Our brain is just like our body, it needs exercise.  We all know jogging is good for health. But how many of us need to jog in our jobs? Don't think too much whether you're going to use the material in your job or not, just take this as a training for your mind. \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Very concise and good explanation. But a bit more is needed for the elimination method. When the coefficients of x or y in both equations match up, it is very easy to apply the elimination method. Example:\par
+3x+2y=7\par
+3x-y=1\par
+\par
+Notice the coefficients of x in both equations are 3, we subtract the 2nd equation from the 1st one and get:\par
+(3x+2y)-(3x-y)=7-1 ---> 3y=6 --> y=2.\par
+Back substituting 2 for y in either equation, for example, the 1st one, we have 3x+2*2=7 --> 3x=3 --> x=1.\par
+\par
+Now what if the coefficients of neither x nor y match up?  To apply the elimination method, we have to scale one or both equations to match them up.\par
+Example:\par
+3x+2y=7\par
+2x+3y=11\par
+\par
+Let's say I want to match up the coefficients of x in both equations.  So I need to multiply the 1st equation 3x+2y=7 by a number  'a' to get \par
+3ax+2ay=7a, multiply the 2nd equation 2x+3y=11 by another number 'b' to get  2bx+3by=11b, and I want 3a=2b. Question is, what are a and b. There are many\par
+possibilities. The simplest one is just take a=2 and b=3. Hence\par
+2(3x+2y)=2*7 -->  6x+4y=14\par
+3(2x+3y)=3*11--> 6x+9y=33\par
+Now we get the coefficients of x match up, we can then eliminate x.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar You're right, graphical and numerical methods are not symbolic methods.  Symbolic methods involve more algebraic operations and can give us the exact formula of the solution even if the coefficients are not nice (integer). For example, (I'll use sqrt(a) to denote the square root of a, i.e., sqrt(4)=2):\par
+sqrt(2) x + y = 6\par
+x-y=3 \par
+Using symbolic method we can get  x=9/(1+sqrt(2)), y=(6-3sqrt(2))/(1+sqrt(2)), complicated expression. But they are the exact formula.\par
+\par
+On the other hand, graphical and numerical methods are approximation methods. They don't involve much algebra, but usually you can only get an approximation of the solution. Consider applying graphical method to the previous example.  Since sqrt(2) is irrational, sqrt(2)=1.414214............., there are infinite number of digits. There is no way to draw the exact line corresponding to sqrt(2)x+y=6.  The best we can do is to approximate sqrt(2) as, for example, 1.414.  Then draw 1.414 x +y =6 as an approximation of sqrt(2)x +y =6.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar It's a good idea to get a good understanding of all options. Most people\par
+like substitution better because it's probably more straightforward\par
+intuitively. But sometimes elimination method might be simpler.\par
+For example,\par
+2sqrt(2)x + 3sqrt(3)y=5\par
+4sqrt(2)x - 2sqrt(3)y=4\par
+\par
+To solve x from one equation and substitute into the other is kind of \par
+pain (not too bad though).\par
+\par
+But notice we can easily eliminate x by multiplying the first equation\par
+by 2 and subtract the result from the second equation.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Very good description of the substitution method. With this \par
+understanding you can try something more advanced but using the same\par
+idea. \par
+The most fundamental strategy of math is to reduce a complicated problem\par
+into a sequence of simpler and familiar ones.\par
+For example, consider the following problem:\par
+x+y+z=6     (1)\par
+2x-y+3z=9   (2)\par
+x+2y-2z=-1  (3)\par
+This is a system of 3 linear equations with 3 unknown variables. It's complicated,\par
+how do we reduce it to a system with only 2 variables? We can use the same\par
+substitution idea.  We use equation (1) to solve for x in terms of y and z, then\par
+substitute it into equations (2) and (3).  After some simple algebra, (2) and (3)\par
+become a system of 2 linear equations with 2 unknown variables y,z and you should\par
+be able to solve it.  When you get time, please try it out. \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Colleen, you're one of the few people who likes the elimination method. Elimination method\par
+is often used to introduce the important concept of matrix (not the movie). \par
+Consider the following example:\par
+2x+3y=5\par
+x+2y=3  \par
+\par
+If we fix the positions of x and y, the problem is uniquely determined by those\par
+coefficients which can be put in the rectangular form:\par
+[2  3  5]\par
+[1  2  3]\par
+\par
+This is called a 2 by 3 matrix. \par
+Applying elimination method to the original problem is just like performing row operations\par
+to this matrix. \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good point Ashly. Another advantage of learning different methods for\par
+solving the same kind of problem is to let you look at a problem from\par
+different aspects. We'll tend to have some kind of a tunnel vision. Once\par
+we're used to a method we then stick with it which is good. But learning\par
+a new method can force you to "tilt your head" and analyze the problem\par
+from a different direction. Not only will it give you a new option,but\par
+it will also improve your understanding of your original method to choose.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720  \par
+
+\pard\nowidctlpar\fs24 Very concise and good explanation. But a bit more is needed for the elimination method. When the coefficients of x or y in both equations match up, it is very easy to apply the elimination method. Example:\par
+3x+2y=7\par
+3x-y=1\par
+\par
+Notice the coefficients of x in both equations are 3, we subtract the 2nd equation from the 1st one and get:\par
+(3x+2y)-(3x-y)=7-1 ---> 3y=6 --> y=2.\par
+Back substituting 2 for y in either equation, for example, the 1st one, we have 3x+2*2=7 --> 3x=3 --> x=1.\par
+\par
+Now what if the coefficients of neither x nor y match up?  To apply the elimination method, we have to scale one or both equations to match them up.\par
+Example:\par
+3x+2y=7\par
+2x+3y=11\par
+\par
+Let's say I want to match up the coefficients of x in both equations.  So I need to multiply the 1st equation 3x+2y=7 by a number  'a' to get \par
+3ax+2ay=7a, multiply the 2nd equation 2x+3y=11 by another number 'b' to get  2bx+3by=11b, and I want 3a=2b. Question is, what are a and b. There are many possibilities. The simplest one is just take a=2 and b=3. Hence\par
+2(3x+2y)=2*7 -->  6x+4y=14\par
+3(2x+3y)=3*11--> 6x+9y=33\par
+Now we get the coefficients of x match up, we can then eliminate x.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar OK, let's consider the following problem:\par
+x+3y=8  (1)\par
+3x+2y=10  (2)\par
+\par
+I want to use the elimination method, and more specifically I want eliminate x.  But here comes the difficult part: in equation (1)  x has coefficient 1 while in (2) the coefficient is 3.  Now if I can make the coefficient of x in equation (1) also equivalent to 3, then I can subject these two equations to get rid of x.  How do I do it? Notice that if you multiply an equation by a non-zero number,  you will change the coefficients, but not the solutions.  In other words,  I will multiply both sides of (1) by 3 and get  3x+9y=24 which I call equation (1a).  (1a) and (1) have different appearance, but they are actually the same equation.  So instead of solving (1) and (2), I just need to deal with (1a) and (2):\par
+3x+9y=24 (1a)\par
+3x+2y=10 (2)\par
+\par
+Now elimination method can be easily applied.\par
+\par
+For a more complicated example:\par
+2x+5y=14 (3)\par
+3x+2y=10 (4)\par
+The main idea is the same: I want to scale (meaning to multiply by a non-zero number) (3) and/or (4) so that x has the same coefficients in them.  One way to do that is to scale (3) by 3, scale (4) by 2 and leads to:\par
+6x+15y=42 (3a)\par
+6x+4y=20  (4a)\par
+Then we can easily eliminate x.\par
+\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar It's a great feeling to learn or work on something that interests you. Ideally we only need to study subjects that we're interested in. However it's important to have an open mind during education. Because one of the main part of education is training. Even if you're not particularly fond of a subject, I would still recommend you to spend serious effort on it, at least during the period of that course. Just like exercise, some people like running, some people like swimming, and some others may enjoy yoga. An all-round training program may benefit you the most. \par
+\par
+\par
+\b\par
+\par
+\i Week 4 Discussion Question2:\par
+\i0 How many solutions do systems of linear inequalities have? Do solutions to systems of linear inequalities need to satisfy both inequalities? In what case might they not?\par
+\b0\fs20\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-360\li720\par
+
+\pard\nowidctlpar As a practice/review, please answer the following questions. \par
+1. How many solutions are there for 3x-2>=4 & x+3<=5? (a solution must satisfy both inequalities simultaneously)\par
+2. How many solutions are there for 3x-2>=4 & x+3<5?\par
+3. How many solutions are there for 3x-2>=4 & x+3<=6?\par
+4. How many solutions are there for x+y<=1 & x-y>=0? (Can you draw the solution region?)\par
+5. How many solutions are there for x+y<=1 & x+y<=2?\par
+6. How many solutions are there for x+y<=1 & x+y>=2?\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good example Clare. But I want to clarify one thing about this question. For any given system of inequalities or equations, we say that it has a solution set which consists of all solutions. In other words, there is just one solution set.  The questions actually asks how many solutions might be in that set. For example, 0, 1, finite, infinite are some possible answers etc.  In your example, the solution set is \{ x:  2<x<6\}. How many numbers are in this set?\par
+Another example: 3x-2>=4 and x+3<=5  ---> x>=2 and x<=2, the solution set is \{x :2<=x<=2\}. How many numbers are in this set?\par
+The last example: 3x-2>=4 and x+3<5 ----> x>=2 and x<2, the solution set is \{x :2<=x<2\}. How many numbers are in this set?\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar I would like to show you some examples:\par
+(1)  x+y<=1 and x-y>=0,  the corresponding lines are x+y=1 and x-y=0, they intersect at the point (1/2,1/2),  can you see what is the solution region?\par
+(2) x+y<=1 and x+y<=2, the corresponding lines are parallel x+y=1 and x+y=2, what is the solution region?\par
+(3) x+y<=1 and x+y>=2, the corresponding lines are the same as (2),\par
+what is the solution region?\par
+ \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good answer. Just need a bit clarification by separating one-variable system from  multi-variable system. A system of linear inequalities with at least two unknown variables  can have either 0 or infinite number of solutions. A system of linear inequalities with one variable may have either 0 or 1 or infinite number of solutions. The difference can be seen in the following examples:\par
+(1) x<=1 and x>=1, clearly, x=1 is the only solution.\par
+(2) x+y<=1 and x+y>=1, clearly all points (x,y) satisfying x+y=1 are solutions, and there are infinite number of them.\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Very good answer and examples. A few clarifications:\par
+(1) Usually when we say a system of equations or inequalities, we mean AND, not OR. In other words, all inequalities/equations have to be satisfied.\par
+(2) Technically a half plane results from dividing the x-y plane by ONE line.  For example, to the right of the line x+y=1 is a half plane, to the left is another half plane. {{\field{\*\fldinst{HYPERLINK http://mathworld.wolfram.com/Half-Plane.html }}{\fldrslt{http://mathworld.wolfram.com/Half-Plane.html\ul0\cf0}}}}\f0\fs20\par
+Now usually the two inequalities in the system correspond to non-parallel lines, for example, x+y<=1, x-y>=0, then the solution set is not a half plane, but an infinite region with two edges. \par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Interesting discussion. It is a special case when two lines are parallel. In this case, there are two possibilities. One is infinite many solutions, the other is no solution, depending on the inequality sign. For example, y>x+1, and y>x+2, any (x,y) satisfies y>x+2 also satisfies y>x+1, so the solution is (x,y) that satisfies y>x+2, which are infinitely many. But for y>x+1, and y<x-2, there is no solution, because for any x, if y is greater than x+1, it can't be less than x-2.  \par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar A linear equation on the plane represents a line which separates the whole plane into two parts. The left half-plane and the right half-plane are corresponding to the two linear inequalities by replacing the equality sign of the equation by <= and >=, respectively.  Now imagine we have another line that intersects the first line.  These two lines divide the whole plane into 4 parts. They are corresponding to the solutions of the system inequalities obtained by replacing the equality signs of the two equations by <= and/or >=.  They are just like the four quadrant bordered by x,y- axises,  after some shifting and rotation.  Clearly each quadrant contains infinite number of points.  This is a geometric interpretation of the solution sets.  Do you have some examples of system of inequalities that have 0 or a few solutions?\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar A system of linear inequalities with at least two unknown variables \par
+ can have either 0 or infinite number of solutions. \par
+A system of linear inequalities with one variable may have either 0\par
+or 1 or infinite number of solutions. \par
+The difference can be seen in the following examples:\par
+(1) x<=1 and x>=1, clearly, x=1 is the only solution.\par
+(2) x+y<=1 and x+y>=1, clearly all points (x,y) satisfying \par
+x+y=1 are solutions, and there are infinite number of them. \par
+of solutions.\par
+\par
+
+\pard{\pntext\f1\'B7\tab}{\*\pn\pnlvlblt\pnf1\pnindent0{\pntxtb\'B7}}\nowidctlpar\fi-720\li720\par
+
+\pard\nowidctlpar Good post Ashly. Learning math is like building a house, the foundation\par
+is very important. When you just start to learn a new skill, it's best\par
+to go through each step slowly and carefully, making sure everything\par
+is correct before moving on. It's very tempting to skip steps and move\par
+at a fast speed. But that should only be done after you have become\par
+very comfortable with the skill.\par
+ \par
+\par
+\par
+}
+ 

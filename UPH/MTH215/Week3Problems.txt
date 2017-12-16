@@ -1,0 +1,80 @@
+Practice problems:
+(1) A box has the following dimension: length = 4 feet, width = 30 inches and height = 127 cms.
+Find the volume and the total surface area of the box.
+Your final answer should use inch as unit.
+
+(1.5) simplify  1/3 + 1/6 + 2/9
+Your final answer should only have one fraction.
+
+
+/*******************/
+
+
+Adding two fractions or more often causes confusion. The main points are:
+
+(1) If you multiply both the numerator and the denominator of a fraction by the same nonzero number, its value won't change.  For example, given 2/3, we can multiply both top and bottom by any number, say, 5, and get (2*5)/(3*5) = 10/15 which equals 2/3.
+
+(2) You can only add two (or more) fractions when they all have the same denominator.
+
+For example,  1/3 + 4/3 is easy, simply  adding the numerators and keep the same denominator:  1/3 + 4/3 = (1+4)/3  =5/3.
+
+(3) When you need to add fractions that don't have the same denominator, you need to use (1) to convert them so that they share a denominator.
+
+For example,  to do 1/3 + 4/5, we need to convert 1/3 = (1*5)/(3*5) = 5/15 and  4/5 = (4*3)/(5*3) = 12/15, then add 5/15 + 12/15 = 17/15 as the final answer.
+
+/********************/
+When you need to add/subtract two fractions with different denominators, you first need to find one of their common denominator.
+
+Simply put, a common denominator is a multiple of both denominators.
+
+In this example 1/3 + 4/5,  the two denominators  are  3 and 5. The multiples of both 3 and 5 are 15, 30, 45, 60, ...
+
+And you are right, the easiest way to find a common denominator (common multiple) is just to multiply the two numbers.
+
+In this case, we can just use 3 * 5 = 15 as our common denominator. 
+
+Now in order to transform 1/3 into a fraction with 15 as denominator, we multiply both top and bottom by 5 and get (1*5)/(3*5) = 5/15. Similarly,  4/5 ---> (4*3)/(5*3) = 12/15.  The rest is easy 5/15 + 12/15. Because the fraction have the same denominator, we just need to add the numerators:  5/15 + 12/15 = (5+12)/15 = 17 /15.
+
+
+Consider another example: 1/4 + 1/6.  The common denominators are 12, 24, 36, 48 .....
+
+You can certainly use the 4 * 6 = 24 as the chosen common denominator: 1/4 = (1*6)/(4*6) = 6 /24, 1/6 = (1*4)/(6*4) = 4/24 ---->
+
+1/4 + 1/6 = 6/24 + 4/24 = (6+4)/24 = 10/24 = 5/12.
+
+
+On the other hand, many people prefers 12 which is the least common denominator:
+
+1/4 = (1*3)/(4*3) = 3/12;  1/6 = (1*2)/(6*2) = 2/12 ----> 1/4 + 1/6 = 3/12 + 2/12 = 5/12.
+
+
+Of course, you may encounter problem with more than one fractions, e.g.:
+
+1/3 + 5/6 + 2/9 =?  Can you try it out?
+
+
+
+/*******************/
+
+
+(2) The average housing price for a single family house in certain area has fallen from $500K to $400K in the past 5 years.
+What's the percentage of the decrease?
+
+(3) The average housing price for a single family house in certain area has risen by 30% in the last 10 years. 
+If the average price was $500K, what's average price now?
+
+(4) Express 3/25 as a decimal and a percentage.
+
+/*******************/
+To add or subtract fractions, the fist step is to conver them to having the same denominator.
+
+
+Ideally we would like to use the least common denominator.  For example, in this problem 1/3 + 1/6 + 1/9, you can see that
+
+18 is the least common multiple of 3, 6 and 9.  The advantage of using the least common denominator is that the resulting fractions will have relative small tops and bottoms.
+
+
+On the other hand, sometimes it's hard to find the least common denominator, in this case any common denominator will work. For example, we can simply use the product of all denominators.  Again using this problem as an example, we can use 3 * 6 * 9 = 162 as the common denominator:  1/3 + 1/6 + 1/9  = 54/162 + 27/162 + 36/162 = (54 + 27 + 36)/162 = 117/162.
+
+
+
