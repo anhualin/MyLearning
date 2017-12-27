@@ -1,0 +1,12 @@
+1. Confidence intervals or Hypothesis Test for proportion 
+Eg. A sample of 1000 adults have 600 with at least BS degree.  Can we claim that the whole population of adults have at least 60% with BS degree?
+
+Check conditions:
+(i) Random instance (random selection or assignment) or if selection without replacement  then the sample size is < 10% of population size
+(ii) CI:  n*p^hat >= 10 and n* (1-p^hat) >= 10,  HT: n*p >=10 and n*(1-p) >= 10.  Here n is the sample size and p is the population proportion,
+   and p^hat is the sample preportion.
+
+Use central limit theorem:  the sampling distribution is approximately normal N(p, SE) where SE standard error = sqrt(p*(1-p)/n).  Use estimation of 
+p (p^hat or 0.5) when doing CI.
+   
+   
