@@ -21,6 +21,12 @@
 ##             binomial test, multinomial test, G-test, Fisher's exact test
 ###
 
+if (.Platform$OS.type == 'windows'){
+  setwd('C:/Users/alin/Documents/Data/Design_Analysis')
+}else{
+  setwd('/home/alin/Data/Design_Analysis')
+}
+
 ## One-sample tests of proportions
 
 # read in a data file with 2 response categories
