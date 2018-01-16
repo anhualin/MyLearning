@@ -1,7 +1,7 @@
-#setwd("C:\\Users\\alin\\Documents\\SelfStudy\\MyLearning\\FDA2018")
-#library('ReporteRs') 
-#library(flextable)
-#system("java -version")
+# setwd("C:\\Users\\alin\\Documents\\SelfStudy\\MyLearning\\FDA2018")
+# library('ReporteRs') 
+# library(flextable)
+# system("java -version")
 # dat1 <- readRDS("C:\\Users\\alin\\Documents\\SelfStudy\\CausalEffectsVideos\\psm.rds")
 # xvars <- c('gender', 'age', 'prog', 'balance', 'honesty', 'pay_plan', 'assignment',
 #                     'forum', 'africa', 'asia', 'europe', 'america', 'other_region')
@@ -130,19 +130,101 @@ doc <- addSlide(doc, "Title and Content")
 doc <- addTitle(doc, "Check balance")
 doc <- addPlot(doc, function() print(display_prop(df = dat, target = 'prog', 
                                   category = c('Management', 'EDD'))))
-#doc <- addParagraph(doc, value = c(capture.output(runif(3)), x))
-#r_code ="data(iris)
-#hist(iris$Sepal.Width, col = 4)"
-#doc <- addRScript(doc, text=r_code)
 
-# Silde  : Add R script
+# Slide: Check balance
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "Check balance")
+raw_text <- capture.output(check_balance(d = dat, fld_name = 'prog'))
+my_text <- pot(trimws(paste(raw_text, collapse = '\n')))
+doc <- addParagraph(doc, value = set_of_paragraphs(my_text),
+                    par.properties=parProperties(text.align="justify"))
+
+# Silde  : Check balance
+
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "Check balance")
+doc <- addPlot(doc, function() print(display_prop(df = dat, target = 'pay_plan', 
+                                                  category = c('1_installment', '3_installment'))))
+
+# Slide: Check balance
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "Check balance")
+raw_text <- capture.output(check_balance(d = dat, fld_name = 'pay_plan'))
+my_text <- pot(trimws(paste(raw_text, collapse = '\n')))
+doc <- addParagraph(doc, value = set_of_paragraphs(my_text),
+                    par.properties=parProperties(text.align="justify"))
+
+# Silde  : Check balance
+
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "Check balance")
+doc <- addPlot(doc, function() print(display_prop(df = dat, target = 'honesty', 
+                                                  category = c('No', 'Yes'))))
+
+# Slide: Check balance
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "Check balance")
+raw_text <- capture.output(check_balance(d = dat, fld_name = 'honesty'))
+my_text <- pot(trimws(paste(raw_text, collapse = '\n')))
+doc <- addParagraph(doc, value = set_of_paragraphs(my_text),
+                    par.properties=parProperties(text.align="justify"))
+
+
+# Slide: standarized mean difference
+
+tab1_pre <- read.csv(file = 'table1_prematch.csv')
+
+# Slide : prematch table1
+# +++++++++++++++++++++
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "SMD prematch")
+dtab <- vanilla.table(tab1_pre)
+dtab <- setZebraStyle(dtab, odd = '#eeeeee', even = 'white')
+#dtab <-  bg(dtab, bg = "#E4C994", part = "header")
+#dtab <- align(dtab, align = "center", part = "all" )
+doc <- addFlexTable(doc, dtab)
+
+# Slide : PSM
+# +++++++++++++++++++++
+doc <- addSlide(doc, "Two Content")
+doc <- addTitle(doc, "Propensity Score")
+doc  <- addParagraph(doc, 
+                     value = c('Estimate propensity scores by model', 
+                               'Usually use logistic regression',
+                               'Also may use other models'),
+                     par.properties = parProperties(list.style = 'ordered', level = 1)
+)
+
+r_code <- "psmodel <- glm(tc ~ . - id - ret, 
+      family = binomial(), data = dat)
+
+dat$ps <- psmodel$fitted.values"
+doc <- addRScript(doc, text=r_code)
+
+### Slide : compare common support
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "Common Support")
+# doc <- addPlot(doc, function() print(display_prop(df = dat, target = 'honesty', 
+#                                                   category = c('No', 'Yes'))))
+
+doc <- addPlot(doc, function() commonsupport())
 
 doc <- addSlide(doc, "Two Content")
-doc <- addTitle(doc, "R Script for histogram plot")
-doc <- addParagraph(doc, value = c(capture.output(runif(3)), x))
-r_code ="data(iris)
-hist(iris$Sepal.Width, col = 4)"
+doc <- addTitle(doc, "Propensity Score Matching")
+doc  <- addParagraph(doc, 
+                     value = c('Match on the logit of propensity scores', 
+                               'May try greedy match and optimal match and different caliper',
+                               'The goal is to balance confounders'),
+                     par.properties = parProperties(list.style = 'ordered', level = 1)
+)
+
+r_code <- "logit <- function(p) {log(p)-log(1-p)}
+
+psmatch <- Match(Tr=dat$tc, M=1, X=logit(dat$ps),replace=FALSE,caliper= 1.3)
+
+matched<-dat[unlist(psmatch[c('index.treated','index.control')]), ]"
+
 doc <- addRScript(doc, text=r_code)
-# write the document 
+
 
 writeDoc(doc, "FDA_Presentation.pptx" )

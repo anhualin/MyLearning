@@ -42,5 +42,31 @@ check_balance <- function(d, test_type = 'p', trt_name='tc', fld_name, alternati
   }
 }
 
-a <- display_prop(df = dat, target = 'prog', category = c('Management', 'EDD'))
-check_balance(d = dat, fld_name = 'prog')
+# a <- display_prop(df = dat, target = 'prog', category = c('Management', 'EDD'))
+# b <- capture.output(check_balance(d = dat, fld_name = 'prog'))
+# g <- trimws(paste(b, collapse = '\n'))
+# check_balance(d = dat, fld_name = 'prog')
+
+table1 <- CreateTableOne(vars = xvars, strata = 'tc', data = dat, test = FALSE)
+print_table1 <- print(table1, smd = TRUE, exact = "stage", quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+write.csv(print_table1, file = 'table1_prematch.csv')
+
+psmodel <- glm(tc ~ gender + age + prog + balance + honesty + pay_plan 
+               + assignment + forum + africa + asia
+               + europe + america + other_region, 
+               family = binomial(), data = dat)
+
+
+dat$ps <- psmodel$fitted.values
+
+commonsupport <- function(){
+  plot(dat$ps, jitter(dat$tc+0.5), pch=16, cex=0.5, col=2*dat$tc+2,
+       axes=FALSE, type="p", xlim=c(0,1), ylim=c(0,2), xlab="", ylab="")
+  axis(1)
+  mtext(c("control", "treatment"), side=2, at=c(0.5, 1.5), line=3, las=1, adj=0)
+  mtext("Propensity score", side=1, at=0.5, line=2.5)
+  lines(quantile(dat$ps[dat$tc==0])[c(2,4)], c(0.85, 0.85), col=2)
+  lines(rep(quantile(dat$ps[dat$tc==0])[3], 2), c(0.8, 0.9), col=2)
+  lines(quantile(dat$ps[dat$tc==1])[c(2,4)], c(1.15, 1.15), col=4)
+  lines(rep(quantile(dat$ps[dat$tc==1])[3], 2), c(1.1, 1.2), col=4)
+}
