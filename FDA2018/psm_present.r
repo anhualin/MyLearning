@@ -70,3 +70,11 @@ commonsupport <- function(){
   lines(quantile(dat$ps[dat$tc==1])[c(2,4)], c(1.15, 1.15), col=4)
   lines(rep(quantile(dat$ps[dat$tc==1])[3], 2), c(1.1, 1.2), col=4)
 }
+
+logit <- function(p) {log(p)-log(1-p)}
+psmatch<-Match(Tr=dat$tc, M=1,X=logit(dat$ps),replace=FALSE,caliper= 1.3)
+matched<-dat[unlist(psmatch[c("index.treated","index.control")]), ]
+
+table1 <- CreateTableOne(vars = xvars, strata = 'tc', data = matched, test = FALSE)
+print_table1 <- print(table1, smd = TRUE, exact = "stage", quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+write.csv(print_table1, file = 'table1_aftermatch.csv')
