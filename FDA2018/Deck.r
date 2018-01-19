@@ -1,25 +1,22 @@
-# setwd("C:\\Users\\alin\\Documents\\SelfStudy\\MyLearning\\FDA2018")
-# library('ReporteRs')
-# library(flextable)
-# system("java -version")
-# dat1 <- readRDS("C:\\Users\\alin\\Documents\\SelfStudy\\CausalEffectsVideos\\psm.rds")
-# xvars <- c('gender', 'age', 'prog', 'balance', 'honesty', 'pay_plan', 'assignment',
-#                     'forum', 'africa', 'asia', 'europe', 'america', 'other_region')
-# 
-# dat <- dat1[, c('id', 'tc', 'ret', xvars)]
+setwd("C:\\Users\\alin\\Documents\\SelfStudy\\MyLearning\\FDA2018")
+library('ReporteRs')
+library(flextable)
+system("java -version")
+
 
 
 # download.file(url="http://www.sthda.com/sthda/RDoc/example-files/r-reporters-powerpoint-template.pptx",
 #               destfile="r-reporters-powerpoint-template.pptx", quiet=TRUE)
 
 options('ReporteRs-fontsize'= 18, 'ReporteRs-default-font'='Arial')
-doc <- pptx(template="r-reporters-powerpoint-template.pptx" )
+#doc <- pptx(template="r-reporters-powerpoint-template.pptx" )
+doc <- pptx(template = 'facet.pptx')
 #doc <- pptx(template="A_template.pptx")
 # Slide 1 : Title slide
 #+++++++++++++++++++++++
 doc <- addSlide(doc, "Title Slide")
 doc <- addTitle(doc,"Applications of Statistics in Education Business")
-doc <- addSubtitle(doc, "Anhua Lin1")
+doc <- addSubtitle(doc, "Anhua Lin")
 doc <- addDate(doc)
 #doc <- addFooter(doc, "Anhua Lin")
 #doc <- addPageNumber(doc, "1/4")
@@ -31,7 +28,7 @@ doc <- addDate(doc)
 doc <- addSlide(doc, "Title and Content")
 doc <- addTitle(doc, "Background Information")
 doc  <- addParagraph(doc, 
-                     value = c('Business request', "Similarity with clinical trials"),
+                     value = c('Business requests', "Similarity with clinical trials"),
                      par.properties = parProperties(list.style = 'ordered', level = 1)
 )
 
@@ -79,7 +76,8 @@ doc <- addFlexTable(doc, dtab)
 doc  <- addParagraph(doc, 
                      value = c('Treatment: new students in June 2017', 
                                'Control: new students in June 2016',
-                               'Goal: improve second term retention'
+                               'Goal: improve second term retention',
+                               'Not real data'
                      ),
                      par.properties = parProperties(list.style = 'ordered', level = 1)
 )
@@ -119,7 +117,7 @@ doc <- addFlexTable(doc, dtab)
 doc <- addSlide(doc, "Title and Content")
 doc <- addTitle(doc, "Risk")
 doc  <- addParagraph(doc, 
-                     value = c('Other confounders' 
+                     value = c('Ignore other potential confounders' 
                                
                      ),
                      par.properties = parProperties(list.style = 'ordered', level = 1)
@@ -172,6 +170,17 @@ doc <- addParagraph(doc, value = set_of_paragraphs(my_text),
 
 
 # Slide: standarized mean difference
+doc <- addSlide(doc, "Title and Content")
+doc <- addTitle(doc, "Standardized Mean Difference")
+doc  <- addParagraph(doc, 
+                     value = c('SMD is the difference in means between groups, divided by (pooled) standard deviation',
+                               'Value < 0.1 indicates adequate balance',
+                               'Value 0.1 - 0.2 are not too alarming',
+                               'Value > 0.2 indicates serious imbalance'
+                     ),
+                     par.properties = parProperties(list.style = 'ordered', level = 1)
+)
+
 
 tab1_pre <- read.csv(file = 'table1_prematch.csv')
 
@@ -192,15 +201,16 @@ doc <- addTitle(doc, "Propensity Score")
 doc  <- addParagraph(doc, 
                      value = c('Estimate propensity scores by model', 
                                'Usually use logistic regression',
-                               'Also may use other models'),
+                               'Also may use other models',
+                               'There are arguments for and against PSM'),
                      par.properties = parProperties(list.style = 'ordered', level = 1)
 )
 
-r_code <- "psmodel <- glm(tc ~ . - id - ret, 
+r_code0 <- "psmodel <- glm(tc ~ . - id - ret, 
       family = binomial(), data = dat)
 
 dat$ps <- psmodel$fitted.values"
-doc <- addRScript(doc, text=r_code)
+doc <- addRScript(doc, text=r_code0)
 
 ### Slide : compare common support
 doc <- addSlide(doc, "Title and Content")
@@ -212,20 +222,21 @@ doc <- addPlot(doc, function() commonsupport())
 
 doc <- addSlide(doc, "Two Content")
 doc <- addTitle(doc, "Propensity Score Matching")
-doc  <- addParagraph(doc, 
-                     value = c('Match on the logit of propensity scores', 
+doc  <- addParagraph(doc,
+                     value = c('Match on the logit of propensity scores',
                                'May try greedy match and optimal match and different caliper',
                                'The goal is to balance confounders across treatment and control groups'),
                      par.properties = parProperties(list.style = 'ordered', level = 1)
 )
 
-r_code <- "logit <- function(p) {log(p)-log(1-p)}
+r_code1 <- "logit <- function(p) {log(p)-log(1-p)}
 
 psmatch <- Match(Tr=dat$tc, M=1, X=logit(dat$ps),replace=FALSE,caliper= 1.3)
 
 matched<-dat[unlist(psmatch[c('index.treated','index.control')]), ]"
 
-doc <- addRScript(doc, text=r_code)
+doc <- addRScript(doc, text=r_code1)
+
 
 
 # Silde  : Check balance

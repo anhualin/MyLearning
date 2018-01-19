@@ -7,7 +7,13 @@ require(ggplot2)
 require(scales)
 require(ggthemes) 
 
-dat <- readRDS("C:\\Users\\alin\\Documents\\SelfStudy\\CausalEffectsVideos\\psm.rds")
+dat1 <- readRDS("C:\\Users\\alin\\Documents\\SelfStudy\\CausalEffectsVideos\\psm.rds")
+xvars <- c('gender', 'age', 'prog', 'balance', 'honesty', 'pay_plan', 'assignment',
+           'forum', 'africa', 'asia', 'europe', 'america', 'other_region')
+
+dat <- dat1[, c('id', 'tc', 'ret', xvars)]
+
+#dat <- readRDS("C:\\Users\\alin\\Documents\\SelfStudy\\CausalEffectsVideos\\psm.rds")
 
 display_prop <- function(df, tc_fld = 'tc', target, category){
   # show bar charts of proportion of a binary variate by  treatment/control
@@ -47,9 +53,9 @@ check_balance <- function(d, test_type = 'p', trt_name='tc', fld_name, alternati
 # g <- trimws(paste(b, collapse = '\n'))
 # check_balance(d = dat, fld_name = 'prog')
 
-table1 <- CreateTableOne(vars = xvars, strata = 'tc', data = dat, test = FALSE)
-print_table1 <- print(table1, smd = TRUE, exact = "stage", quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
-write.csv(print_table1, file = 'table1_prematch.csv')
+# table1 <- CreateTableOne(vars = xvars, strata = 'tc', data = dat, test = FALSE)
+# print_table1 <- print(table1, smd = TRUE, exact = "stage", quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+# write.csv(print_table1, file = 'table1_prematch.csv')
 
 psmodel <- glm(tc ~ gender + age + prog + balance + honesty + pay_plan 
                + assignment + forum + africa + asia
@@ -75,6 +81,6 @@ logit <- function(p) {log(p)-log(1-p)}
 psmatch<-Match(Tr=dat$tc, M=1,X=logit(dat$ps),replace=FALSE,caliper= 1.3)
 matched<-dat[unlist(psmatch[c("index.treated","index.control")]), ]
 
-table1 <- CreateTableOne(vars = xvars, strata = 'tc', data = matched, test = FALSE)
-print_table1 <- print(table1, smd = TRUE, exact = "stage", quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
-write.csv(print_table1, file = 'table1_aftermatch.csv')
+# table1 <- CreateTableOne(vars = xvars, strata = 'tc', data = matched, test = FALSE)
+# print_table1 <- print(table1, smd = TRUE, exact = "stage", quote = FALSE, noSpaces = TRUE, printToggle = FALSE)
+# write.csv(print_table1, file = 'table1_aftermatch.csv')
