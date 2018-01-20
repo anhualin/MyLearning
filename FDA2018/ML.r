@@ -108,32 +108,6 @@ valid0_num <- t(apply(valid0_num, 1, '-', means))
 valid0_num <- t(apply(valid0_num, 1, '/', stds))
 valid0[, numericVars] <- data.frame(valid0_num)
 
-v <- 'program'
-pi <- paste('pred',v,sep='')
-train0[,pi] <- mkPredC(train0[,outcome],train0[,v],train0[,v])
-valid0[,pi] <- mkPredC(train0[,outcome],train0[,v],valid0[,v])
-aucTrain <- calcAUC(train0[,pi], train0[,outcome])
-aucCal <- calcAUC(valid0[,pi], valid0[,outcome])
-
-eval <- prediction(train0[,pi], train0[, outcome])
-plot(performance(eval,"tpr","fpr"))
-print(attributes(performance(eval,'auc'))$y.values[[1]])
-
-eval <- prediction(valid0[,pi], valid0[, outcome])
-plot(performance(eval,"tpr","fpr"))
-print(attributes(performance(eval,'auc'))$y.values[[1]])
-
-v <- 'ba_credits_passed_prior1yr'
-pi <- paste('pred',v,sep='')
-train0[,pi] <- mkPredC(train0[,outcome],train0[,v],train0[,v])
-valid0[,pi] <- mkPredC(train0[,outcome],train0[,v],valid0[,v])
-aucTrain <- calcAUC(train0[,pi], train0[,outcome])
-aucCal <- calcAUC(valid0[,pi], valid0[,outcome])
-eval <- prediction(valid0[,pi], valid0[, outcome])
-plot(performance(eval,"tpr","fpr"))
-print(attributes(performance(eval,'auc'))$y.values[[1]])
-
-
 
 for(v in numericVars) {
   pi <- paste('pred',v,sep='')
@@ -155,6 +129,34 @@ for(v in catVars) {
                 pi,aucTrain,aucCal))
   
 }
+
+
+v <- 'program'
+pi <- paste('pred',v,sep='')
+# train0[,pi] <- mkPredC(train0[,outcome],train0[,v],train0[,v])
+# valid0[,pi] <- mkPredC(train0[,outcome],train0[,v],valid0[,v])
+# aucTrain <- calcAUC(train0[,pi], train0[,outcome])
+# aucCal <- calcAUC(valid0[,pi], valid0[,outcome])
+
+eval <- prediction(train0[,pi], train0[, outcome])
+plot(performance(eval,"tpr","fpr"))
+print(attributes(performance(eval,'auc'))$y.values[[1]])
+
+eval <- prediction(valid0[,pi], valid0[, outcome])
+plot(performance(eval,"tpr","fpr"))
+print(attributes(performance(eval,'auc'))$y.values[[1]])
+
+v <- 'ba_credits_passed_prior1yr'
+pi <- paste('pred',v,sep='')
+# train0[,pi] <- mkPredC(train0[,outcome],train0[,v],train0[,v])
+# valid0[,pi] <- mkPredC(train0[,outcome],train0[,v],valid0[,v])
+# aucTrain <- calcAUC(train0[,pi], train0[,outcome])
+# aucCal <- calcAUC(valid0[,pi], valid0[,outcome])
+eval <- prediction(valid0[,pi], valid0[, outcome])
+plot(performance(eval,"tpr","fpr"))
+print(attributes(performance(eval,'auc'))$y.values[[1]])
+
+
 
 
 logLikelyhood <- function(outCol,predCol) {

@@ -201,8 +201,8 @@ doc <- addTitle(doc, "Propensity Score")
 doc  <- addParagraph(doc, 
                      value = c('Estimate propensity scores by model', 
                                'Usually use logistic regression',
-                               'Also may use other models',
-                               'There are arguments for and against PSM'),
+                               'Also may use other models'
+                               ),
                      par.properties = parProperties(list.style = 'ordered', level = 1)
 )
 
@@ -220,22 +220,23 @@ doc <- addTitle(doc, "Common Support")
 
 doc <- addPlot(doc, function() commonsupport())
 
-doc <- addSlide(doc, "Two Content")
-doc <- addTitle(doc, "Propensity Score Matching")
-doc  <- addParagraph(doc,
-                     value = c('Match on the logit of propensity scores',
-                               'May try greedy match and optimal match and different caliper',
-                               'The goal is to balance confounders across treatment and control groups'),
-                     par.properties = parProperties(list.style = 'ordered', level = 1)
-)
-
-r_code1 <- "logit <- function(p) {log(p)-log(1-p)}
-
-psmatch <- Match(Tr=dat$tc, M=1, X=logit(dat$ps),replace=FALSE,caliper= 1.3)
-
-matched<-dat[unlist(psmatch[c('index.treated','index.control')]), ]"
-
-doc <- addRScript(doc, text=r_code1)
+# doc <- addSlide(doc, "Two Content")
+# doc <- addTitle(doc, "Propensity Score Matching")
+# doc  <- addParagraph(doc,
+#                      value = c('Match on the logit of propensity scores',
+#                                'May try greedy match and optimal match and different caliper',
+#                                'The goal is to balance confounders across treatment and control groups',
+#                                'There are both arguments  in favor of and arguments against PSM'),
+#                      par.properties = parProperties(list.style = 'ordered', level = 1)
+# )
+# 
+# r_code1 <- "logit <- function(p) {log(p)-log(1-p)}
+# 
+# psmatch <- Match(Tr=dat$tc, M=1, X=logit(dat$ps),replace=FALSE,caliper= 1.3)
+# 
+# matched<-dat[unlist(psmatch[c('index.treated','index.control')]), ]"
+# 
+# doc <- addRScript(doc, text=r_code1)
 
 
 
@@ -303,7 +304,7 @@ doc <- addFlexTable(doc, dtab)
 # Slide: Outcome
 doc <- addSlide(doc, "Title and Content")
 doc <- addTitle(doc, "Outcome")
-raw_text <- capture.output(check_balance(d = matched, fld_name = 'ret'))
+raw_text <- capture.output(check_balance(d = matched, fld_name = 'ret', alternative = 'greater'))
 my_text <- pot(trimws(paste(raw_text, collapse = '\n')))
 doc <- addParagraph(doc, value = set_of_paragraphs(my_text),
                     par.properties=parProperties(text.align="justify"))
