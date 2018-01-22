@@ -57,14 +57,15 @@ doc <- addPlot(doc, function() print(ggplot(data=train) +
                                                         color = risk,
                                                         linetype = risk))))
   
-doc <- addSlide(doc, "Title and Content")
-doc <- addTitle(doc, "EDA (bb_gip): Missing Values")
+doc <- addSlide(doc, "Two Content")
+doc <- addTitle(doc, "EDA Example")
 raw_text <- capture.output(summary(train$bb_gip_etc_ratio_std))
 my_text <- pot(trimws(paste(raw_text, collapse = '\n')))
 doc <- addParagraph(doc, value = set_of_paragraphs(my_text),
                     par.properties=parProperties(text.align="justify"))
                                                   
-
+r_code0 <- "summary(train$bb_gip_etc_ratio_std)"
+doc <- addRScript(doc, text=r_code0)
 
 # Slide: Data
 # +++++++++++
