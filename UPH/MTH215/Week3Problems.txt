@@ -74,7 +74,7 @@ Ideally we would like to use the least common denominator.  For example, in this
 18 is the least common multiple of 3, 6 and 9.  The advantage of using the least common denominator is that the resulting fractions will have relative small tops and bottoms.
 
 
-On the other hand, sometimes it's hard to find the least common denominator, in this case any common denominator will work. For example, we can simply use the product of all denominators.  Again using this problem as an example, we can use 3 * 6 * 9 = 162 as the common denominator:  1/3 + 1/6 + 1/9  = 54/162 + 27/162 + 36/162 = (54 + 27 + 36)/162 = 117/162.
+On the other hand, sometimes it's hard to find the least common denominator, in this case any common denominator will work. For example, we can simply use the product of all denominators.  Again using this problem as an example, we can use 3 * 6 * 9 = 162 as the common denominator:  1/3 + 1/6 + 2/9  = 54/162 + 27/162 + 36/162 = (54 + 27 + 36 )/162 = 117/162.
 
 
 
