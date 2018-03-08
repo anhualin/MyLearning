@@ -1,0 +1,39 @@
+First Message 1
+
+
+Consider one of the following jobs: writer, health administrator, or police officer. How do you think they use data in their careers? Where in your potential career do you think you will use data?
+
+****
+Not only in one's career, statistics are widely used in everyday life. For example, when applying for a car loan or a mortgage, the applicant needs to provide information about employment, income, etc. The bank who issues the loan will also look into a person's credit score. And weather forecast is also based on statistics. Weather history is built into a complicated model that can predict accurately what's the weather will be like tomorrow, and a week from today although with less accuracy.
+
+**********************
+
+
+************************8
+***********************
+First Message 2
+
+What are some processes of data collection? Give at least two examples.
+
+
+*********************************
+**************************
+
+Vedio
+*********
+It is a great idea to use data to illustrate how to calculate mean, variance and standard deviation. I need to point out two places in your calculation that need some more work. First is variance, when calculating variance, the denominator is the n-1, which is the total number of data points minus 1. So the variance is 20/3=6.67. Your denominator is the number of data points plus 1. And standard deviation is the square root of the variance, so it is sqrt(6.67), which is 2.59.
+**************************
+
+It is understandable that estimation is harder than multiple choices problems. Estimation usually involves calculation with many steps. For example, when estimating the population mean, one needs to calculate the sample mean, and sample standard deviation, and then based on standard deviation, calculate the margin of error, and finally from sample mean and margin of error, one gets the population mean. This is some serious calculation. There are softwares can do this for us, but still we need to know how to calculate ourselves before using the software.
+
+*******************************
+
+
+Cassandra, very good examples to illustrate the concepts of mean, median and mode. The best way to get familiar with a new concept is to practice with data. I only have one note. For the example of 4, 7, 6, 8, 9, the median is 7 instead of 6. Sorting the data results in 4, 6, 7, 8, 9. The number in the middle is 7, which is the median.
+
+*********************************8
+
+Very comprehensive review of all the concepts involved in describing a data set. In my work,  the most often used concepts are mean, standard deviation, median, min and max. These are the first step in data analysis. Sometimes, a histogram is very helpful. You can see whether the distribution is symmetric or not, has one mode or more. A graph worth a thousand words.
+
+*************************
+other

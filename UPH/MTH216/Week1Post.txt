@@ -1,4 +1,4 @@
-First Message (I)
+1First Message (I)
 Why do you think this course will be helpful toward for your career? What math skills from this week can you apply to your career or life?
 
 ***********************
@@ -31,6 +31,8 @@ When the dots form a line, it is perfect linear correlation. when dots move away
 
 All the planning tasks need statistics. Not only in predicting office supply needs, but also in other fields. For example, airline companies need to predict how much oil will be consumed in the next season, grocery stores need to predict what grocery to restock and how often, and vaccine manufactures need to predict the demand of flu vaccine in the coming year, etc. Statistics models are used in which variables are combined and work together to give an estimate of the future unknown variable.  
 
+*****************************
+All the planning tasks need statistics. Not only in predicting office supply needs, but also in other fields. For example, airline companies need to predict how much oil will be consumed in the next season, grocery stores need to predict what grocery to restock and how often, and vaccine manufactures need to predict the demand of flu vaccine in the coming year, etc. Statistics models are used in which variables are combined and work together to give an estimate of the future unknown variable.   
 ********************************************
 
 
@@ -48,6 +50,10 @@ Daniel, this is a good question, is there causation without any correlation? Int
 ******************************
 As I understand it, exercise does not need to be the sole factor responsible for weight loss in order for them to form a causal relationship. Other factors may contribute to weight loss, for example, diet, reduce stress and other life style change. But as long as exercise contribute to the weight loss, they are cause and effect.
 
+**************************
+As I understand it, exercise does not need to be the sole factor responsible for weight loss in order for them to form a causal relationship. Other factors may contribute to weight loss, for example, diet, reduce stress and other life style change. But as long as exercise contribute to the weight loss, they are cause and effect.
+
+
 
 **********************************************
 ****************************************
@@ -63,3 +69,16 @@ Diana, thanks for sharing with us your experince of table data usage in your wor
 Hi Evelyn, usually for histogram the frequency is not for a single number, but rather a range of numbers. For example, the frequency of man with age between 20 and 25, 26 and 35, 36 and 50, etc. And histogram is usually used to describe the distribution of a continuous variable. From the shape of the histogram we have an idea of what the distribution looks like.
 **********************************
 Seems a lot of students find rounding difficult. How to do rounding really depends on how many decimal points you want to keep. For example, 3.1415926 (pi). If only keep one decimal point, it is 3.1; if two, 3.14; if three, 3.142 ( this is because it is 15 after the 4). You get the idea.
+
+******************************
+Seems a lot of students find rounding difficult. How to do rounding really depends on how many decimal points you want to keep. For example, 3.1415926 (pi). If only keep one decimal point, it is 3.1; if two, 3.14; if three, 3.142 ( this is because it is 15 after the 4). You get the idea.
+
+*************************************************
+
+
+Seems everyone agrees that bar charts are easier to read than scatter plots. A scatter plot is for two variables, for example, height and weight for a person. And what to look for in a scatter plot is correlation or more complex types of relationship between the two variables. As weight usually goes up with the increase in height, we can see a positively correlated trend with the scatter plot.
+
+**********************************************
+I have to say, Internet has changed the way people learn. When I was in school, I studied by reading books, practicing problems, sitting in a class listening to lectures.  But nowadays people have access to a lot more resources and there are many new way of acquiring knowledge. Youtube has a lot of teaching videos, literally about every thing, math, statistics, computer science, arts, dance, you name it. And there are also websites offering online courses like coursera, Udemy,etc. some of them are even free. This is a good time for people want to learn.
+
+******************************************************
