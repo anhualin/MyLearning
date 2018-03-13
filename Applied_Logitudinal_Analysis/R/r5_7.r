@@ -1,3 +1,5 @@
+pacman::p_load(dplyr, ReporteRs, RODBC, RtutoR, tidyverse) 
+
 library(foreign)
 dir <- 'C:\\Users\\alin\\Documents\\SelfStudy\\MyLearning\\Applied_Logitudinal_Analysis\\data\\'
 fpath <- paste(dir, 'tlc-data.txt', sep = '')
