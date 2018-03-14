@@ -1,0 +1,75 @@
+First Message (1)
+
+What are the different ways to visualize data? Pick two and discuss the pros and cons of each.
+
+**************************************
+A box and whisker plot is also called a boxplot. Actually the later term is more often used in statistics. Boxplot is very informative, it shows the median, 1st and 3rd quantiles and min, max. From the boxplot we know roughly the distribution of the data.  Boxplot is often used in comparing two or more data groups. When two boxplots are placed side by side, you can see how the distribution differs, which group tends to have lower values. When two boxplots do not overlap, it shows the two groups are significantly different.
+
+****************************************************
+
+Time series are widely used in finance. It is useful in tracing the price of a stock, and one can find some time series models that can describe the price fluctuation, hopefully one can predict what the stock price will be in the future using the fitted model. Time series are also helpful in other areas like weather forecasting.
+
+*************************************
+
+R2 is not an easy concept. It is the square of the correlation coefficient. R2 equal to one means perfect linear correlation. R2 also has another meaning. In linear regression models, R2 measures how much variance in the dependent variable can be explained by the variance of the independent variables. R2 close to 1 means that the linear regression model include most of the necessary variables and the model fits the data well.
+
+************************************************
+************************************************
+****************************************
+
+First Message (2)
+
+What are the differences between qualitative and quantitative data? Give examples of each.
+
+******************************
+**********************************
+*******************************
+
+videos:
+***************************
+Marie, if the number of data points is small, then rounding may not be an issue and two decimal places should be good enough. A common mistake in calculating the standard deviation is to forget that the denominator is n-1, the number of data points minus 1, it is NOT the number of data points. This is tricky and counterintuitive. It is very easy to make this mistake. If the standard deviation you got is close to but not exact right, very likely you used n as the denominator. Please check.
+******************************
+
+I use statistics in my work, as I am a statistician. My work is on biostatistics, a branch of statistics focus on data from clinical trials. For example, when a new drug wants to get to the market, it needs a licensure and the company needs to submit clinical trial data to the FDA for review. My job is to review such data and determine whether the study meets its objective and the drug is effective and safe. Through the life cycle of a drug development, we provide guidance on the study design and statistical analysis plan, from early phase studies to the late phase pivotal trials.
+
+********************************
+Sorting the numbers is indeed very helpful. By doing this, a lot of the summary statistics are readily available or can be easily calculated. For example, the min is the first number and max is the largest, also the median is the number in the middle or the average of the two middle ones. You can also find out the mode.
+************************************************
+Many in this class find variance and standard deviation difficult to understand. This does not surprise me. When I first learn these concepts, I was confused too. But now after years of statistics practice, they are so natural to me. One way to understand variance and standard deviation is that they measure how far data points are deviate from the mean. Mean is the center of the data points, the larger the variance, the more spread out the data, the average distance from each data point to the center is then larger.
+
+*****************************************
+In a scatter plot, the dots come first, and then the line. It is not the other way around. The line is a fitted line that is the linear regression of the dots. The dot (x,y) is in a two dimensional space and x-coordinate is one measurement of a person such as the height, the y-coordinate is the other measurement such as the weight. And the line shows a line relationship between weight and height and that weight goes up with the height, which is quite reasonable.
+
+*********************************************
+
+
+The most commonly seen two-way table problem is for testing the independence of two variables. One example is whether gender and promotion. The cells of the two-way table show the number of subjects who were male/female and promoted/not promoted. When the total number of promotion is fixed, what's the chance that the observed number of males get promoted if male and female has the same chance of being promoted? The Fisher's exact test can answer this question. The Chi-squre test can also be used. 
+
+
+**********************************
+*************************************
+******************************88
+Others:
+****************
+I understand your frustration. The standard deviation was difficult for me to grasp when I had my first statistics course. I suggest two ways to try. Write down the 5 steps of standard deviation calculation, and follow those steps exactly. Watching others do the calculation is different from doing it yourself. I found others doing it effortlessly, but I could not. So do it yourself first and then compare notes. Locate which step you made a mistake, and do it again until you get it right. Then move to the next step. Also start with easy problems, for example, a few data points to get yourself familiar with the concept and the steps and then move on to more data points. Hope this helps.
+
+***********************************************
+It is a good idea to compare notes. You can first do calculation by yourself and then compare yours with the excel output. You can find out if you get the right answer or not, and if not, you can dig deeper and locate the calculation error. Practice several times, you will grasp the concept and know how to do it confidently. This is almost like you have a tutor by your side and lead you step by step to the right answer. Only you need to do the work of discovery and reasoning.
+
+************************************************
+This is interesting discussion. Outliers have huge impact on mean, but not so much on median. This is why median household income is often reported, not the mean income. The reason is that the mean will be high due to a few very rich household, but the median will be stable and are not impact by the extremely high income.
+
+*********************************************
+I like frequency tables too. Because it is neat and organized. Making frequency tables for me is like cleaning up a room, sorting things out, putting similar things together. After cleaning up the room, there is more space. Frequency tables also take less space than listing all the data points.
+
+***********************************************
+Yes, two variables go up together when they have positively correlation. If the correlation is negative, one goes up, the other goes down. An example of  negative correlation will be school absence and grades.  Students with more absent days tend to have lower grades. Another example is temperature and gas usage. When temperature increase, gas usage decreases.
+
+**********************************************
+
+There could be no outsiders. In that case, there is no number outside the two circles. The key of the Venn diagram is the intersection. The intersection can not be counted twice. When you calculate the union, you need to subtract the intersection from the sum of the two circles. If you don't subtract the intersection, you count it twice and the number is not correct. When there are three circles, it is more complicated, because you need to subtract the two-way overlap, but you need to add back the three way overlap, because it got subtracted three times.
+
+*************************************
+
+
+

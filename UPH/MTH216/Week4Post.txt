@@ -1,0 +1,11 @@
+First Message (1)
+
+Entering a PIN number for an ATM machine is an example of a permutation. The order that we enter the number matters. How is that different from a combination? Give an example of a permutation and a combination from life, and explain why each example is a permutation or combination.
+
+******************************
+************************************
+****************************************8
+
+First Message (2)
+
+Rolling a pair of dice is an example of an independent event. Whatever number is rolled on the first dice doesn't change the outcome of the second dice that is rolled. Give another example of an independent and explain why it is an independent event. What is a dependent event? Give an example and explain why the example is a dependent event.
