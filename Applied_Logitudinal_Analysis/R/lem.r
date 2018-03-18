@@ -11,7 +11,7 @@ anova(fit.lm)
 
 # treat subject as random factor
 fit.aov <- aov(y ~ 1 + Error(subject), data = Data)
-summary(fit.aov)
+summary(fit.aov)N
 
 # modern approach treating subject as random factor
 library(lme4)
