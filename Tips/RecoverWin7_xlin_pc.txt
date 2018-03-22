@@ -1,0 +1,10 @@
+1. Power on the computer and repeatedly press the F8 key until the screen
+ titled "Advanced Boot Options" show up on the screen.
+ 2. Select the option "Repair Your Computer" using the up and down arrow keys and press Enter
+ 3. Under "System Recovery Options", you can change a keyboard input method. Click on NEXT
+ 4. Under User name, Select your User Account. Enter the password (Optional), click on OK.
+ 5. Click on "Reinstall Windows"
+ 6. Please DO NOT POWER OFF THE SYSTEM during re-installation process.  The Out-Of-Box-Experience (OOBE) pop-up
+ windows should appear once the process is complete. At which point you will be able to register/set-up the 
+ system once again.
+ 
