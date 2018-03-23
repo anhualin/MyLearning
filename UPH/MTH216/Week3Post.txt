@@ -71,5 +71,7 @@ There could be no outsiders. In that case, there is no number outside the two ci
 
 *************************************
 
+The axis of a graph is also important. For example, when different units are used in the x-axis, the graph looks quite different. When using a big unit, the graph looks steep. For time-to-event type of data, such as survival time, disease relapse time, etc. when subjects' survival time is short, like relapsed/resistant cancer patients, the x-axis unit may need to be a month. However for cardiovascular patients, the unit can be a year. Y axis can have some variation too. For example, when data is very large, y-axis can be in log scale. So when we read a graph, we need to pay attention to the x and y axis unit too.
 
+************************************
 
