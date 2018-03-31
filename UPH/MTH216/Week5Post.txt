@@ -5,6 +5,17 @@ Now that you are in the final week of your math class, what skills have you lear
 *************************************
 
 
+I am glad you enjoy this course.  I believe they redesigned this course. A long time again I taught a statistics course, and the curriculum was theoretical. I still remember the week when hypothesis testing was introduced. Every one in the class had a hard time understanding it. I was not surprised, because when I first studied hypothesis testing, it was Greek to me. It took me a long time to make sense out of it. I need to, because I deal with hypothesis testing every day.  Every clinical trial needs to have a study hypothesis. However, most of people don't have to deal with it and they never will. So it may not be a good idea to squeeze it into a 5 week class. I like the current curriculum better. Because students can relate to it more easily.
+
+***********************************************
+
+
+I know what you are talking about. Instructors are required to take a training course before teaching. When I took the course, I was eager to find out if my messages were substantive. If I did not find an "S" next to my messages, I was disappointed, and I thought my post was not substantive so I need to post more messages. But later my post turned out to be "substantive". I understand your frustration when the instructor graded the participation last minute. Your post is a motivation for me to read the posts in a timely manner.
+
+********************************************************
+Very honest and frank. I have to admit that teaching this course is not as easy as I thought. I have taught at UOP for many years now but this is the first time that I teach this course. Just like you guys, I am required to publish at least two substantive messages 5 days a week. I need to read all the messages so that I can grade participation. I usually spend several nights grading, and if I squeeze it into one night, it will be overwhelming. Teaching is my second job, and I can only work on it after I have done my day job and have done the house work. Time management is very much needed.    
+
+
 
 **********************************************
 ********************************************
@@ -15,3 +26,16 @@ What role does budgeting play in your personal finances? What have you taken awa
 
 ***************************************************
 
+
+I do impulsive shopping too, mostly for food. I never stick to a shopping list. I like to try new food. Currently what cost me most is mortgage and daycare. These two expenses cost me majority of my paycheck. For the first year, the mortgage payment are mostly for interest, and gradually over the years, the principle payment increases. We pay extra principle, because we don't have a way to invest the money to get more than 3% return. I hope I can teach my daughter how to manage her money when she grows up. I probably will use this Chapter to teach her.
+
+***********************************************
+Other
+*********************
+It is interesting that you mentioned credit score. Because there is serious statistics involved in determining one's credit score. Credit score is used whenever you take a loan, for example, car loan, mortgage, etc. But in many other situations as well, such as renting an apartment, even when you looking for a job, the employer may check your credit score. The exact statistical model the three companies use to calculate credit score in unknown, but some of  the covariates in the model we can have a good guess. For example, one major factor is whether the person have been bankruptcy or not, are there unpaid debt, how many credit cards are under your name, what is the balance on each card. All covariates are then put into this potentially complicated model to produce a score that's supposed to measure your credibility.
+
+******************************************************
+
+Video
+***************
+This is a nice explanation of the difference between bonds and stocks. Buying bonds is like lending your money, they will pay you back after certain years (maturity). In the mean time, they will pay you interest. When people talk about bonds, they often talk about yield. The (nominal) yield of a bond is the amount of interest divided by the face value of the bond. For example, if you buying a bond for $10,000, and you get $2,000 per year, then the yield of the bond is 2%. The price of a bond fluctuates depending over time and it is presented as a percentage of face (par) value. For example, for a bond with a face value of $10,000, its price could be 97, 99, 103, etc. over the time. 97 means that people pay 97% of the face value when buying it.
