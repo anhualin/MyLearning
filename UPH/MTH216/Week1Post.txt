@@ -41,7 +41,7 @@ Describe the difference between correlation and causality. Gives examples in lif
 
 **********************8
 
-Daniel, good message about distinguishing correlation and causation. It is not easy to separate the two. One way to conceptualize it goes about this.There is a latent variable, denoted as X. X causes changes in both Y and Z. We will see Z and Y are correlated, because their change are both caused by X. But there is no causal relationship between Y and Z. One example is the correlation between ice cream sale increase and drowning deaths increase. But one does not cause the other,rather both are caused by temperature increase. During hot summer, more people eat ice cream, and more people swim and unfortunately more drowning deaths.
+Daniel, good message about distinguishing correlation and causation. It is not easy to separate the two. One way to conceptualize it goes about this. There is a latent variable, denoted as X. X causes changes in both Y and Z. We will see Z and Y are correlated, because their change are both caused by X. But there is no causal relationship between Y and Z. One example is the correlation between ice cream sale increase and drowning deaths increase. But one does not cause the other,rather both are caused by temperature increase. During hot summer, more people eat ice cream, and more people swim and unfortunately more drowning deaths.
 
 *******************8
 
@@ -51,7 +51,6 @@ Daniel, this is a good question, is there causation without any correlation? Int
 As I understand it, exercise does not need to be the sole factor responsible for weight loss in order for them to form a causal relationship. Other factors may contribute to weight loss, for example, diet, reduce stress and other life style change. But as long as exercise contribute to the weight loss, they are cause and effect.
 
 **************************
-As I understand it, exercise does not need to be the sole factor responsible for weight loss in order for them to form a causal relationship. Other factors may contribute to weight loss, for example, diet, reduce stress and other life style change. But as long as exercise contribute to the weight loss, they are cause and effect.
 
 
 
