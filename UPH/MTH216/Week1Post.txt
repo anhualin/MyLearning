@@ -4,6 +4,9 @@ Why do you think this course will be helpful toward for your career? What math s
 ***********************
 XXXX, you are right about practice. Practice makes Perfect. This course will be a good opportunity to sharpen your math skills. And also you will learn basic statistics, how to summarize data and how to interpret study results, such as whether there is potential bias in the study design, or what are the sources of variability, etc. It will be an interesting learning experience. We are in a modern world and data is generated every second. Everyone needs to learn math and statistics to understand the data and interpret the data. There course will be very helpful.  
 
+***********************************
+Good discussion. Indeed math shows up in all aspects of life. Very few people may become pure mathematician and the pure theoretical mathematics finds close to none application in real life. But basic math and statistics is used almost every where. It can be as simple as calculating your grocery bill or checking your mortgage. It can also be some fancy stuff done by Google. For example, their page rank algorithm which is the backbone of the search engine actually involves solving a huge linear equation.
+
 **********************************
 Allison,very good example of using math in one's daily job. I agree that there are problems to be solved in every career path that need math skills. Actually not only in one's job, but also every day life, if one wants to make informed decision about how much mortgage to take, what data plan to purchase, what health insurance plan to buy, all these decisions involve math and statistics.
 
@@ -33,8 +36,7 @@ When the dots form a line, it is perfect linear correlation. when dots move away
 
 All the planning tasks need statistics. Not only in predicting office supply needs, but also in other fields. For example, airline companies need to predict how much oil will be consumed in the next season, grocery stores need to predict what grocery to restock and how often, and vaccine manufactures need to predict the demand of flu vaccine in the coming year, etc. Statistics models are used in which variables are combined and work together to give an estimate of the future unknown variable.  
 
-*****************************
-All the planning tasks need statistics. Not only in predicting office supply needs, but also in other fields. For example, airline companies need to predict how much oil will be consumed in the next season, grocery stores need to predict what grocery to restock and how often, and vaccine manufactures need to predict the demand of flu vaccine in the coming year, etc. Statistics models are used in which variables are combined and work together to give an estimate of the future unknown variable.   
+
 ********************************************
 
 

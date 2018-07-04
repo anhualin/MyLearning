@@ -1,7 +1,58 @@
+************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************
+
+Some students have asked questions about standard deviation.
+
+
+Given a list of numbers, for example,  1, 5, 8, 15, 15, 22.
+
+(1) You need to understand the mean which is also just the average. You calculate it by adding all numbers together then divide the sum by the number of items.
+
+In this case the mean = (1 + 5 + 8 + 15 + 15 + 22) / 6 = 11. 
+
+(2) The average is like the center of these numbers who are spread around it with various distances.  For example, 1 is away from 11 by 10 and 22 is away from 11 by 11.  The detail is here:
+
+1 --> 10
+
+5 --> 6
+
+8 --> 3
+
+15 --> 4
+
+15 --> 4
+
+22 --> 11
+
+
+We can see that some numbers are closer to the center while others are far away.
+
+(3) Now you need to understand the concept of variance which is an index measuring as a whole how close are these numbers to the center.
+
+The variance is defined to be the (adjusted) average of the square distance of those numbers to their center.
+
+In our example,  it is (10^2 + 6^2 + 3^2 + 4^2 + 4^2 + 11^2) / 5 or (10^2 + 6^2 + 3^2 + 4^2 + 4^2 + 11^2) / 6.  There is a technical detail about the denominator, should we use the number of items (6 here) or one less than that (5 ). Based on statistical concern, usually we use one less than the number of items, but for most practical problem they are practically the same.  I have seen softwares implementing both of them.
+
+So the variance = 59.6.
+
+(4) The standard deviation is just the square root of the variance, in other words, it's also an index to measures how spread out are the numbers around its center.
+
+For this case the standard deviation = sqrt(59.6) = 7.72.
+
+**********************************************
+When we have a lot of numbers, we often want to use a few indices to characterize them.  Mean and median are two such indices that try to give a sense about the center of these numbers. Because they have different definitions, so sometimes they give the same value while other times they are different.
+
+Example1:  consider 1, 2, 3, 4, 5, both mean and median = 3.
+
+Example2:  consider 1, 2, 3, 10, 15, the mean = 6.2 while the median = 3.
+
+
+Now which one is better in terms of describing the center? It depends on the data. Generally the mean is easy to handle in analysis, while the median is more robust against outliers. For example, say we have the following numbers 1, 1, 2, 2, 3, 3, 4, 5, 10000000. The mean = 1111113 while the median = 3. Which one do you think  that characterize the center of these numbers better?
+***********************************
+
 First Message 1
 
 
-Consider one of the following jobs: writer, health administrator, or police officer. How do you think they use data in their careers? Where in your potential career do you think you will use data?
+ Where in your potential career do you think you will use data? Given an example.
 
 ****
 Not only in one's career, statistics are widely used in everyday life. For example, when applying for a car loan or a mortgage, the applicant needs to provide information about employment, income, etc. The bank who issues the loan will also look into a person's credit score. And weather forecast is also based on statistics. Weather history is built into a complicated model that can predict accurately what's the weather will be like tomorrow, and a week from today although with less accuracy.
@@ -19,7 +70,7 @@ What are some processes of data collection? Give at least two examples.
 *********************************
 **************************
 
-Vedio
+Video
 *********
 It is a great idea to use data to illustrate how to calculate mean, variance and standard deviation. I need to point out two places in your calculation that need some more work. First is variance, when calculating variance, the denominator is the n-1, which is the total number of data points minus 1. So the variance is 20/3=6.67. Your denominator is the number of data points plus 1. And standard deviation is the square root of the variance, so it is sqrt(6.67), which is 2.59.
 **************************
@@ -36,4 +87,15 @@ Cassandra, very good examples to illustrate the concepts of mean, median and mod
 Very comprehensive review of all the concepts involved in describing a data set. In my work,  the most often used concepts are mean, standard deviation, median, min and max. These are the first step in data analysis. Sometimes, a histogram is very helpful. You can see whether the distribution is symmetric or not, has one mode or more. A graph worth a thousand words.
 
 *************************
-other
+Critical thinking in this information era:
+
+
+A lot of information is shared everyday via the Internet. We need to acquire the ability to think indecently and make our own judgment. Depending on the source of the information, and how the information is acquired, the conclusion may not be valid. For example, if one makes conclusion about a general matter by telephone survey on a specific area, it may be biased, because it leaves out people who are not in this area.
+
+***************************
+A fast paced course:
+
+
+
+This course is fast paced and a lot of content is squeezed into 5 weeks. We encourage you all to spend some time each day in MyMathLab. New concepts can only sink in after practice. And joining in the forum discussion is also helpful so that you can look at things from a different perspective and you know what people can do with what's taught in this class. This can also be a good source of motivation.
+
