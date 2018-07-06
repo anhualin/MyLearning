@@ -58,7 +58,7 @@ First Message 1
 Not only in one's career, statistics are widely used in everyday life. For example, when applying for a car loan or a mortgage, the applicant needs to provide information about employment, income, etc. The bank who issues the loan will also look into a person's credit score. And weather forecast is also based on statistics. Weather history is built into a complicated model that can predict accurately what's the weather will be like tomorrow, and a week from today although with less accuracy.
 
 **********************
-
+Very interesting examples. Indeed, keeping accurate data records is fundamentally important for many business. Nowadays, many companies will want to go one step further. They want to discover insights hidden in the data and use them to drive business. They often have a team of data scientists to do just that. Actually there are companies share their data and problems to the public (of course, after deletion of sensitive information) and offer reward for whoever can best analyzing their data. Kaggle https://www.kaggle.com/ is such as place where data scientists around word compete and learn from each other.
 
 ************************8
 ***********************
@@ -68,6 +68,10 @@ What are some processes of data collection? Give at least two examples.
 
 
 *********************************
+
+
+Good discussion. The importance of data collection is often under-valued by many people including statisticians. In school we are often taught how to analyze or build model based on some given data. But not many of us pay attention to where do the data come from. In real world, the data collection process is extremely important. Garbage in garbage out. If the collected data are not in good quality, then whatever insights squeezed out of the data are likely to be wrong and may even have negative impact on the business.
+
 **************************
 
 Video
