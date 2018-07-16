@@ -2,10 +2,15 @@ First Message (1)
 
 What are the different ways to visualize data? Pick two and discuss the pros and cons of each.
 
+You are right. No single visualization technique can show every aspect of the data. So usually it is recommended to try various types of plots during the exploratory analysis phase so that we can get a much better sense of the data than just using one specific plot.  It is the similar case regarding statistical index. Although mean is the most often calculated index, usually we also need to find other indices such as the median, variance, standard deviation etc.
+**********************************8
 **************************************
 A box and whisker plot is also called a boxplot. Actually the later term is more often used in statistics. Boxplot is very informative, it shows the median, 1st and 3rd quantiles and min, max. From the boxplot we know roughly the distribution of the data.  Boxplot is often used in comparing two or more data groups. When two boxplots are placed side by side, you can see how the distribution differs, which group tends to have lower values. When two boxplots do not overlap, it shows the two groups are significantly different.
 
 ****************************************************
+Good discussion! Bar graph and pie chart are indeed very popular. I have seen them in many documents. Among these two, usually we prefer the bar graph. It is because that given two bars, we can easily tell which one is higher, especially when they are placed next to each other. On the other hand, when two pies are similar in size, it will not be so easy for human eyes to tell which one is bigger.
+
+**********************************************
 
 Time series are widely used in finance. It is useful in tracing the price of a stock, and one can find some time series models that can describe the price fluctuation, hopefully one can predict what the stock price will be in the future using the fitted model. Time series are also helpful in other areas like weather forecasting.
 
@@ -14,6 +19,7 @@ Time series are widely used in finance. It is useful in tracing the price of a s
 R2 is not an easy concept. It is the square of the correlation coefficient. R2 equal to one means perfect linear correlation. R2 also has another meaning. In linear regression models, R2 measures how much variance in the dependent variable can be explained by the variance of the independent variables. R2 close to 1 means that the linear regression model include most of the necessary variables and the model fits the data well.
 
 ************************************************
+Good discussion. You pointed out a big problem with pie chart when we need to divide it into many pieces. In this case each piece will be so small that the whole chart becomes messy and cannot convey the intended information. A similar problem is that when two pieces of pie are close in size, it is very hard to tell the difference by just looking at them. Because of such drawbacks, usually a bar chart is preferred. That being said, pie charts still appear a lot in real life work, maybe a pie looks more exciting or friendly than a bar? I don't really know.
 ************************************************
 ****************************************
 
@@ -29,8 +35,11 @@ videos:
 ***************************
 Marie, if the number of data points is small, then rounding may not be an issue and two decimal places should be good enough. A common mistake in calculating the standard deviation is to forget that the denominator is n-1, the number of data points minus 1, it is NOT the number of data points. This is tricky and counterintuitive. It is very easy to make this mistake. If the standard deviation you got is close to but not exact right, very likely you used n as the denominator. Please check.
 ******************************
+This week you have learned statistical reasoning.
 
-I use statistics in my work, as I am a statistician. My work is on biostatistics, a branch of statistics focus on data from clinical trials. For example, when a new drug wants to get to the market, it needs a licensure and the company needs to submit clinical trial data to the FDA for review. My job is to review such data and determine whether the study meets its objective and the drug is effective and safe. Through the life cycle of a drug development, we provide guidance on the study design and statistical analysis plan, from early phase studies to the late phase pivotal trials.
+I use statistics in my work, as I am a statistician. My work is on biostatistics, a branch of statistics focus on data from clinical trials. For example, when a new drug wants to get to the market, it needs a license and the company needs to submit clinical trial data to the FDA for review. My job is to review such data and determine whether the study meets its objective and the drug is effective and safe. Through the life cycle of a drug development, we provide guidance on the study design and statistical analysis plan, from early phase studies to the late phase pivotal trials.
+
+Do you use statistics in your work? If so can you share some examples?
 
 ********************************
 Sorting the numbers is indeed very helpful. By doing this, a lot of the summary statistics are readily available or can be easily calculated. For example, the min is the first number and max is the largest, also the median is the number in the middle or the average of the two middle ones. You can also find out the mode.

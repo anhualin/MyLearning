@@ -49,6 +49,11 @@ Example2:  consider 1, 2, 3, 10, 15, the mean = 6.2 while the median = 3.
 Now which one is better in terms of describing the center? It depends on the data. Generally the mean is easy to handle in analysis, while the median is more robust against outliers. For example, say we have the following numbers 1, 1, 2, 2, 3, 3, 4, 5, 10000000. The mean = 1111113 while the median = 3. Which one do you think  that characterize the center of these numbers better?
 ***********************************
 
+
+Adding the number together then dividing it by the number of numbers will give you the mean or average of these numbers. It is one of the most important index that characterizes these numbers.  However, using the mean alone can often lead to misleading conclusion. So during a data analysis we usually find many indices such as mean, median, mode, standard deviation etc, and draw many plots such as histogram, box-plot, this way we can get a much better sense of how these data distributed.
+
+*******************************************************
+
 First Message 1
 
 
@@ -61,14 +66,26 @@ Not only in one's career, statistics are widely used in everyday life. For examp
 Very interesting examples. Indeed, keeping accurate data records is fundamentally important for many business. Nowadays, many companies will want to go one step further. They want to discover insights hidden in the data and use them to drive business. They often have a team of data scientists to do just that. Actually there are companies share their data and problems to the public (of course, after deletion of sensitive information) and offer reward for whoever can best analyzing their data. Kaggle https://www.kaggle.com/ is such as place where data scientists around word compete and learn from each other.
 
 ************************8
+One strategy that I find useful is to start with small data set and try variouls ideas/concepts/techniques using just paper and pen(cil). This can be tedious and time consuming but is very helpful for you to master the material. However, most real life data sets are quite big and usually requires computer software. Therefore if you feel comfortable with calculations on small data sets by hand, the next step is to try large ones using software such as Excel, R, SAS etc.
+
+
+
+
+
 ***********************
 First Message 2
 
 What are some processes of data collection? Give at least two examples.
 
+*************************8
+Twenty years ago I was in college. Together with my roommates we rented a computer which had 2G hard disk. It was really big at that time and we spent a long night to put lots of stuff on it. Nowadays a so-so laptop may have 16G memory. Technology has advanced at a very fast speed. In this age people are capable to deal with big data where a file is so big that we have to split it into many parts to store at different places. However, the old saying garbage in garbage out is still true. It becomes a big problem to separate useful information from noise in such huge amount of data.
 
 *********************************
+Excellent discussion. I work as a mathematical statistician for FDA. My main responsibility is to review clinical trials for drug development.
 
+Random selection is no doubt the most important part for a successful clinical trial. For example, usually the goal is to prove that a new drug is effective for the target patient population. However, it's impossible to try the new drug on every patient. So we have to limit our test to a sample of the population. Now this sample cannot be a biased representative of the patient population. For example, if the patient population has significant portions of male and females, then a sample with only female may not be a good idea. In this case, typically we use random selection to guarantee that there is no system bias in the sample.
+
+****************************************88
 
 Good discussion. The importance of data collection is often under-valued by many people including statisticians. In school we are often taught how to analyze or build model based on some given data. But not many of us pay attention to where do the data come from. In real world, the data collection process is extremely important. Garbage in garbage out. If the collected data are not in good quality, then whatever insights squeezed out of the data are likely to be wrong and may even have negative impact on the business.
 
@@ -91,6 +108,9 @@ Cassandra, very good examples to illustrate the concepts of mean, median and mod
 Very comprehensive review of all the concepts involved in describing a data set. In my work,  the most often used concepts are mean, standard deviation, median, min and max. These are the first step in data analysis. Sometimes, a histogram is very helpful. You can see whether the distribution is symmetric or not, has one mode or more. A graph worth a thousand words.
 
 *************************
+I believe that we never really forget things. I think that the stuff that we forget actually just lurk some where in our brain. We usually have a much better understanding of any knowledge the second time we learn it. It just takes practice. On the other hand, when doing data analysis sometimes a graph worths a thousand words. So after calculating the mean, median, mode, standard deviation etc., you should try to draw histogram, scatter plot etc which will help you to have a better sense of the data.
+****************************
+
 Critical thinking in this information era:
 
 
