@@ -39,3 +39,18 @@ sudo systemctl restart network-manager.service
     sudo apt-get update
     sudo apt-get install hpijs-ppds
   (2) System setting --> Add Printer --> use Brother HL-2170W Foomatic/hpijs-pcl5e
+
+10. trouble installing adobe flash, software center doesn't show repository:
+
+Step 1: Enable Canonical Partners Repository
+The latest flash plugin lives in the Canonical Partners’ repository and is disabled by default. You must enable this repository before attempting to install flash plugin.
+
+To do that, open the command line terminal and run the commands below.
+
+sudo add-apt-repository "deb http://archive.canonical.com/ $(lsb_release -sc) partner"
+
+Step 2: Installing Adobe Flash Plugin
+After enabling the partner’s repository, run the commands below to install Adobe flash plugin
+
+sudo apt update
+sudo apt install adobe-flashplugin browser-plugin-freshplayer-pepperflash
