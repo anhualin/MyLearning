@@ -70,21 +70,20 @@ The price of a house is ​$344,000 today and rises with time at a constant rate
 
 
 /************/
-Your answer is correct. A function is a way to describe the relation between two variables.
+Your answer is correct.  But the problem also asks you to give the linear function. A function is a way to describe the relation between two variables.
 
 In this problem, we can consider the variable P = the price of the house and t = the number of years since today.
 
-Since the initial price is 444000 and each year the price increases by 1500. So the relation between P and t
+Since the initial price is 344000 and each year the price increases by 1000. So the relation between P and t
 
-is P = 444000 + 1500 * t or often written as P(t) = 444000 + 1500 * t. In other words, here the price P depends of t through this expression.
+is P = 344000 + 1000 * t or often written as P(t) = 344000 + 1000 * t. In other words, here the price P depends of t through this expression.
 
 
 This equation can be used for two purposes:
 
-1. knowing t, to find P. For example, what's the price after 10 years?  Then P(10) = 444000 + 1500 * 10 = 459000.
+1. knowing t, to find P. For example, what's the price after 10 years?  Then P(10) = 344000 + 1000 * 10 = 354000.
 
-2. knowing P to find t.  For example, when will the price become 450000?  Then 450000 = 444000 + 1500 * t ---> 1500 * t = 450000 - 444000  ---> 1500 t = 6000 ----> t = 6000 / 1500 = 4 years.
-
+2. knowing P to find t.  For example, when will the price become 450000?  Then 351000 = 344000 + 1000 * t ---> 1000 * t = 351000 - 344000  ---> 1000 t = 7000 ----> t = 7000 / 1000 = 7 years.
 /***/
 
 (3) You can rent time on computers at the local copy center for a

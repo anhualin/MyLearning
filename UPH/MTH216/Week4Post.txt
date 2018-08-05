@@ -23,6 +23,8 @@ I saw an earlier post using candies in a bag as an example. I think we can use a
 ****************************************8
 
 First Message (2)
+What is the difference between independent and dependent probabilities?
+***************************************88
 
 Rolling a pair of dice is an example of an independent event. Whatever number is rolled on the first dice doesn't change the outcome of the second dice that is rolled. Give another example of an independent and explain why it is an independent event. What is a dependent event? Give an example and explain why the example is a dependent event.
 
@@ -30,6 +32,19 @@ Rolling a pair of dice is an example of an independent event. Whatever number is
 *********************************
 Causality usually implies dependence, but the reverse is not necessarily true. For example, people's weight and height usually increase together, so they are dependent. But weight increase does not cause height increase, neither does height cause weight increase. The two are correlated, but there is no causality.
 
+**************************
+
+
+You are basically correct. Consider flipping two coins in the following two scenarios:
+
+(1) Flip the 1st coin, then flip the 2nd coin as usual.
+
+In this case what show up in the first coin is independent from that from the 2nd coin. For example, the probability of  1st coin = head and the probability of 2nd coin = head are both 1/2; and the probability of getting two heads = 1/2 * 1/2 = 1/4 ---> independent probability.
+
+
+(2) Flip the 1st coin, then flip the 2nd coin slowly and carefully so that it shows the same side as the first coin.
+
+In this case  what show up in the two coins are always the same, so of course they are dependent. We still have the probability of 1st coin = 1/2 and the probability of 2nd coin = head = 1/2; however the probability of getting two heads is also 1/2 instead 1/4 as in previous case ---> dependent probability.
 ***************************
 **************************
 Video
@@ -48,6 +63,10 @@ The odds of winning a lottery is quite small. By small, I mean less than 1 in a 
 1/99 × 1/98 × 1/97 × 1/96 × 1/95 = 1/8582777280. You can try it to see the odds of winning your state lottery.
 
 *****************************
+Oh well, the lottery probability is indeed disappointing but shouldn't be surprising. The lottery is essentially a way to gather a small amount of money from each person of a large group and redistribute it to a few luck ones. If you want the reward money to be exciting, then there can be very few lucky people and the probability to be one of them is slim; on the other hand, if you want the probability to win the lottery to be exciting, then there have to be many winners and each one won't get much money.
+
+***************************************
+
 This way of learning works best for me too. I like to try it first and compare my answer with the solution. If I get it wrong, I dig in and find out which step I miss. And next time, I will pay special attention when it comes to this step. It is always easy to see other people do it, because it appears so effortlessly, so that you miss the chance to appreciate the thinking process as they move from one step to the next.
 **********************************
 I did not know you can set up a pin for snowblower. This is smart. We do have lots of pins to remember. For my work laptop, they require us to change the pin every 3 months. So I need to come up with a new permutations every three months. And old pin can not be recycled until one year after. What a lot of fun it is! Here is an interesting problem. Suppose you need to come up with a 5 digits pin, at least one of the three special characters need to be in it: !, # and $. And at least one number, at least one upper case and one lower case. How many permutations you can come up with?
@@ -68,5 +87,5 @@ We also used key fob to access VPN, but it was outdated and we now use our badge
 I understand your frustration. From my own experience, the concept of probability was first built on examples with finite outcomes. For example, the rolling of a dice, flipping of a coiI understand your frustration. From my own experience, the concept of probability was first built on examples with finite outcomes. For example, the rolling of a dice, flipping of a coin. But gradually, the concept becomes more abstract and no longer depending on dice or coin, though you can still use them as a model. For example, when you flip not one but three fair coins, what is the probability that there are two heads and one tail? One way to calculate it is the total number of possible outcomes are 2^3=8, and the tail can be any of the three tosses, so the denominator is 3. 3/8=0.375. Or using the counting skills 3 choose 1 times (1/2)^3 =0.375. If you are familiar with the Binomial random variable, you can use the formula to derive the probability without thinkingn. But gradually, the concept becomes more abstract and no longer depending on dice or coin, though you can still use them as a model. For example, when you flip not one but three fair coins, what is the probability that there are two heads and one tail? One way to calculate it is the total number of possible outcomes are 2^3=8, and the tail can be any of the three tosses, so the denominator is 3. 3/8=0.375. Or using the counting skills 3 choose 1 times (1/2)^3 =0.375. If you are familiar with the Binomial random variable, you can use the formula to derive the probability without thinking.
 
 ***************************************************
-
+You made a good point. It would be nice to see examples similar to the problems that you have missed before attempting them again. I'm not sure whether the current software has this feature or not. Theoretically I don't think it's very hard to do. They will need a large problem database and a way to find similar problems to any given problem. Then once you select a problem for help, the system should be able to find several similar examples and demonstrate the solutions. Maybe you should write this wish/suggestion in your course feedback.
 *********************************************************
